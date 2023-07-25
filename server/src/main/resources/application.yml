@@ -1,0 +1,17 @@
+mybatis:
+  type-aliases-package: com.portfolio.community.dtos
+  configuration:
+    map-underscore-to-camel-case: true
+    level:
+      com.study.springboard.repository: trace
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/portfolio
+    username: root
+    password: admin!32
+
+  messages:
+    basename: messages
+    encoding: utf-8
