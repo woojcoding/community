@@ -3,6 +3,7 @@ package com.portfolio.community.services;
 import com.portfolio.community.dtos.UserDto;
 import com.portfolio.community.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,12 +15,18 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     /**
      * 회원가입을 하는 메서드
      *
      * @param userDto the user dto
      */
     public void signUp(UserDto userDto) {
+        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+
+        userDto.setPassword(encodedPassword);
+
         userRepository.signUp(userDto);
     }
 

@@ -11,6 +11,6 @@
 
     <insert id="signUp">
         INSERT INTO user(account_id, password, name)
-        VALUES ( #{accountId}, SHA2(#{password}, 256), #{name})
+        VALUES ( #{accountId}, #{password}, #{name})
     </insert>
 </mapper>

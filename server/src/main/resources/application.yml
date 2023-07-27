@@ -15,3 +15,8 @@ spring:
   messages:
     basename: messages
     encoding: utf-8
+
+jwt:
+  secret: wooj123wooj123wooj123wooj
+
+
