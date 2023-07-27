@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 로그인</title>
+</head>
+<body>
+  <form th:object="${loginDto}" th:action="@{/admin/login}" th:method="post">
+    <div>
+      <input type="text"
+             th:field="${loginDto.accountId}"
+             placeholder="아이디">
+      <input type="password"
+             th:field="${loginDto.password}"
+             placeholder="비밀번호">
+      <button>로그인</button>
+    </div>
+  </form>
+</body>
+</html>

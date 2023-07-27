@@ -74,9 +74,9 @@ public class JwtAuthenticationFilter
     /**
      * 인증에 성공했을 때 호출하는 메서드
      *
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
-     * @param chain FilterChain
+     * @param request    HttpServletRequest
+     * @param response   HttpServletResponse
+     * @param chain      FilterChain
      * @param authResult 인증 정보
      * @throws IOException
      * @throws ServletException
@@ -92,40 +92,33 @@ public class JwtAuthenticationFilter
 
         String accessToken = jwtUtil.encode(userDto.getUserId());
 
-        String role = userDto.getRole();
 
-        // 역할(role)에 따라 다른 동작을 수행
-        if ("ADMIN".equals(role)) {
-            // 관리자일 경우 admin 페이지로 리다이렉트
-            response.sendRedirect("/admin/home");
-        } else {
-            // 일반 사용자일 경우 JSON 형태로 응답
-            String message =
-                    messageSource.getMessage(
-                            "login.success", null,
-                            LocaleContextHolder.getLocale()
-                    );
+        // 일반 사용자일 경우 JSON 형태로 응답
+        String message =
+                messageSource.getMessage(
+                        "login.success", null,
+                        LocaleContextHolder.getLocale()
+                );
 
-            LoginResultDto loginResultDto = LoginResultDto.builder()
-                    .userId(userDto.getUserId())
-                    .accessToken("Bearer " + accessToken)
-                    .build();
+        LoginResultDto loginResultDto = LoginResultDto.builder()
+                .userId(userDto.getUserId())
+                .accessToken("Bearer " + accessToken)
+                .build();
 
-            ApiResult apiResult = ApiResult.builder()
-                    .status(ApiStatus.SUCCESS)
-                    .message(message)
-                    .data(loginResultDto)
-                    .build();
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
+                .data(loginResultDto)
+                .build();
 
-            // ApiResult를 JSON 형식으로 변환하여 response의 본문에 추가
+        // ApiResult를 JSON 형식으로 변환하여 response의 본문에 추가
 
-            ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
 
-            String apiResultJson = objectMapper.writeValueAsString(apiResult);
+        String apiResultJson = objectMapper.writeValueAsString(apiResult);
 
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(apiResultJson);
-        }
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(apiResultJson);
     }
 }
