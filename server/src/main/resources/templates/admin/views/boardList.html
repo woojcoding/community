@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{admin/layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <th:block layout:fragment="content">
+        <div th:switch="${type}">
+            <div th:case="'notice'">
+                <h2>공지사항 관리</h2>
+                <div th:replace="admin/fragments/searchForm :: common-search-container"></div>
+            </div>
+            <div th:case="'free'">
+                <h2>자유 게시판 관리</h2>
+                <div th:replace="admin/fragments/searchForm :: common-search-container"></div>
+            </div>
+            <div th:case="'gallery'">
+                <h2>갤러리 게시판 관리</h2>
+                <div th:replace="admin/fragments/searchForm :: common-search-container"></div>
+            </div>
+            <div th:case="'gallery'">
+                <h2>문의 게시판 관리</h2>
+            </div>
+        </div>
+        <div>
+            <select>
+                <option>10</option>
+                <option>20</option>
+                <option>30</option>
+                <option>40</option>
+                <option>50</option>
+            </select>
+            <p>개씩 보기</p>
+
+            <p>정렬</p>
+            <select>
+                <option>등록일시</option>
+                <option>분류</option>
+                <option>제목</option>
+                <option>조회수</option>
+            </select>
+            <select>
+                <option>내림차순</option>
+                <option>오름차순</option>
+            </select>
+            <button>글 등록</button>
+        </div>
+        <table class="boardList">
+            <tr>
+                <td>번호</td>
+                <td>분류</td>
+                <td>제목</td>
+                <td>조회수</td>
+                <td>등록 일시</td>
+                <td>작성자</td>
+            </tr>
+            <tr th:each="board, iterStat : ${boardListDto.boardResponseDtoList}">
+                <td th:text="${boardListDto.totalBoardCount - ((boardSearch.pageNum - 1) * boardSearch.pageSize) - iterStat.count + 1}"></td>
+                <td th:text="${board.categoryName}"></td>
+                <td>
+                    <a th:text="${board.title}"></a>
+                </td>
+                <td th:text="${board.views}"></td>
+                <td th:text="${board.createdAt}"></td>
+                <td th:text="${board.writer}"></td>
+            </tr>
+        </table>
+    </th:block>
+</div>
+</body>
+</html>

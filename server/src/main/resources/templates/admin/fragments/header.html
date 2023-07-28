@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<div>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<header th:fragment="headerFragment">
     <span th:text="${#authentication.name + ' 님 안녕하세요!'}"></span>
     <form action="/admin/logout" method="post">
         <button>로그아웃</button>
     </form>
-</div>
-</body>
+</header>
+
 </html>
