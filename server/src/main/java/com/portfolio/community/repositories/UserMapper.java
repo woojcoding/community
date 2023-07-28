@@ -10,6 +10,7 @@ import java.util.Optional;
  */
 @Mapper
 public interface UserMapper {
+
     /**
      * 회원 아이디 중복 여부를 위해 AccountId로 회원을 조회하는 메서드
      *

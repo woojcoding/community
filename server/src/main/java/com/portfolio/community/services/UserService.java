@@ -13,8 +13,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
+    /**
+     * UserRepository 의존성 주입
+     */
     private final UserRepository userRepository;
 
+    /**
+     * 암호화를 처리하는 PasswordEncoder 의존성 주입
+     */
     private final PasswordEncoder passwordEncoder;
 
     /**

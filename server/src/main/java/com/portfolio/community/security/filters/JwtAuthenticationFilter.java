@@ -29,6 +29,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter
         extends UsernamePasswordAuthenticationFilter {
+
     /**
      * 인증을 해주는 AuthenticationManager 의존성 주입
      */

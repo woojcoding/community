@@ -1,4 +1,4 @@
-package com.portfolio.community.admin;
+package com.portfolio.community.admin.controller;
 
 import com.portfolio.community.dtos.LoginDto;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
+
     /**
      * 로그인 폼을 가져오는 메서드.
      *
@@ -38,7 +39,7 @@ public class AdminController {
 
         model.addAttribute("loginDto", loginDto);
 
-        return "admin/loginForm";
+        return "admin/views/loginForm";
     }
 
     /**
@@ -49,6 +50,6 @@ public class AdminController {
      */
     @GetMapping("/home")
     public String getHomeForm(Model model) {
-        return "admin/home";
+        return "admin/views/home";
     }
 }

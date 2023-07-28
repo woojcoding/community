@@ -14,6 +14,7 @@ import java.io.IOException;
  */
 public class AdminAuthenticationSuccessHandler
         implements AuthenticationSuccessHandler {
+
     /**
      * 로그인에 성공 시 /admin/home으로 redirect
      *

@@ -16,6 +16,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class DelegatedAuthenticationEntryPoint
         implements AuthenticationEntryPoint {
+
     /**
      *  에러를 response에 담아 처리해주는 유틸 ErrorResponder 의존성 주입
      */

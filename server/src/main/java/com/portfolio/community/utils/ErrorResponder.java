@@ -18,6 +18,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class ErrorResponder {
+
     /**
      * 다국어 메시지 처리를 지원하는 messageSource 의존성 주입
      */

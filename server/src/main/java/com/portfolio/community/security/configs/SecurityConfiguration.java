@@ -32,7 +32,7 @@ import java.util.Arrays;
  */
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfiguration {
     /**
      * 필터에서 사용하는 JwtUtil 의존성 주입
@@ -99,8 +99,9 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers("/api/v1/**").permitAll()
-                        .antMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().hasAnyRole("ADMIN", "USER"));
+                        .antMatchers("/admin/**").permitAll());
+//                        .antMatchers("/admin/**").hasRole("ADMIN")
+//                        .anyRequest().hasAnyRole("ADMIN", "USER"));
 
         return http.build();
     }

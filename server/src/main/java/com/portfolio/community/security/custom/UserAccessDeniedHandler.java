@@ -18,6 +18,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class UserAccessDeniedHandler implements AccessDeniedHandler {
+
     /**
      *  에러를 response에 담아 처리해주는 유틸 ErrorResponder 의존성 주입
      */

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
+
     /**
      *  User에 대한 정보가 있는 UserRepository 의존성 주입
      */
