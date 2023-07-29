@@ -41,4 +41,13 @@ public class BoardRepository {
     ) {
         return boardMapper.getTotalBoardCount(boardSearchCondition);
     }
+
+    /**
+     * 게시글 목록 조회에서 공지사항에서는 알림글 정보들을 List로 가져오는 메서드
+     *
+     * @return 알림글 List
+     */
+    public List<BoardResponseDto> getNotificationList() {
+        return boardMapper.getNotificationList();
+    }
 }

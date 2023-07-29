@@ -49,4 +49,19 @@ public class BoardService {
                 .totalBoardCount(totalBoardCount)
                 .build();
     }
+
+    /**
+     * 게시글 목록 조회에서 공지사항에서는 알림글 정보들을 List로 가져오도록
+     * Repository에 요청하기 위해 사용하는 메서드
+     *
+     * @return BoardListDto 알림글 정보 List
+     */
+    public BoardListDto getNotificationList() {
+        List<BoardResponseDto> boardResponseDtoList =
+                boardRepository.getNotificationList();
+
+        return BoardListDto.builder()
+                .boardResponseDtoList(boardResponseDtoList)
+                .build();
+    }
 }

@@ -49,26 +49,7 @@
             </select>
             <button>글 등록</button>
         </div>
-        <table class="boardList">
-            <tr>
-                <td>번호</td>
-                <td>분류</td>
-                <td>제목</td>
-                <td>조회수</td>
-                <td>등록 일시</td>
-                <td>작성자</td>
-            </tr>
-            <tr th:each="board, iterStat : ${boardListDto.boardResponseDtoList}">
-                <td th:text="${boardListDto.totalBoardCount - ((boardSearch.pageNum - 1) * boardSearch.pageSize) - iterStat.count + 1}"></td>
-                <td th:text="${board.categoryName}"></td>
-                <td>
-                    <a th:text="${board.title}"></a>
-                </td>
-                <td th:text="${board.views}"></td>
-                <td th:text="${board.createdAt}"></td>
-                <td th:text="${board.writer}"></td>
-            </tr>
-        </table>
+        <div th:replace="admin/fragments/boardListTable :: boardListTable"></div>
     </th:block>
 </div>
 </body>

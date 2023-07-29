@@ -53,6 +53,14 @@ public class BoardController {
         BoardListDto boardListDto =
                 boardService.getBoardList(boardSearchCondition);
 
+        // 공지사항에서는 알림글을 가져와줌
+        if (type.equals("notice")) {
+            BoardListDto notificationListDto =
+                    boardService.getNotificationList();
+
+            model.addAttribute("notificationListDto", notificationListDto);
+        }
+
         List<CategoryDto> categoryList = categoryService.getCategoryList(type);
 
         model.addAttribute("boardListDto", boardListDto);
@@ -60,6 +68,6 @@ public class BoardController {
         model.addAttribute("boardSearch", boardSearchCondition);
         model.addAttribute("type", type);
 
-        return "admin/views/boardList";
+        return "admin/views/boardListView";
     }
 }

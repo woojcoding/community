@@ -103,4 +103,21 @@
             </if>
         </where>
     </select>
+
+    <!-- 알림글만 가져오는  메서드 -->
+    <select id="getNotificationList" resultType="BoardResponseDto">
+        SELECT b.board_id,
+               b.title,
+               b.content,
+               b.views,
+               b.status,
+               b.created_at,
+               u.name AS writer
+        FROM board b
+                 JOIN user u
+                      ON u.user_id = b.user_id
+        WHERE b.status = "notification"
+        ORDER BY b.created_at DESC
+        LIMIT 5
+    </select>
 </mapper>
