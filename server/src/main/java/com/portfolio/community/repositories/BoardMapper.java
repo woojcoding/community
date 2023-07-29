@@ -1,5 +1,6 @@
 package com.portfolio.community.repositories;
 
+import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.BoardResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,7 +16,7 @@ public interface BoardMapper {
      * 게시글 목록 조회에서  검색 조건에 따라 게시글 정보들을 List로 가져오는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @return List<BoardResponseDto>        게시글 정보 List
+     * @return List<BoardResponseDto>         게시글 정보 List
      */
     List<BoardResponseDto> getBoardList(BoardSearchCondition boardSearchCondition);
 
@@ -33,4 +34,11 @@ public interface BoardMapper {
      * @return 알림글 List
      */
     List<BoardResponseDto> getNotificationList();
+
+    /**
+     * 게시글을 저장하는 메서드
+     *
+     * @param boardRequestDto 게시글 정보
+     */
+    void postBoard(BoardRequestDto boardRequestDto);
 }

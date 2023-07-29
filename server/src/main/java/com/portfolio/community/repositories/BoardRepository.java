@@ -1,5 +1,6 @@
 package com.portfolio.community.repositories;
 
+import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.BoardResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -49,5 +50,14 @@ public class BoardRepository {
      */
     public List<BoardResponseDto> getNotificationList() {
         return boardMapper.getNotificationList();
+    }
+
+    /**
+     * 게시글을 저장하는 메서드
+     *
+     * @param boardRequestDto 게시글 정보
+     */
+    public void postBoard(BoardRequestDto boardRequestDto) {
+        boardMapper.postBoard(boardRequestDto);
     }
 }

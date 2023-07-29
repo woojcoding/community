@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{admin/layout/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div th:switch="${type}">
+        <div th:case="'notice'">
+            <div th:replace="admin/fragments/writeForm :: noticeWriteForm"></div>
+        </div>
+        <div th:case="'free'">
+        </div>
+        <div th:case="'gallery'">
+        </div>
+        <div th:case="'help'">
+        </div>
+    </div>
+    <button>목록</button>
+    <button>삭제</button>
+</th:block>
+</body>
+</html>

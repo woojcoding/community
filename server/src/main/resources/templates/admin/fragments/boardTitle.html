@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<div th:fragment="boardTitle" th:switch="${type}">
+  <h2 th:case="'notice'">공지사항 관리</h2>
+  <h2 th:case="'free'">자유 게시판 관리</h2>
+  <h2 th:case="'gallery'">갤러리 게시판 관리</h2>
+  <h2 th:case="'help'">문의 게시판 관리</h2>
+</div>
+</html>

@@ -1,6 +1,7 @@
 package com.portfolio.community.admin.controller;
 
 import com.portfolio.community.dtos.BoardListDto;
+import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.CategoryDto;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import com.portfolio.community.services.BoardService;
@@ -11,16 +12,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
 /**
- *  board에 대한  admin의 요청을 처리하는 컨트롤러
+ * board에 대한  admin의 요청을 처리하는 컨트롤러
  */
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin/boards")
+@RequestMapping("/admin")
 public class BoardController {
 
     /**
@@ -37,11 +41,11 @@ public class BoardController {
      * 게시글 목록을 조회하는데 사용되는 메서드.
      *
      * @param boardSearchCondition 검색 조건
-     * @param model                the model
      * @param type                 게시글의 타입
+     * @param model                the model
      * @return boardList 페이지 반환
      */
-    @GetMapping("/{type}")
+    @GetMapping("/boards/{type}")
     public String getBoardList(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
@@ -69,5 +73,69 @@ public class BoardController {
         model.addAttribute("type", type);
 
         return "admin/views/boardListView";
+    }
+
+    /**
+     * 게시글 작성폼을 가져오는 메서드
+     *
+     * @param boardSearchCondition 검색조건
+     * @param type                 게시글 타입
+     * @param model                the model
+     * @return writeView 반환
+     */
+    @GetMapping("/board/{type}")
+    public String getWriteForm(
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition,
+            @PathVariable("type") String type,
+            Model model
+    ) {
+        List<CategoryDto> categoryList = categoryService.getCategoryList(type);
+
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("boardRequestDto", new BoardRequestDto());
+
+        return "admin/views/writeView";
+    }
+
+    /**
+     * 게시글을 저장합니다 // 현재 post만 가능
+     *
+     * @param userId               작성자 Id
+     * @param boardSearchCondition 검색 조건
+     * @param boardRequestDto      게시글 정보 Dto
+     * @param type                 게시글 타입
+     * @param model                the model
+     * @return 작성된 게시글 페이지로 redirect
+     */
+    @PostMapping("/board/{type}")
+    public String saveBoard(
+            @RequestAttribute("userId") int userId,
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition,
+            @ModelAttribute BoardRequestDto boardRequestDto,
+            @PathVariable("type") String type,
+            Model model
+    ) {
+        boardRequestDto.setType(type);
+        boardRequestDto.setUserId(userId);
+
+        if (boardRequestDto.getBoardId() == null) {
+            boardService.postBoard(boardRequestDto);
+        }
+
+        Integer savedBoardId = boardRequestDto.getBoardId();
+
+        // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromPath("/admin/boards/{type}/{boardId}")
+                .queryParam("pageNum", boardSearchCondition.getPageNum())
+                .queryParam("startDate", boardSearchCondition.getStartDate())
+                .queryParam("endDate", boardSearchCondition.getEndDate())
+                .queryParam("category", boardSearchCondition.getCategory())
+                .queryParam("keyword", boardSearchCondition.getKeyword());
+
+        return "redirect:" +
+                builder.buildAndExpand(type, savedBoardId).toUriString();
     }
 }

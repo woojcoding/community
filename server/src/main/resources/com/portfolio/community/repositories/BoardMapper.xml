@@ -16,11 +16,11 @@
         u.name AS writer
         FROM board b
         JOIN board_info bi
-            ON b.board_info_id = bi.board_info_id
+        ON b.board_info_id = bi.board_info_id
         JOIN user u
-            ON u.user_id = b.user_id
+        ON u.user_id = b.user_id
         JOIN category c
-            ON c.category_id = b.category_id
+        ON c.category_id = b.category_id
         <where>
             <if test="type != null and type != ''">
                 AND bi.type = #{type}
@@ -71,9 +71,9 @@
         SELECT COUNT(*) as totalBoardCount
         FROM board AS b
         JOIN board_info bi
-            ON bi.board_info_id = b.board_info_id
+        ON bi.board_info_id = b.board_info_id
         JOIN user u
-            ON u.user_id = b.user_id
+        ON u.user_id = b.user_id
         <where>
             <if test="type != null and type != ''">
                 AND bi.type = #{type}
@@ -104,7 +104,7 @@
         </where>
     </select>
 
-    <!-- 알림글만 가져오는  메서드 -->
+    <!-- 알림글만 가져옴-->
     <select id="getNotificationList" resultType="BoardResponseDto">
         SELECT b.board_id,
                b.title,
@@ -120,4 +120,24 @@
         ORDER BY b.created_at DESC
         LIMIT 5
     </select>
+
+    <!-- 게시글을 저장-->
+    <insert id="postBoard" useGeneratedKeys="true" keyProperty="boardId">
+        INSERT INTO board(
+                          title,
+                          content,
+                          status,
+                          user_id,
+                          category_id,
+                          board_info_id
+                          )
+        VALUES (
+                #{title},
+                #{content},
+                #{status},
+                #{userId},
+                #{categoryId},
+                #{boardInfoId}
+                )
+    </insert>
 </mapper>

@@ -11,19 +11,15 @@
     <th:block layout:fragment="content">
         <div th:switch="${type}">
             <div th:case="'notice'">
-                <h2>공지사항 관리</h2>
                 <div th:replace="admin/fragments/searchForm :: common-search-container"></div>
             </div>
             <div th:case="'free'">
-                <h2>자유 게시판 관리</h2>
                 <div th:replace="admin/fragments/searchForm :: common-search-container"></div>
             </div>
             <div th:case="'gallery'">
-                <h2>갤러리 게시판 관리</h2>
                 <div th:replace="admin/fragments/searchForm :: common-search-container"></div>
             </div>
-            <div th:case="'gallery'">
-                <h2>문의 게시판 관리</h2>
+            <div th:case="'help'">
             </div>
         </div>
         <div>
@@ -47,7 +43,15 @@
                 <option>내림차순</option>
                 <option>오름차순</option>
             </select>
-            <button>글 등록</button>
+            <a th:href="@{/admin/board/{type}
+            (type = ${type},
+            pageNum=${boardSearch.pageNum},
+            startDate=${boardSearch.startDate},
+            endDate=${boardSearch.endDate},
+            category=${boardSearch.category},
+            keyword=${boardSearch.keyword})}">
+                <button>등록</button>
+            </a>
         </div>
         <div th:replace="admin/fragments/boardListTable :: boardListTable"></div>
     </th:block>

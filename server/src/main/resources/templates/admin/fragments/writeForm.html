@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<div th:fragment="noticeWriteForm">
+    <form th:action="@{/admin/board/{type}
+    (type=${type},
+    pageNum=${boardSearch.pageNum},
+    startDate=${boardSearch.startDate},
+    endDate=${boardSearch.endDate},
+    category=${boardSearch.category},
+    keyword=${boardSearch.keyword})}"
+          th:object="${boardRequestDto} " method="post">
+        <table>
+            <tr>
+                <td>분류</td>
+                <td>
+                    <select name="categoryId" th:field="*{categoryId}">
+                        <option value="all">카테고리 선택</option>
+                        <option th:each="category : ${categoryList}"
+                                th:value="${category.categoryId}"
+                                th:text="${category.name}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>제목</td>
+                <td>
+                    <textarea rows="1" cols="60" name="title"
+                              th:field="*{title}"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>내용</td>
+                <td>
+                    <textarea rows="10" cols="60" name="content"
+                              th:field="*{content}"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>알림글</td>
+                <td>
+                    <input type="checkbox"
+                           th:field="*{status}"
+                           th:value="notification"
+                           th:checked="${boardRequestDto.status == 'notification'}">
+                    <input type="hidden"
+                           th:field="*{status}"
+                           th:value="general"
+                           th:unless="${boardRequestDto.status == 'notification'}">
+                </td>
+            </tr>
+        </table>
+        <button>등록 / 수정</button>
+    </form>
+</div>
+
+</html>
