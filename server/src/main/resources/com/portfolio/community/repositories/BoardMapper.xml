@@ -140,4 +140,27 @@
                 #{boardInfoId}
                 )
     </insert>
+
+    <!-- 게시글 수정에 필요한 정보들을 조회 -->
+    <select id="getBoard" resultType="BoardRequestDto">
+        SELECT title,
+               content,
+               status,
+               answer,
+               board_info_id,
+               category_id
+        FROM board
+        WHERE board_id = #{boardId}
+    </select>
+
+    <!-- 게시글Id에 해당하는 게시글 수정 -->
+    <update id="updateBoard">
+        UPDATE board
+        SET category_id = #{categoryId},
+            title = #{title},
+            content = #{content},
+            status = #{status},
+            answer = #{answer}
+        WHERE board_id = #{boardId}
+    </update>
 </mapper>

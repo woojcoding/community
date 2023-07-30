@@ -2,14 +2,7 @@
 <html lang="en">
 
 <div th:fragment="noticeWriteForm">
-    <form th:action="@{/admin/board/{type}
-    (type=${type},
-    pageNum=${boardSearch.pageNum},
-    startDate=${boardSearch.startDate},
-    endDate=${boardSearch.endDate},
-    category=${boardSearch.category},
-    keyword=${boardSearch.keyword})}"
-          th:object="${boardRequestDto} " method="post">
+    <form id="writeForm" th:object="${boardRequestDto}" method="post">
         <table>
             <tr>
                 <td>분류</td>
@@ -18,7 +11,8 @@
                         <option value="all">카테고리 선택</option>
                         <option th:each="category : ${categoryList}"
                                 th:value="${category.categoryId}"
-                                th:text="${category.name}"></option>
+                                th:text="${category.name}"
+                                th:selected="${category.categoryId == boardRequestDto.categoryId}"></option>
                     </select>
                 </td>
             </tr>
@@ -26,6 +20,7 @@
                 <td>제목</td>
                 <td>
                     <textarea rows="1" cols="60" name="title"
+                              th:value="*{title}"
                               th:field="*{title}"></textarea>
                 </td>
             </tr>
@@ -33,6 +28,7 @@
                 <td>내용</td>
                 <td>
                     <textarea rows="10" cols="60" name="content"
+                              th:value="*{title}"
                               th:field="*{content}"></textarea>
                 </td>
             </tr>
@@ -53,5 +49,29 @@
         <button>등록 / 수정</button>
     </form>
 </div>
+
+<script th:inline="javascript">
+    function setFormAction() {
+        var form = document.getElementById('writeForm');
+
+        var boardId = null;
+
+        boardId = [[${boardRequestDto.boardId}]];
+
+        var type = [[${type}]];
+
+        var actionUrl;
+
+        if (boardId) {
+            actionUrl = '/admin/board/' + type + '/' + boardId
+        } else {
+            actionUrl = '/admin/board/' + type
+        }
+
+        form.action = actionUrl;
+    }
+
+    document.addEventListener('DOMContentLoaded', setFormAction);
+</script>
 
 </html>

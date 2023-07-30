@@ -16,7 +16,7 @@ public interface BoardMapper {
      * 게시글 목록 조회에서  검색 조건에 따라 게시글 정보들을 List로 가져오는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @return List<BoardResponseDto>         게시글 정보 List
+     * @return List<BoardResponseDto>           게시글 정보 List
      */
     List<BoardResponseDto> getBoardList(BoardSearchCondition boardSearchCondition);
 
@@ -41,4 +41,20 @@ public interface BoardMapper {
      * @param boardRequestDto 게시글 정보
      */
     void postBoard(BoardRequestDto boardRequestDto);
+
+    /**
+     * 업데이트를 위해 게시글의 정보를 가져오는 메서드
+     *
+     * @param boardId 게시글 Id
+     * @return BoardRequestDto 게시글 정보
+     */
+    BoardRequestDto getBoard(String boardId);
+
+
+    /**
+     * 게시글을 업데이트 하는 메서드
+     *
+     * @param boardRequestDto 게시글 정보
+     */
+    void updateBoard(BoardRequestDto boardRequestDto);
 }

@@ -97,4 +97,22 @@ public class BoardService {
     private int getBoardInfoId(String type) {
         return boardInfoRepository.getBoardInfoId(type);
     }
+
+    public BoardRequestDto getBoard(String boardId) {
+        return boardRepository.getBoard(boardId);
+    }
+
+    /**
+     * 게시글을 업데이트하는 메서드
+     *
+     * @param boardRequestDto 게시글 정보
+     */
+    public void updateBoard(BoardRequestDto boardRequestDto) {
+        // 배열형태이기에 콤마 제거
+        String status = boardRequestDto.getStatus().replaceAll(",", "");
+
+        boardRequestDto.setStatus(status);
+
+        boardRepository.updateBoard(boardRequestDto);
+    }
 }

@@ -18,7 +18,14 @@
           <td></td>
           <td th:text="'알림'"></td>
           <td>
-            <a th:text="${notification.title}"></a>
+            <a th:href="@{/admin/board/{type}/{boardId}
+            (type=${type},
+            boardId=${notification.boardId},
+            pageNum=${boardSearch.pageNum},
+            startDate=${boardSearch.startDate},
+            endDate=${boardSearch.endDate},
+            category=${boardSearch.category},
+            keyword=${boardSearch.keyword})}" style="text-decoration:none;" th:text="${notification.title}"></a>
           </td>
           <td th:text="${notification.views}"></td>
           <td th:text="${notification.createdAt}"></td>
@@ -31,7 +38,14 @@
             th:text="${board.categoryName}">
         </td>
         <td>
-          <a th:text="${board.title}"></a>
+          <a th:href="@{/admin/board/{type}/{boardId}
+            (type=${type},
+            boardId=${board.boardId},
+            pageNum=${boardSearch.pageNum},
+            startDate=${boardSearch.startDate},
+            endDate=${boardSearch.endDate},
+            category=${boardSearch.category},
+            keyword=${boardSearch.keyword})}" style="text-decoration:none;" th:text="${board.title}"></a>
         </td>
         <td th:text="${board.views}"></td>
         <td th:text="${board.createdAt}"></td>
