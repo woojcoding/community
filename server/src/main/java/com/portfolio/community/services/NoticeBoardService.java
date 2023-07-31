@@ -3,7 +3,7 @@ package com.portfolio.community.services;
 import com.portfolio.community.dtos.BoardListDto;
 import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.BoardResponseDto;
-import com.portfolio.community.repositories.BoardInfoRepository;
+import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.repositories.BoardRepository;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +16,12 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class BoardService {
+public class NoticeBoardService {
 
     /**
      * boardRepository 의존성 주입
      */
     private final BoardRepository boardRepository;
-
-    private final BoardInfoRepository boardInfoRepository;
 
     /**
      * 게시글 목록 조회에서 검색 조건에 따라 게시글 정보들을 List로 받도록
@@ -32,8 +30,10 @@ public class BoardService {
      * @param boardSearchCondition 검색 조건
      * @return BoardListDto 게시글 정보 List
      */
-    public BoardListDto getBoardList(
+    public BoardListDto getNoticeBoardList(
             BoardSearchCondition boardSearchCondition) {
+        boardSearchCondition.setType(BoardType.NOTICE);
+
         int pageNum = boardSearchCondition.getPageNum();
 
         int pageSize = boardSearchCondition.getPageSize();
@@ -70,49 +70,23 @@ public class BoardService {
     }
 
     /**
-     * 게시글을 저장하는 메서드
-     *
-     * @param boardRequestDto 게시글 정보 Dto
-     */
-    public void postBoard(BoardRequestDto boardRequestDto) {
-        // board_info 테이블에서 type으로 id를 조회 후 지정
-        int boardInfoId = getBoardInfoId(boardRequestDto.getType());
-
-        boardRequestDto.setBoardInfoId(boardInfoId);
-
-        // 배열형태이기에 콤마 제거
-        String status = boardRequestDto.getStatus().replaceAll(",", "");
-
-        boardRequestDto.setStatus(status);
-
-        boardRepository.postBoard(boardRequestDto);
-    }
-
-    /**
-     * board_info 테이블에서 type으로 id를 조회하는 메서드
-     *
-     * @param type 게시글 타입
-     * @return
-     */
-    private int getBoardInfoId(String type) {
-        return boardInfoRepository.getBoardInfoId(type);
-    }
-
-    public BoardRequestDto getBoard(String boardId) {
-        return boardRepository.getBoard(boardId);
-    }
-
-    /**
      * 게시글을 업데이트하는 메서드
      *
      * @param boardRequestDto 게시글 정보
      */
-    public void updateBoard(BoardRequestDto boardRequestDto) {
-        // 배열형태이기에 콤마 제거
-        String status = boardRequestDto.getStatus().replaceAll(",", "");
+    public void updateNoticeBoard(BoardRequestDto boardRequestDto) {
+        boardRequestDto.setType(BoardType.NOTICE);
 
-        boardRequestDto.setStatus(status);
+        boardRepository.updateNoticeBoard(boardRequestDto);
+    }
 
-        boardRepository.updateBoard(boardRequestDto);
+    public void postNoticeBoard(BoardRequestDto boardRequestDto) {
+        boardRequestDto.setType(BoardType.NOTICE);
+
+        boardRepository.postNoticeBoard(boardRequestDto);
+    }
+
+    public BoardRequestDto getNoticeBoard(String boardId) {
+        return boardRepository.getNoticeBoard(boardId);
     }
 }

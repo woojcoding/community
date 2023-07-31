@@ -1,5 +1,6 @@
 package com.portfolio.community.dtos;
 
+import com.portfolio.community.enums.BoardType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,5 +32,9 @@ public class BoardResponseDto {
 
     private String createdAt; // 작성일
 
-    private String status; // 상태
+    private boolean notificationFlag; // 알림글 여부
+
+    private boolean secretFlag; // 비밀글 여부
+
+    private BoardType type; // 타입
 }

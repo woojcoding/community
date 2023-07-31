@@ -9,17 +9,17 @@
 <body>
 <div>
     <th:block layout:fragment="content">
-        <div th:switch="${type}">
-            <div th:case="'notice'">
+        <div th:switch="${type.code}">
+            <div th:case="'n'">
                 <div th:replace="admin/fragments/searchForm :: common-search-container"></div>
             </div>
-            <div th:case="'free'">
+            <div th:case="'f'">
                 <div th:replace="admin/fragments/searchForm :: common-search-container"></div>
             </div>
-            <div th:case="'gallery'">
+            <div th:case="'g'">
                 <div th:replace="admin/fragments/searchForm :: common-search-container"></div>
             </div>
-            <div th:case="'help'">
+            <div th:case="'h'">
             </div>
         </div>
         <div>
@@ -44,7 +44,7 @@
                 <option>오름차순</option>
             </select>
             <a th:href="@{/admin/board/{type}
-            (type=${type},
+            (type=${#strings.toLowerCase(type)},
             pageNum=${boardSearch.pageNum},
             startDate=${boardSearch.startDate},
             endDate=${boardSearch.endDate},

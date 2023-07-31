@@ -1,6 +1,7 @@
 package com.portfolio.community.repositories;
 
 import com.portfolio.community.dtos.CategoryDto;
+import com.portfolio.community.enums.BoardType;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public interface CategoryMapper {
      *
      * @return List<Category> 카테고리 List
      */
-    List<CategoryDto> getCategoryList(String type);
+    List<CategoryDto> getCategoryList(BoardType type);
 }

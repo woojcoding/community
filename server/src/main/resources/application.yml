@@ -5,6 +5,7 @@ mybatis:
     level:
       com.study.springboard.repository: trace
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    default-enum-type-handler: com.portfolio.community.enums.BoardTypeHandler
 
 spring:
   datasource:
@@ -15,6 +16,17 @@ spring:
   messages:
     basename: messages
     encoding: utf-8
+
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    devtools:
+      livereload:
+        enabled: true
+      remote:
+        restart:
+          enabled: true
 
 jwt:
   secret: wooj123wooj123wooj123wooj

@@ -36,13 +36,9 @@
                 <td>알림글</td>
                 <td>
                     <input type="checkbox"
-                           th:field="*{status}"
-                           th:value="notification"
-                           th:checked="${boardRequestDto.status == 'notification'}">
-                    <input type="hidden"
-                           th:field="*{status}"
-                           th:value="general"
-                           th:unless="${boardRequestDto.status == 'notification'}">
+                           name="notificationFlag"
+                           th:field="${boardRequestDto.notificationFlag}"
+                           th:checked="${boardRequestDto.notificationFlag == 1}">
                 </td>
             </tr>
         </table>
@@ -58,7 +54,7 @@
 
         boardId = [[${boardRequestDto.boardId}]];
 
-        var type = [[${type}]];
+        var type = Strings.toLowerCase([[${type}]]);
 
         var actionUrl;
 

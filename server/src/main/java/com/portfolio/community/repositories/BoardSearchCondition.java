@@ -1,5 +1,6 @@
 package com.portfolio.community.repositories;
 
+import com.portfolio.community.enums.BoardType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -56,7 +57,7 @@ public class BoardSearchCondition {
     private int offSet;
 
     /**
-     * 게시글 타입 (예: "notice", "free", "gallery", "help")
+     * 게시글 타입
      */
-    private String type;
+    private BoardType type;
 }

@@ -3,9 +3,10 @@ package com.portfolio.community.admin.controller;
 import com.portfolio.community.dtos.BoardListDto;
 import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.CategoryDto;
+import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.repositories.BoardSearchCondition;
-import com.portfolio.community.services.BoardService;
 import com.portfolio.community.services.CategoryService;
+import com.portfolio.community.services.NoticeBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,58 +20,55 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+
 /**
- * board에 대한  admin의 요청을 처리하는 컨트롤러
+ * The type Notice controller.
  */
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-public class BoardController {
+public class NoticeController {
 
     /**
-     * board에 대한 로직을 처리하는 boardService를 의존성 주입
+     *  공지글에 대한 로직을 처리하는 noticeBoardService를 의존성 주입
      */
-    private final BoardService boardService;
+    private final NoticeBoardService noticeBoardService;
 
     /**
      * 카테고리에 대한 로직을 처리하는 categoryService를 의존성 주입
      */
     private final CategoryService categoryService;
 
+
     /**
-     * 게시글 목록을 조회하는데 사용되는 메서드
+     * 공지글 목록을 조회하는데 사용되는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @param type                 게시글의 타입
      * @param model                the model
      * @return boardList 페이지 반환
      */
-    @GetMapping("/boards/{type}")
-    public String getBoardList(
+    @GetMapping("/boards/notice")
+    public String getNoticeBoardList(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @PathVariable("type") String type,
             Model model
     ) {
-        boardSearchCondition.setType(type);
-
         BoardListDto boardListDto =
-                boardService.getBoardList(boardSearchCondition);
+                noticeBoardService.getNoticeBoardList(boardSearchCondition);
 
         // 공지사항에서는 알림글을 가져와줌
-        if (type.equals("notice")) {
-            BoardListDto notificationListDto =
-                    boardService.getNotificationList();
+        BoardListDto notificationListDto = noticeBoardService.getNotificationList();
 
-            model.addAttribute("notificationListDto", notificationListDto);
-        }
+        model.addAttribute("notificationListDto", notificationListDto);
 
-        List<CategoryDto> categoryList = categoryService.getCategoryList(type);
+
+        List<CategoryDto> categoryList =
+                categoryService.getCategoryList(BoardType.NOTICE);
 
         model.addAttribute("boardListDto", boardListDto);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("boardSearch", boardSearchCondition);
-        model.addAttribute("type", type);
+        model.addAttribute("type", BoardType.NOTICE);
 
         return "admin/views/boardListView";
     }
@@ -79,31 +77,33 @@ public class BoardController {
      * 게시글 작성/수정 폼을 가져오는 메서드
      *
      * @param boardSearchCondition 검색조건
-     * @param type                 게시글 타입
      * @param boardId              게시글 Id - 수정인 경우에 필수
      * @param model                the model
      * @return writeView 반환
      */
-    @GetMapping(value = {"/board/{type}/{boardId}", "/board/{type}"})
-    public String getWriteForm(
+    @GetMapping(value = {"/board/notice/{boardId}", "/board/notice"})
+    public String getNoticeWriteForm(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @PathVariable("type") String type,
             @PathVariable(value = "boardId", required = false) String boardId,
             Model model
     ) {
-        List<CategoryDto> categoryList = categoryService.getCategoryList(type);
+        List<CategoryDto> categoryList =
+                categoryService.getCategoryList(BoardType.NOTICE);
 
         model.addAttribute("categoryList", categoryList);
 
         // boardId가 있다면 수정폼이므로 게시글 정보들을 model에 지정
         if (boardId != null) {
-            BoardRequestDto boardRequestDto = boardService.getBoard(boardId);
+            BoardRequestDto boardRequestDto =
+                    noticeBoardService.getNoticeBoard(boardId);
 
             model.addAttribute("boardRequestDto", boardRequestDto);
         } else {
             model.addAttribute("boardRequestDto", new BoardRequestDto());
         }
+
+        model.addAttribute("type", BoardType.NOTICE);
 
         return "admin/views/writeView";
     }
@@ -114,27 +114,24 @@ public class BoardController {
      * @param userId               작성자 Id
      * @param boardSearchCondition 검색 조건
      * @param boardRequestDto      게시글 정보 Dto
-     * @param type                 게시글 타입
      * @return 작성된 게시글 페이지로 redirect
      */
-    @PostMapping("/board/{type}")
-    public String postBoard(
+    @PostMapping("/board/notice")
+    public String postNoticeBoard(
             @RequestAttribute("userId") int userId,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @ModelAttribute BoardRequestDto boardRequestDto,
-            @PathVariable("type") String type
+            @ModelAttribute BoardRequestDto boardRequestDto
     ) {
-        boardRequestDto.setType(type);
         boardRequestDto.setUserId(userId);
 
-        boardService.postBoard(boardRequestDto);
+        noticeBoardService.postNoticeBoard(boardRequestDto);
 
         Integer savedBoardId = boardRequestDto.getBoardId();
 
         // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromPath("/admin/board/{type}/{boardId}")
+                .fromPath("/admin/board/notice/{boardId}")
                 .queryParam("pageNum", boardSearchCondition.getPageNum())
                 .queryParam("startDate", boardSearchCondition.getStartDate())
                 .queryParam("endDate", boardSearchCondition.getEndDate())
@@ -142,33 +139,31 @@ public class BoardController {
                 .queryParam("keyword", boardSearchCondition.getKeyword());
 
         return "redirect:" +
-                builder.buildAndExpand(type, savedBoardId).toUriString();
+                builder.buildAndExpand(savedBoardId).toUriString();
     }
 
     /**
-     * 게시글을 update
+     * 공지글을 update
      *
      * @param boardSearchCondition 검색 조건
      * @param boardRequestDto      게시글 정보 Dto
-     * @param type                 게시글 타입
      * @param boardId              the board id
      * @return 작성된 게시글 페이지로 redirect
      */
-    @PostMapping("/board/{type}/{boardId}")
-    public String updateBoard(
+    @PostMapping("/board/notice/{boardId}")
+    public String updateNoticeBoard(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
             @ModelAttribute BoardRequestDto boardRequestDto,
-            @PathVariable("type") String type,
             @PathVariable("boardId") int boardId
     ) {
         boardRequestDto.setBoardId(boardId);
 
-        boardService.updateBoard(boardRequestDto);
+        noticeBoardService.updateNoticeBoard(boardRequestDto);
 
         // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromPath("/admin/board/{type}/{boardId}")
+                .fromPath("/admin/board/notice/{boardId}")
                 .queryParam("pageNum", boardSearchCondition.getPageNum())
                 .queryParam("startDate", boardSearchCondition.getStartDate())
                 .queryParam("endDate", boardSearchCondition.getEndDate())
@@ -176,6 +171,6 @@ public class BoardController {
                 .queryParam("keyword", boardSearchCondition.getKeyword());
 
         return "redirect:" +
-                builder.buildAndExpand(type, boardId).toUriString();
+                builder.buildAndExpand(boardId).toUriString();
     }
 }

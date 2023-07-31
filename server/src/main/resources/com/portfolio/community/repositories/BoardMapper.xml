@@ -5,35 +5,32 @@
 
     <!-- 검색 조건에 맞는 게시글을 페이지네이션 적용하여 조회-->
     <select id="getBoardList" resultType="BoardResponseDto">
-        SELECT b.board_id,
-        b.title,
-        b.content,
-        b.views,
-        b.status,
-        b.answer,
-        b.created_at,
-        c.name AS categoryName,
-        u.name AS writer
+        SELECT
+            b.board_id,
+            b.title,
+            b.content,
+            b.views,
+            b.notification_flag,
+            b.secret_flag,
+            b.answer,
+            b.type,
+            b.created_at,
+            c.name AS categoryName,
+            u.name AS writer
         FROM board b
-        JOIN board_info bi
-        ON b.board_info_id = bi.board_info_id
-        JOIN user u
-        ON u.user_id = b.user_id
-        JOIN category c
-        ON c.category_id = b.category_id
+            JOIN user u
+              ON u.user_id = b.user_id
+            JOIN category c
+             ON c.category_id = b.category_id
         <where>
-            <if test="type != null and type != ''">
-                AND bi.type = #{type}
+            <if test="type.code != null and type.code != ''">
+                AND b.type = #{type.code}
             </if>
             <if test="startDate != null and startDate != ''">
-                <![CDATA[
-                AND DATE(b.created_at) >= DATE(#{startDate})
-                ]]>
+                AND DATE(b.created_at) &gt;= DATE(#{startDate})
             </if>
             <if test="endDate != null and endDate != ''">
-                <![CDATA[
-                AND DATE(b.created_at) <= DATE(#{endDate})
-                ]]>
+                AND DATE(b.created_at) &lt;= DATE(#{endDate})
             </if>
             <if test="category != null and category != ''
             and category != 'all'">
@@ -41,7 +38,7 @@
             </if>
             <if test="keyword != null and keyword != ''">
                 AND (
-                <if test="type != 'notice'">
+                <if test='type.code != "n"'>
                     u.name LIKE CONCAT('%', #{keyword}, '%') OR
                 </if>
                 b.title LIKE CONCAT('%', #{keyword}, '%') OR
@@ -70,13 +67,11 @@
     <select id="getTotalBoardCount" resultType="java.lang.Integer">
         SELECT COUNT(*) as totalBoardCount
         FROM board AS b
-        JOIN board_info bi
-        ON bi.board_info_id = b.board_info_id
         JOIN user u
         ON u.user_id = b.user_id
         <where>
-            <if test="type != null and type != ''">
-                AND bi.type = #{type}
+            <if test="type.code != null and type.code != ''">
+                AND b.type = #{type.code}
             </if>
             <if test="startDate != null and startDate != ''">
                 <![CDATA[
@@ -94,7 +89,7 @@
             </if>
             <if test="keyword != null and keyword != ''">
                 AND (
-                <if test="type != 'notice'">
+                <if test= 'type.code != "n"'>
                     u.name LIKE CONCAT('%', #{keyword}, '%') OR
                 </if>
                 b.title LIKE CONCAT('%', #{keyword}, '%') OR
@@ -104,63 +99,43 @@
         </where>
     </select>
 
-    <!-- 알림글만 가져옴-->
-    <select id="getNotificationList" resultType="BoardResponseDto">
-        SELECT b.board_id,
-               b.title,
-               b.content,
-               b.views,
-               b.status,
-               b.created_at,
-               u.name AS writer
-        FROM board b
-                 JOIN user u
-                      ON u.user_id = b.user_id
-        WHERE b.status = "notification"
-        ORDER BY b.created_at DESC
-        LIMIT 5
-    </select>
+<!--    &lt;!&ndash; 게시글을 저장&ndash;&gt;-->
+<!--    <insert id="postBoard" useGeneratedKeys="true" keyProperty="boardId">-->
+<!--        INSERT INTO board(-->
+<!--                          title,-->
+<!--                          content,-->
+<!--                          status,-->
+<!--                          user_id,-->
+<!--                          category_id-->
+<!--                          )-->
+<!--        VALUES (-->
+<!--                #{title},-->
+<!--                #{content},-->
+<!--                #{status},-->
+<!--                #{userId},-->
+<!--                #{categoryId},-->
+<!--                )-->
+<!--    </insert>-->
 
-    <!-- 게시글을 저장-->
-    <insert id="postBoard" useGeneratedKeys="true" keyProperty="boardId">
-        INSERT INTO board(
-                          title,
-                          content,
-                          status,
-                          user_id,
-                          category_id,
-                          board_info_id
-                          )
-        VALUES (
-                #{title},
-                #{content},
-                #{status},
-                #{userId},
-                #{categoryId},
-                #{boardInfoId}
-                )
-    </insert>
+<!--    &lt;!&ndash; 게시글 수정에 필요한 정보들을 조회 &ndash;&gt;-->
+<!--    <select id="getBoard" resultType="BoardRequestDto">-->
+<!--        SELECT title,-->
+<!--               content,-->
+<!--               status,-->
+<!--               answer,-->
+<!--               category_id-->
+<!--        FROM board-->
+<!--        WHERE board_id = #{boardId}-->
+<!--    </select>-->
 
-    <!-- 게시글 수정에 필요한 정보들을 조회 -->
-    <select id="getBoard" resultType="BoardRequestDto">
-        SELECT title,
-               content,
-               status,
-               answer,
-               board_info_id,
-               category_id
-        FROM board
-        WHERE board_id = #{boardId}
-    </select>
-
-    <!-- 게시글Id에 해당하는 게시글 수정 -->
-    <update id="updateBoard">
-        UPDATE board
-        SET category_id = #{categoryId},
-            title = #{title},
-            content = #{content},
-            status = #{status},
-            answer = #{answer}
-        WHERE board_id = #{boardId}
-    </update>
+<!--    &lt;!&ndash; 게시글Id에 해당하는 게시글 수정 &ndash;&gt;-->
+<!--    <update id="updateBoard">-->
+<!--        UPDATE board-->
+<!--        SET category_id = #{categoryId},-->
+<!--            title = #{title},-->
+<!--            content = #{content},-->
+<!--            status = #{status},-->
+<!--            answer = #{answer}-->
+<!--        WHERE board_id = #{boardId}-->
+<!--    </update>-->
 </mapper>

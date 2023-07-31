@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="common-search-container">
-    <form th:action="@{'/admin/boards/' + ${type}}" method="get">
+    <form th:action="@{'/admin/boards/' + ${#strings.toLowerCase(type)}}" method="get">
         <p>등록일시</p>
         <input type="date" name="startDate" th:value="${param.startDate}">
         <input type="date" name="endDate" th:value="${param.endDate}">
@@ -13,7 +13,7 @@
                     th:text="${category.name}"></option>
         </select>
         <input type="text" name="keyword"
-               th:placeholder="${type == 'notice' ? '제목 or 내용' : '제목 or 내용 or 작성자'}"
+               th:placeholder="${type.code == 'n' ? '제목 or 내용' : '제목 or 내용 or 작성자'}"
                th:value="${param.keyword}">
         <button>검색</button>
     </form>

@@ -1,5 +1,6 @@
 package com.portfolio.community.dtos;
 
+import com.portfolio.community.enums.BoardType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,9 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
  * - Integer boardId: 반환되는 게시글 ID
  * - int userId: 작성자 ID
  * - String categoryId: 카테고리 ID
- * - String password: 비밀번호
  * - String title: 제목
  * - String content: 내용
+ * - BoardType type: 게시글의 타입
+ * - boolean notificaionFlag: 알림글 여부
+ * - boolean secretFlag: 비밀글 여부
  * - String status: 상태
  * - String answer: 답변
  * - MultipartFile[] files: 파일들
@@ -30,15 +33,15 @@ public class BoardRequestDto {
 
     private String categoryId; // 카테고리 Id
 
-    private Integer boardInfoId; // 보드정보 Id
-
-    private String type; // 타입
+    private BoardType type; // 타입
 
     private String title; // 제목
 
     private String content; // 내용
 
-    private String status; // 상태
+    private boolean notificationFlag; // 알림글 여부
+
+    private boolean secretFlag; // 비밀글 여부
 
     private String answer; // 답변
 

@@ -19,6 +19,8 @@ public class BoardRepository {
      */
     private final BoardMapper boardMapper;
 
+    private final NoticeBoardMapper noticeBoardMapper;
+
     /**
      * 게시글 목록 조회에서  검색 조건에 따라 게시글 정보들을 List로 가져오는 메서드
      *
@@ -44,12 +46,22 @@ public class BoardRepository {
     }
 
     /**
+     * 공지글을 수정하기 위해 게시글Id에 해당하는 공지글을 가져오는 메서드
+     *
+     * @param boardId
+     * @return
+     */
+    public BoardRequestDto getNoticeBoard(String boardId) {
+        return noticeBoardMapper.getNoticeBoard(boardId);
+    }
+
+    /**
      * 게시글 목록 조회에서 공지사항에서는 알림글 정보들을 List로 가져오는 메서드
      *
      * @return 알림글 List
      */
     public List<BoardResponseDto> getNotificationList() {
-        return boardMapper.getNotificationList();
+        return noticeBoardMapper.getNotificationList();
     }
 
     /**
@@ -57,18 +69,8 @@ public class BoardRepository {
      *
      * @param boardRequestDto 게시글 정보
      */
-    public void postBoard(BoardRequestDto boardRequestDto) {
-        boardMapper.postBoard(boardRequestDto);
-    }
-
-    /**
-     * 업데이트를 위해 게시글의 정보를 가져오는 메서드
-     *
-     * @param boardId 게시글 Id
-     * @return BoardRequestDto 게시글 정보
-     */
-    public BoardRequestDto getBoard(String boardId) {
-        return boardMapper.getBoard(boardId);
+    public void postNoticeBoard(BoardRequestDto boardRequestDto) {
+        noticeBoardMapper.postNoticeBoard(boardRequestDto);
     }
 
     /**
@@ -76,7 +78,7 @@ public class BoardRepository {
      *
      * @param boardRequestDto 게시글 정보
      */
-    public void updateBoard(BoardRequestDto boardRequestDto) {
-        boardMapper.updateBoard(boardRequestDto);
+    public void updateNoticeBoard(BoardRequestDto boardRequestDto) {
+        noticeBoardMapper.updateNoticeBoard(boardRequestDto);
     }
 }

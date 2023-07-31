@@ -1,6 +1,7 @@
 package com.portfolio.community.repositories;
 
 import com.portfolio.community.dtos.CategoryDto;
+import com.portfolio.community.enums.BoardType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -23,7 +24,7 @@ public class CategoryRepository {
      *
      * @return List<Category> 카테고리 List
      */
-    public List<CategoryDto> getCategoryList(String type) {
+    public List<CategoryDto> getCategoryList(BoardType type) {
         return categoryMapper.getCategoryList(type);
     }
 }

@@ -8,8 +8,6 @@
         SELECT category_id,
                name
         FROM category c
-        JOIN board_info bi
-            ON bi.board_info_id = c.board_info_id
-        WHERE bi.type = #{type}
+        WHERE board_type = #{type.code}
     </select>
 </mapper>
