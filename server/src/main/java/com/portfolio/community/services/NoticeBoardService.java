@@ -70,7 +70,7 @@ public class NoticeBoardService {
     }
 
     /**
-     * 게시글을 업데이트하는 메서드
+     * 공지글을 업데이트하는 메서드
      *
      * @param boardRequestDto 게시글 정보
      */
@@ -80,12 +80,23 @@ public class NoticeBoardService {
         boardRepository.updateNoticeBoard(boardRequestDto);
     }
 
+    /**
+     * 공지글을 작성하는 메서드
+     *
+     * @param boardRequestDto
+     */
     public void postNoticeBoard(BoardRequestDto boardRequestDto) {
         boardRequestDto.setType(BoardType.NOTICE);
 
         boardRepository.postNoticeBoard(boardRequestDto);
     }
 
+    /**
+     * 게시글Id로 공지글을 가져오는 메서드
+     *
+     * @param boardId
+     * @return BoardRequestDto 공지글 정보
+     */
     public BoardRequestDto getNoticeBoard(String boardId) {
         return boardRepository.getNoticeBoard(boardId);
     }
