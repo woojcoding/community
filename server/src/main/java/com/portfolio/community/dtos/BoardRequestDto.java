@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 게시글 등록에 사용되는 DTO 클래스입니다.
  *
@@ -46,4 +49,6 @@ public class BoardRequestDto {
     private String answer; // 답변
 
     private  MultipartFile[] files; // 파일들
+
+    private List<Integer> deleteFileIdList = new ArrayList<>(); // 삭제할 파일 Id list
 }

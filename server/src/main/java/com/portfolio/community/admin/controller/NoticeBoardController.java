@@ -27,7 +27,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-public class NoticeController {
+public class NoticeBoardController {
 
     /**
      *  공지글에 대한 로직을 처리하는 noticeBoardService를 의존성 주입

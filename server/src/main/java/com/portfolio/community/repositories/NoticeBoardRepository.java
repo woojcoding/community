@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Repository
 @RequiredArgsConstructor
-public class BoardRepository {
+public class NoticeBoardRepository {
 
     /**
      * board에 대한 db조작을 하는 인터페이스 의존성 주입
@@ -81,4 +81,6 @@ public class BoardRepository {
     public void updateNoticeBoard(BoardRequestDto boardRequestDto) {
         noticeBoardMapper.updateNoticeBoard(boardRequestDto);
     }
+
+
 }

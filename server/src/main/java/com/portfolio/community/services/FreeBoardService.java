@@ -5,7 +5,7 @@ import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.BoardResponseDto;
 import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.repositories.BoardSearchCondition;
-import com.portfolio.community.repositories.NoticeBoardRepository;
+import com.portfolio.community.repositories.FreeBoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +16,12 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class NoticeBoardService {
+public class FreeBoardService {
 
     /**
      * boardRepository 의존성 주입
      */
-    private final NoticeBoardRepository noticeBoardRepository;
+    private final FreeBoardRepository freeBoardRepository;
 
     /**
      * 게시글 목록 조회에서 검색 조건에 따라 게시글 정보들을 List로 받도록
@@ -30,9 +30,9 @@ public class NoticeBoardService {
      * @param boardSearchCondition 검색 조건
      * @return BoardListDto 게시글 정보 List
      */
-    public BoardListDto getNoticeBoardList(
+    public BoardListDto getFreeBoardList(
             BoardSearchCondition boardSearchCondition) {
-        boardSearchCondition.setType(BoardType.NOTICE);
+        boardSearchCondition.setType(BoardType.FREE);
 
         int pageNum = boardSearchCondition.getPageNum();
 
@@ -43,10 +43,10 @@ public class NoticeBoardService {
         boardSearchCondition.setOffSet(offset);
 
         List<BoardResponseDto> boardResponseDtoList =
-                noticeBoardRepository.getBoardList(boardSearchCondition);
+                freeBoardRepository.getBoardList(boardSearchCondition);
 
         int totalBoardCount
-                = noticeBoardRepository.getTotalBoardCount(boardSearchCondition);
+                = freeBoardRepository.getTotalBoardCount(boardSearchCondition);
 
         return BoardListDto.builder()
                 .boardResponseDtoList(boardResponseDtoList)
@@ -55,49 +55,34 @@ public class NoticeBoardService {
     }
 
     /**
-     * 게시글 목록 조회에서 공지사항에서는 알림글 정보들을 List로 가져오도록
-     * Repository에 요청하기 위해 사용하는 메서드
-     *
-     * @return BoardListDto 알림글 정보 List
-     */
-    public BoardListDto getNotificationList() {
-        List<BoardResponseDto> boardResponseDtoList =
-                noticeBoardRepository.getNotificationList();
-
-        return BoardListDto.builder()
-                .boardResponseDtoList(boardResponseDtoList)
-                .build();
-    }
-
-    /**
-     * 공지글을 업데이트하는 메서드
+     * 자유 게시글을 업데이트하는 메서드
      *
      * @param boardRequestDto 게시글 정보
      */
-    public void updateNoticeBoard(BoardRequestDto boardRequestDto) {
-        boardRequestDto.setType(BoardType.NOTICE);
+    public void updateFreeBoard(BoardRequestDto boardRequestDto) {
+        boardRequestDto.setType(BoardType.FREE);
 
-        noticeBoardRepository.updateNoticeBoard(boardRequestDto);
+        freeBoardRepository.updateFreeBoard(boardRequestDto);
     }
 
     /**
-     * 공지글을 작성하는 메서드
+     * 자유 게시글을 작성하는 메서드
      *
      * @param boardRequestDto
      */
-    public void postNoticeBoard(BoardRequestDto boardRequestDto) {
-        boardRequestDto.setType(BoardType.NOTICE);
+    public void postFreeBoard(BoardRequestDto boardRequestDto) {
+        boardRequestDto.setType(BoardType.FREE);
 
-        noticeBoardRepository.postNoticeBoard(boardRequestDto);
+        freeBoardRepository.postFreeBoard(boardRequestDto);
     }
 
     /**
-     * 게시글Id로 공지글을 가져오는 메서드
+     * 게시글Id로 자유게시글을 가져오는 메서드
      *
      * @param boardId
      * @return BoardRequestDto 공지글 정보
      */
-    public BoardRequestDto getNoticeBoard(String boardId) {
-        return noticeBoardRepository.getNoticeBoard(boardId);
+    public BoardRequestDto getFreeBoard(String boardId) {
+        return freeBoardRepository.getFreeBoard(boardId);
     }
 }

@@ -10,17 +10,28 @@
 <th:block layout:fragment="content">
     <div th:switch="${type.code}">
         <div th:case="'n'">
-            <div th:replace="admin/fragments/writeForm :: noticeWriteForm"></div>
+            <div th:replace="admin/fragments/writeForm :: writeForm"></div>
         </div>
         <div th:case="'f'">
+            <div th:replace="admin/fragments/writeForm :: writeForm"></div>
         </div>
         <div th:case="'g'">
         </div>
         <div th:case="'h'">
         </div>
     </div>
-    <button>목록</button>
-    <button>삭제</button>
+    <a th:href="@{/admin/boards/{type}/
+            (type=${#strings.toLowerCase(type)},
+            pageNum=${boardSearch.pageNum},
+            startDate=${boardSearch.startDate},
+            endDate=${boardSearch.endDate},
+            category=${boardSearch.category},
+            keyword=${boardSearch.keyword})}">
+        <button>목록</button>
+    </a>
+    <a>
+        <button>삭제</button>
+    </a>
 </th:block>
 </body>
 </html>
