@@ -15,10 +15,13 @@ import java.util.List;
 public class FreeBoardRepository {
 
     /**
-     * board에 대한 db조작을 하는 인터페이스 의존성 주입
+     * 게시글에 대한 공통 db조작을 하는 인터페이스 의존성 주입
      */
     private final BoardMapper boardMapper;
 
+    /**
+     *  자유 게시글에 대한 db조작을 하는 인터페이스 의존성 주입
+     */
     private final FreeBoardMapper freeBoardMapper;
 
     /**

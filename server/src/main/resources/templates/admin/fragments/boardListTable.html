@@ -18,7 +18,7 @@
           <td></td>
           <td th:text="'알림'"></td>
           <td>
-            <a th:href="@{/admin/board/{type}/{boardId}
+            <a th:href="@{/admin/boards/{type}/{boardId}
             (type=${#strings.toLowerCase(type)},
             boardId=${notification.boardId},
             pageNum=${boardSearch.pageNum},
@@ -38,7 +38,7 @@
             th:text="${board.categoryName}">
         </td>
         <td>
-          <a th:href="@{/admin/board/{type}/{boardId}
+          <a th:href="@{/admin/boards/{type}/{boardId}
             (type=${#strings.toLowerCase(type)},
             boardId=${board.boardId},
             pageNum=${boardSearch.pageNum},

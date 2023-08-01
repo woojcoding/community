@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="commentForm" th:if="${type.code == 'f' and mode == 'modify'}">
+    <form th:action="@{/admin/boards/free/{boardId}/comment(boardId=${boardId})}"
+          th:object="${commentRequestDto}" method="post">
+        <table>
+            <tr class="commentEnd">
+                <td>
+                    <textarea
+                            th:field="${commentRequestDto.content}"
+                            placeholder="댓글을 입력해주세요."></textarea>
+                </td>
+                <td>
+                    <button type="submit">등록</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <table class="comment" th:each="comment : ${commentList}">
+        <tr>
+            <td>
+                <label th:text="${comment.writer}"></label>
+            </td>
+            <td>
+                <label th:text="${comment.createdAt}"></label>
+            </td>
+            <td>
+                <form th:action="@{/admin/boards/free/{boardId}/comments/{commentId}
+                (boardId=${boardId},commentId=${comment.commentId})}" method="post">
+                    <input type="hidden" name="_method" value="delete">
+                    <button type="submit">삭제</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <p th:text="${comment.content}"></p>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</html>

@@ -13,6 +13,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FileRepository {
 
+    /**
+     * 파일에 대한 db 조작을 하는 인터페이스 의존성 주입
+     */
     private final FileMapper fileMapper;
 
     /**

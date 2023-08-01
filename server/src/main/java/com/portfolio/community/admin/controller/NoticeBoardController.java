@@ -57,7 +57,8 @@ public class NoticeBoardController {
                 noticeBoardService.getNoticeBoardList(boardSearchCondition);
 
         // 공지사항에서는 알림글을 가져와줌
-        BoardListDto notificationListDto = noticeBoardService.getNotificationList();
+        BoardListDto notificationListDto =
+                noticeBoardService.getNotificationList();
 
         model.addAttribute("notificationListDto", notificationListDto);
 
@@ -81,7 +82,7 @@ public class NoticeBoardController {
      * @param model                the model
      * @return writeView 반환
      */
-    @GetMapping(value = {"/board/notice/{boardId}", "/board/notice"})
+    @GetMapping(value = {"/boards/notice/{boardId}", "/board/notice"})
     public String getNoticeWriteForm(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
@@ -131,7 +132,7 @@ public class NoticeBoardController {
 
         // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromPath("/admin/board/notice/{boardId}")
+                .fromPath("/admin/boards/notice/{boardId}")
                 .queryParam("pageNum", boardSearchCondition.getPageNum())
                 .queryParam("startDate", boardSearchCondition.getStartDate())
                 .queryParam("endDate", boardSearchCondition.getEndDate())
@@ -150,7 +151,7 @@ public class NoticeBoardController {
      * @param boardId              the board id
      * @return 작성된 게시글 페이지로 redirect
      */
-    @PostMapping("/board/notice/{boardId}")
+    @PostMapping("/boards/notice/{boardId}")
     public String updateNoticeBoard(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
@@ -163,7 +164,7 @@ public class NoticeBoardController {
 
         // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromPath("/admin/board/notice/{boardId}")
+                .fromPath("/admin/boards/notice/{boardId}")
                 .queryParam("pageNum", boardSearchCondition.getPageNum())
                 .queryParam("startDate", boardSearchCondition.getStartDate())
                 .queryParam("endDate", boardSearchCondition.getEndDate())

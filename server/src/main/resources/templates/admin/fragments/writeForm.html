@@ -2,7 +2,8 @@
 <html lang="en">
 
 <div th:fragment="writeForm">
-    <form id="writeForm" th:object="${boardRequestDto}" enctype="multipart/form-data" method="post">
+    <form id="writeForm" th:object="${boardRequestDto}"
+          enctype="multipart/form-data" method="post">
         <table>
             <tr>
                 <td>분류</td>
@@ -41,38 +42,14 @@
                            th:checked="${boardRequestDto.notificationFlag == 1}">
                 </td>
             </tr>
-            <tr th:if="${type.code == 'f' and fileDtoList == null}">
-                <input type="file" name="files">
-                <input type="file" name="files">
-                <input type="file" name="files">
-                <input type="file" name="files">
-                <input type="file" name="files">
-            </tr>
-            <tr th:if="${type.code == 'f' and fileDtoList != null}">
-                <tbody>
-                <!-- 기존의 파일 행 -->
-                <tr th:each="file : ${fileDtoList}">
-                    <td>
-                        <a th:href="@{/admin/board/free/file/{fileId}(fileId=${file.fileId})}">
-                            <p th:text="${file.originalName}"></p>
-                        </a>
-                    </td>
-                    <td>
-                        삭제<input type="checkbox" name="deleteFileIdList"
-                                 th:value="${file.fileId}">
-                    </td>
-                </tr>
-                <!-- 추가 입력란 -->
-                <tr th:each="i : ${#numbers.sequence(fileDtoList.size(), 4)}" th:unless="${fileDtoList.size() >= 5}">
-                    <td>
-                        <input type="file" name="files" accept=".jpg, .jpeg, .gif, .png, .zip">
-                    </td>
-                </tr>
-                </tbody>
-            </tr>
+            <th:block
+                    th:replace="admin/fragments/fileRow :: fileRow"></th:block>
         </table>
-        <button>등록 / 수정</button>
     </form>
+    <th:block
+            th:replace="admin/fragments/commentForm :: commentForm"></th:block>
+
+    <button>등록 / 수정</button>
 </div>
 
 <script th:inline="javascript">
@@ -88,7 +65,7 @@
         var actionUrl;
 
         if (boardId) {
-            actionUrl = '/admin/board/' + type + '/' + boardId
+            actionUrl = '/admin/boards/' + type + '/' + boardId
         } else {
             actionUrl = '/admin/board/' + type
         }

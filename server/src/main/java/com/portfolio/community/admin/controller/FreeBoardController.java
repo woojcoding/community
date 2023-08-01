@@ -3,10 +3,12 @@ package com.portfolio.community.admin.controller;
 import com.portfolio.community.dtos.BoardListDto;
 import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.CategoryDto;
+import com.portfolio.community.dtos.CommentRequestDto;
 import com.portfolio.community.dtos.FileDto;
 import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import com.portfolio.community.services.CategoryService;
+import com.portfolio.community.services.CommentService;
 import com.portfolio.community.services.FileService;
 import com.portfolio.community.services.FreeBoardService;
 import com.portfolio.community.utils.AuthenticationUtil;
@@ -56,6 +58,11 @@ public class FreeBoardController {
      */
     private final FileService fileService;
 
+    /**
+     * 댓글에 대한 로직을 처리하는 commentService를 의존성 주입
+     */
+    private final CommentService commentService;
+
 
     /**
      * 자유 게시글 목록을 조회하는데 사용되는 메서드
@@ -92,7 +99,7 @@ public class FreeBoardController {
      * @param model                the model
      * @return writeView 반환
      */
-    @GetMapping(value = {"/board/free/{boardId}", "/board/free"})
+    @GetMapping(value = {"/boards/free/{boardId}", "/board/free"})
     public String getFreeWriteForm(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
@@ -112,12 +119,18 @@ public class FreeBoardController {
 
             List<FileDto> fileDtoList = fileService.getFileList(boardId);
 
+            List<CommentRequestDto> commentList =
+                    commentService.getCommentList(boardId);
+
             model.addAttribute("boardRequestDto", boardRequestDto);
             model.addAttribute("fileDtoList", fileDtoList);
+            model.addAttribute("commentList", commentList);
+            model.addAttribute("commentRequestDto", new CommentRequestDto());
+            model.addAttribute("mode", "modify");
         } else {
-            model.addAttribute("boardRequestDto", new BoardRequestDto());
-
             List<FileDto> fileDtoList = new ArrayList<>();
+
+            model.addAttribute("boardRequestDto", new BoardRequestDto());
             model.addAttribute("fileDtoList", fileDtoList);
         }
 
@@ -157,7 +170,7 @@ public class FreeBoardController {
 
         // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromPath("/admin/board/free/{boardId}")
+                .fromPath("/admin/boards/free/{boardId}")
                 .queryParam("pageNum", boardSearchCondition.getPageNum())
                 .queryParam("startDate", boardSearchCondition.getStartDate())
                 .queryParam("endDate", boardSearchCondition.getEndDate())
@@ -176,7 +189,7 @@ public class FreeBoardController {
      * @param boardId              the board id
      * @return 작성된 게시글 페이지로 redirect
      */
-    @PostMapping("/board/free/{boardId}")
+    @PostMapping("/boards/free/{boardId}")
     public String updateFreeBoard(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
@@ -200,7 +213,7 @@ public class FreeBoardController {
 
         // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromPath("/admin/board/free/{boardId}")
+                .fromPath("/admin/boards/free/{boardId}")
                 .queryParam("pageNum", boardSearchCondition.getPageNum())
                 .queryParam("startDate", boardSearchCondition.getStartDate())
                 .queryParam("endDate", boardSearchCondition.getEndDate())
@@ -218,7 +231,7 @@ public class FreeBoardController {
      * @return 파일 file
      * @throws MalformedURLException the malformed url exception
      */
-    @GetMapping("/board/free/file/{fileId}")
+    @GetMapping("/board/free/files/{fileId}")
     public ResponseEntity<Resource> getFile(@PathVariable("fileId") int fileId)
             throws MalformedURLException {
         // 파일 조회

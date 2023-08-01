@@ -15,10 +15,13 @@ import java.util.List;
 public class NoticeBoardRepository {
 
     /**
-     * board에 대한 db조작을 하는 인터페이스 의존성 주입
+     * 게시글에 대한 공통 db 조작을 하는 인터페이스 의존성 주입
      */
     private final BoardMapper boardMapper;
 
+    /**
+     *  공지사항에 대한 db 조작을 하는 인터페이스 의존성 주입
+     */
     private final NoticeBoardMapper noticeBoardMapper;
 
     /**
