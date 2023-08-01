@@ -11,10 +11,10 @@
                b.views,
                b.notification_flag,
                b.created_at,
-               u.name AS writer
+               a.name AS writer
         FROM board b
-                 JOIN user u
-                      ON u.user_id = b.user_id
+                 JOIN admin a
+                     ON b.admin_id = a.admin_id
         WHERE b.notification_flag = 1
         ORDER BY b.created_at DESC
         LIMIT 5
@@ -26,17 +26,17 @@
                           title,
                           content,
                           notification_flag,
-                          user_id,
                           category_id,
-                          type
+                          type,
+                          admin_id
                           )
         VALUES (
                 #{title},
                 #{content},
                 #{notificationFlag},
-                #{userId},
                 #{categoryId},
-                #{type.code}
+                #{type.code},
+                #{adminId}
                 )
     </insert>
 

@@ -7,6 +7,7 @@ import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import com.portfolio.community.services.CategoryService;
 import com.portfolio.community.services.NoticeBoardService;
+import com.portfolio.community.utils.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -111,19 +111,19 @@ public class NoticeController {
     /**
      * 게시글을 post
      *
-     * @param userId               작성자 Id
      * @param boardSearchCondition 검색 조건
      * @param boardRequestDto      게시글 정보 Dto
      * @return 작성된 게시글 페이지로 redirect
      */
     @PostMapping("/board/notice")
     public String postNoticeBoard(
-            @RequestAttribute("userId") int userId,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
             @ModelAttribute BoardRequestDto boardRequestDto
     ) {
-        boardRequestDto.setUserId(userId);
+        int adminId = AuthenticationUtil.getAdminId();
+
+        boardRequestDto.setAdminId(adminId);
 
         noticeBoardService.postNoticeBoard(boardRequestDto);
 

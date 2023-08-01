@@ -98,10 +98,9 @@ public class SecurityConfiguration {
                 .accessDeniedHandler(new UserAccessDeniedHandler(errorResponder))
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers("/api/v1/**").permitAll()
-                        .antMatchers("/admin/**").permitAll());
-//                        .antMatchers("/admin/**").hasRole("ADMIN")
-//                        .anyRequest().hasAnyRole("ADMIN", "USER"));
+                        .antMatchers("/admin/login").permitAll()
+                        .antMatchers("/admin/backdoor/signup").permitAll()
+                        .antMatchers("/admin/**").authenticated());
 
         return http.build();
     }

@@ -1,55 +1,37 @@
 package com.portfolio.community.admin.controller;
 
-import com.portfolio.community.dtos.LoginDto;
+import com.portfolio.community.dtos.AdminDto;
+import com.portfolio.community.exceptions.DuplicateAccountIdException;
+import com.portfolio.community.services.AdminService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * ADMIN의 요청을 받아들이는 컨트롤러
+ * ADMIN의 가입을 위해 만들어둔 컨트롤러
  */
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping("/admin/backdoor")
 public class AdminController {
 
     /**
-     * 로그인 폼을 가져오는 메서드.
-     *
-     * @param loginDto       로그인 정보 DTO
-     * @param model          Model
-     * @param authentication Authentication
-     * @return 로그인 폼
+     * admin에 대한 로직을 처리하는 AdminService 의존성 주입
      */
-    @GetMapping("/login")
-    public String getLoginForm(
-            LoginDto loginDto,
-            Model model,
-            Authentication authentication
-    ) {
-        // 로그인이 이미 되어있으므로 admin/home으로 redirect
-        if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-
-            return "redirect:/admin/home";
-        }
-
-        model.addAttribute("loginDto", loginDto);
-
-        return "admin/views/loginForm";
-    }
+    private final AdminService adminService;
 
     /**
-     * 로그인 성공 후 홈 폼을 가져오는 메서드
+     * admin 가입을 하는 메서드
      *
-     * @param model Model
-     * @return 홈 폼
+     * @param adminDto
      */
-    @GetMapping("/home")
-    public String getHomeForm(Model model) {
-        return "admin/views/home";
+    @PostMapping("/signup")
+    public void signUp(@RequestBody AdminDto adminDto) {
+        if (adminService.verifyExistAccountId(adminDto.getAccountId())) {
+            throw new DuplicateAccountIdException();
+        }
+        adminService.signUp(adminDto);
     }
 }

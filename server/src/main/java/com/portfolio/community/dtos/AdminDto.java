@@ -12,9 +12,9 @@ import java.util.Collection;
  */
 @Getter
 @Setter
-public class UserDto implements UserDetails {
+public class AdminDto implements UserDetails {
 
-    private Integer userId;
+    private Integer adminId;
 
     private String accountId;
 

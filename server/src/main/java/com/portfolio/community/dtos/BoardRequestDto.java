@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * 이 DTO 클래스는 게시글 등록에 필요한 정보를 담고 있으며, 다음과 같은 필드들을 가지고 있습니다:
  * - Integer boardId: 반환되는 게시글 ID
- * - int userId: 작성자 ID
+ * - int adminId: 어드민 아이디
  * - String categoryId: 카테고리 ID
  * - String title: 제목
  * - String content: 내용
@@ -29,7 +29,7 @@ public class BoardRequestDto {
 
     private Integer boardId; // 반환되는 게시글 Id
 
-    private int userId; // 게시글 작성자 Id
+    private int adminId; // 게시글 작성 admin Id
 
     private String categoryId; // 카테고리 Id
 

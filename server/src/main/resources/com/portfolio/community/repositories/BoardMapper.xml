@@ -16,12 +16,17 @@
             b.type,
             b.created_at,
             c.name AS categoryName,
-            u.name AS writer
+            CASE
+                WHEN b.user_id IS NOT NULL THEN u.name
+                WHEN b.admin_id IS NOT NULL THEN a.name
+            END AS writer
         FROM board b
-            JOIN user u
-              ON u.user_id = b.user_id
+            LEFT JOIN user u
+                ON u.user_id = b.user_id
+            LEFT JOIN admin a
+                ON a.admin_id = b.admin_id
             JOIN category c
-             ON c.category_id = b.category_id
+                ON c.category_id = b.category_id
         <where>
             <if test="type.code != null and type.code != ''">
                 AND b.type = #{type.code}
@@ -40,6 +45,7 @@
                 AND (
                 <if test='type.code != "n"'>
                     u.name LIKE CONCAT('%', #{keyword}, '%') OR
+                    a.name LIKE CONCAT('%', #{keyword}, '%') OR
                 </if>
                 b.title LIKE CONCAT('%', #{keyword}, '%') OR
                 b.content LIKE CONCAT('%', #{keyword}, '%')
@@ -65,10 +71,12 @@
 
     <!-- 검색 조건을 적용하여 게시글의 총 개수를 조회 -->
     <select id="getTotalBoardCount" resultType="java.lang.Integer">
-        SELECT COUNT(*) as totalBoardCount
+        SELECT COUNT(*) AS totalBoardCount
         FROM board AS b
-        JOIN user u
-        ON u.user_id = b.user_id
+            LEFT JOIN user u
+                ON u.user_id = b.user_id
+            LEFT JOIN admin a
+                ON a.admin_id = b.admin_id
         <where>
             <if test="type.code != null and type.code != ''">
                 AND b.type = #{type.code}
@@ -91,6 +99,7 @@
                 AND (
                 <if test= 'type.code != "n"'>
                     u.name LIKE CONCAT('%', #{keyword}, '%') OR
+                    a.name LIKE CONCAT('%', #{keyword}, '%') OR
                 </if>
                 b.title LIKE CONCAT('%', #{keyword}, '%') OR
                 b.content LIKE CONCAT('%', #{keyword}, '%')
