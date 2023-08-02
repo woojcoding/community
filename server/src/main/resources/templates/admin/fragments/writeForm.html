@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="writeForm">
     <form id="writeForm" th:object="${boardRequestDto}"
@@ -42,14 +42,32 @@
                            th:checked="${boardRequestDto.notificationFlag == 1}">
                 </td>
             </tr>
+
+            <!-- 파일 부분 -->
             <th:block
                     th:replace="admin/fragments/fileRow :: fileRow"></th:block>
         </table>
     </form>
+
+    <!-- 댓글 부분 -->
     <th:block
             th:replace="admin/fragments/commentForm :: commentForm"></th:block>
 
-    <button>등록 / 수정</button>
+    <div>
+        <button type="submit" form="writeForm">등록 / 수정</button>
+        <a th:href="@{/admin/boards/{type}/
+            (type=${#strings.toLowerCase(type)},
+            pageNum=${boardSearch.pageNum},
+            startDate=${boardSearch.startDate},
+            endDate=${boardSearch.endDate},
+            category=${boardSearch.category},
+            keyword=${boardSearch.keyword})}">
+            <button>목록</button>
+        </a>
+        <a>
+            <button>삭제</button>
+        </a>
+    </div>
 </div>
 
 <script th:inline="javascript">

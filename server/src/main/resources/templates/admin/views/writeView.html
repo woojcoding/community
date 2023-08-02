@@ -20,18 +20,6 @@
         <div th:case="'h'">
         </div>
     </div>
-    <a th:href="@{/admin/boards/{type}/
-            (type=${#strings.toLowerCase(type)},
-            pageNum=${boardSearch.pageNum},
-            startDate=${boardSearch.startDate},
-            endDate=${boardSearch.endDate},
-            category=${boardSearch.category},
-            keyword=${boardSearch.keyword})}">
-        <button>목록</button>
-    </a>
-    <a>
-        <button>삭제</button>
-    </a>
 </th:block>
 </body>
 </html>
