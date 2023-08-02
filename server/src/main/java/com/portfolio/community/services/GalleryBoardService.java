@@ -5,7 +5,7 @@ import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.BoardResponseDto;
 import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.repositories.BoardSearchCondition;
-import com.portfolio.community.repositories.HelpBoardRepository;
+import com.portfolio.community.repositories.GalleryBoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +16,12 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class HelpBoardService {
+public class GalleryBoardService {
 
     /**
      * boardRepository 의존성 주입
      */
-    private final HelpBoardRepository helpBoardRepository;
+    private final GalleryBoardRepository galleryBoardRepository;
 
     /**
      * 게시글 목록 조회에서 검색 조건에 따라 게시글 정보들을 List로 받도록
@@ -30,9 +30,9 @@ public class HelpBoardService {
      * @param boardSearchCondition 검색 조건
      * @return BoardListDto 게시글 정보 List
      */
-    public BoardListDto getHelpBoardList(
+    public BoardListDto getGalleryBoardList(
             BoardSearchCondition boardSearchCondition) {
-        boardSearchCondition.setType(BoardType.HELP);
+        boardSearchCondition.setType(BoardType.GALLERY);
 
         int pageNum = boardSearchCondition.getPageNum();
 
@@ -43,10 +43,10 @@ public class HelpBoardService {
         boardSearchCondition.setOffSet(offset);
 
         List<BoardResponseDto> boardResponseDtoList =
-                helpBoardRepository.getBoardList(boardSearchCondition);
+                galleryBoardRepository.getBoardList(boardSearchCondition);
 
         int totalBoardCount =
-                helpBoardRepository.getTotalBoardCount(boardSearchCondition);
+                galleryBoardRepository.getTotalBoardCount(boardSearchCondition);
 
         return BoardListDto.builder()
                 .boardResponseDtoList(boardResponseDtoList)
@@ -55,24 +55,34 @@ public class HelpBoardService {
     }
 
     /**
-     * 답변을 달아 업데이트하는 메서드
+     * 갤러리 게시글을 업데이트하는 메서드
      *
      * @param boardRequestDto 게시글 정보
      */
-    public void answerHelpBoard(BoardRequestDto boardRequestDto) {
-        boardRequestDto.setType(BoardType.HELP);
+    public void updateGalleryBoard(BoardRequestDto boardRequestDto) {
+        boardRequestDto.setType(BoardType.GALLERY);
 
-        helpBoardRepository.answerFreeBoard(boardRequestDto);
+        galleryBoardRepository.updateGalleryBoard(boardRequestDto);
     }
 
+    /**
+     * 갤러리 게시글을 작성하는 메서드
+     *
+     * @param boardRequestDto
+     */
+    public void postGalleryBoard(BoardRequestDto boardRequestDto) {
+        boardRequestDto.setType(BoardType.GALLERY);
+
+        galleryBoardRepository.postGalleryBoard(boardRequestDto);
+    }
 
     /**
-     * 답변을 달기 위해 게시글Id로 문의글을 가져오는 메서드
+     * 게시글Id로 갤러리 게시글을 가져오는 메서드
      *
      * @param boardId
      * @return BoardRequestDto 게시글 정보
      */
-    public BoardRequestDto getHelpBoard(String boardId) {
-        return helpBoardRepository.getHelpBoard(boardId);
+    public BoardRequestDto getGalleryBoard(String boardId) {
+        return galleryBoardRepository.getGalleryBoard(boardId);
     }
 }

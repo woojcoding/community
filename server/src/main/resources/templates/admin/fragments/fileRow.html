@@ -1,47 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="fileRow" th:if="${type.code == 'f' and type.code == 'g'}">
-  <table>
-    <tr th:if="${fileDtoList == null}">
-      <td>
-        <input type="file" name="files">
-      </td>
-      <td>
-        <input type="file" name="files">
-      </td>
-      <td>
-        <input type="file" name="files">
-      </td>
-      <td>
-        <input type="file" name="files">
-      </td>
-      <td>
-        <input type="file" name="files">
-      </td>
-    </tr>
-    <tr th:if="${fileDtoList != null}">
-      <tbody>
-      <!-- 기존의 파일 행 -->
-      <tr th:each="file : ${fileDtoList}">
-        <td>
-          <a th:href="@{/admin/board/free/files/{fileId}(fileId=${file.fileId})}">
-            <p th:text="${file.originalName}"></p>
-          </a>
-        </td>
-        <td>
-          삭제<input type="checkbox" name="deleteFileIdList" th:value="${file.fileId}">
-        </td>
-      </tr>
-      <!-- 추가 입력란 -->
-      <tr th:each="i : ${#numbers.sequence(fileDtoList.size(), 4)}" th:unless="${fileDtoList.size() >= 5}">
-        <td>
-          <input type="file" name="files" accept=".jpg, .jpeg, .gif, .png, .zip">
-        </td>
-      </tr>
-      </tbody>
-    </tr>
-  </table>
+<div th:fragment="fileRow" th:if="${type.code == 'f' or type.code == 'g'}">
+    <table>
+        <tr>
+            <td>첨부</td>
+            <td>
+                <table>
+                    <tbody>
+                    <!-- 기존의 파일 행 -->
+                    <tr th:each="file : ${fileDtoList}">
+                        <td>
+                            <a th:href="@{/admin/board/free/files/{fileId}(fileId=${file.fileId})}">
+                                <p th:text="${file.originalName}"></p>
+                            </a>
+                        </td>
+                        <td>
+                            삭제<input type="checkbox" name="deleteFileIdList"
+                                     th:value="${file.fileId}">
+                        </td>
+                    </tr>
+                    <!-- 추가 입력란 -->
+                    <tr th:each="i : ${#numbers.sequence(fileDtoList.size(), 4)}"
+                        th:unless="${fileDtoList.size() >= 5}">
+                        <td>
+                            <input type="file" name="files"
+                                   accept=".jpg, .jpeg, .gif, .png, .zip">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
 </div>
 
 </html>

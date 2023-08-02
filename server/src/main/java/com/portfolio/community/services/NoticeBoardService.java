@@ -45,8 +45,8 @@ public class NoticeBoardService {
         List<BoardResponseDto> boardResponseDtoList =
                 noticeBoardRepository.getBoardList(boardSearchCondition);
 
-        int totalBoardCount
-                = noticeBoardRepository.getTotalBoardCount(boardSearchCondition);
+        int totalBoardCount =
+                noticeBoardRepository.getTotalBoardCount(boardSearchCondition);
 
         return BoardListDto.builder()
                 .boardResponseDtoList(boardResponseDtoList)

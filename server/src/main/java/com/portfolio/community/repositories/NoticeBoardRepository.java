@@ -84,6 +84,4 @@ public class NoticeBoardRepository {
     public void updateNoticeBoard(BoardRequestDto boardRequestDto) {
         noticeBoardMapper.updateNoticeBoard(boardRequestDto);
     }
-
-
 }

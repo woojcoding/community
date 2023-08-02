@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Repository
 @RequiredArgsConstructor
-public class FreeBoardRepository {
+public class GalleryBoardRepository {
 
     /**
      * 게시글에 대한 공통 db조작을 하는 인터페이스 의존성 주입
@@ -20,9 +20,9 @@ public class FreeBoardRepository {
     private final BoardMapper boardMapper;
 
     /**
-     *  자유 게시글에 대한 db조작을 하는 인터페이스 의존성 주입
+     *  갤러리 게시글에 대한 db조작을 하는 인터페이스 의존성 주입
      */
-    private final FreeBoardMapper freeBoardMapper;
+    private final GalleryBoardMapper galleryBoardMapper;
 
     /**
      * 게시글 목록 조회에서  검색 조건에 따라 게시글 정보들을 List로 가져오는 메서드
@@ -49,13 +49,13 @@ public class FreeBoardRepository {
     }
 
     /**
-     * 자유게시글을 수정하기 위해 게시글Id에 해당하는 자유게시글을 가져오는 메서드
+     * 갤러리 글을 수정하기 위해 게시글Id에 해당하는 갤러리 글을 가져오는 메서드
      *
      * @param boardId
      * @return
      */
-    public BoardRequestDto getFreeBoard(String boardId) {
-        return freeBoardMapper.getFreeBoard(boardId);
+    public BoardRequestDto getGalleryBoard(String boardId) {
+        return galleryBoardMapper.getGalleryBoard(boardId);
     }
 
     /**
@@ -63,8 +63,8 @@ public class FreeBoardRepository {
      *
      * @param boardRequestDto 게시글 정보
      */
-    public void postFreeBoard(BoardRequestDto boardRequestDto) {
-        freeBoardMapper.postFreeBoard(boardRequestDto);
+    public void postGalleryBoard(BoardRequestDto boardRequestDto) {
+        galleryBoardMapper.postGalleryBoard(boardRequestDto);
     }
 
     /**
@@ -72,7 +72,7 @@ public class FreeBoardRepository {
      *
      * @param boardRequestDto 게시글 정보
      */
-    public void updateFreeBoard(BoardRequestDto boardRequestDto) {
-        freeBoardMapper.updateFreeBoard(boardRequestDto);
+    public void updateGalleryBoard(BoardRequestDto boardRequestDto) {
+        galleryBoardMapper.updateGalleryBoard(boardRequestDto);
     }
 }
