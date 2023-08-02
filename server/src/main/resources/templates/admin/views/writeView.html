@@ -8,18 +8,7 @@
 </head>
 <body>
 <th:block layout:fragment="content">
-    <div th:switch="${type.code}">
-        <div th:case="'n'">
-            <div th:replace="admin/fragments/writeForm :: writeForm"></div>
-        </div>
-        <div th:case="'f'">
-            <div th:replace="admin/fragments/writeForm :: writeForm"></div>
-        </div>
-        <div th:case="'g'">
-        </div>
-        <div th:case="'h'">
-        </div>
-    </div>
+    <div th:replace="admin/fragments/writeForm :: writeForm"></div>
 </th:block>
 </body>
 </html>

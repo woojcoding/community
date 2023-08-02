@@ -5,7 +5,8 @@
     <form id="writeForm" th:object="${boardRequestDto}"
           enctype="multipart/form-data" method="post">
         <table>
-            <tr>
+            <!-- 카테고리 (문의게시글 미사용) -->
+            <tr th:unless="${type.code == 'h'}">
                 <td>분류</td>
                 <td>
                     <select name="categoryId" th:field="*{categoryId}">
@@ -17,22 +18,39 @@
                     </select>
                 </td>
             </tr>
+            <!-- 제목 -->
             <tr>
                 <td>제목</td>
                 <td>
-                    <textarea rows="1" cols="60" name="title"
+                    <textarea rows="1" cols="100" name="title"
+                              style="resize: none; overflow: hidden"
                               th:value="*{title}"
                               th:field="*{title}"></textarea>
+                    <span th:if="${type.code == 'h' && boardRequestDto.answer != null}">(답변완료)</span>
+                    <span th:if="${type.code == 'h' && boardRequestDto.answer == null}">(미답변)</span>
                 </td>
             </tr>
+            <!--내용 (문의 게시판의 경우 질문) -->
             <tr>
-                <td>내용</td>
+                <td th:text="${type.code == 'h' ? '질문' : '내용' }"></td>
                 <td>
-                    <textarea rows="10" cols="60" name="content"
-                              th:value="*{title}"
+                    <textarea rows="20" cols="100" name="content"
+                              style="resize: none"
+                              th:value="*{content}"
                               th:field="*{content}"></textarea>
                 </td>
             </tr>
+            <!-- 문의게시판에서만 사용되는 답변 -->
+            <tr th:if="${type.code == 'h'}">
+                <td>답변</td>
+                <td>
+                    <textarea rows="20" cols="100" name="answer"
+                              style="resize: none"
+                              th:value="*{answer}"
+                              th:field="*{answer}"></textarea>
+                </td>
+            </tr>
+            <!-- 공지글에서만 사용되는 알림글 체크 -->
             <tr th:if="${type.code == 'n'}">
                 <td>알림글</td>
                 <td>
@@ -43,18 +61,19 @@
                 </td>
             </tr>
 
-            <!-- 파일 부분 -->
+            <!-- 갤러리와 자유게시판에서 사용되는 파일 -->
             <th:block
                     th:replace="admin/fragments/fileRow :: fileRow"></th:block>
         </table>
     </form>
 
-    <!-- 댓글 부분 -->
+    <!-- 자유게시판에서 사용되는 댓글 -->
     <th:block
             th:replace="admin/fragments/commentForm :: commentForm"></th:block>
 
     <div>
-        <button type="submit" form="writeForm">등록 / 수정</button>
+        <button type="submit" form="writeForm"
+                th:text="${type.code == 'h' ? '답변완료' : '등록 / 수정'}"></button>
         <a th:href="@{/admin/boards/{type}/
             (type=${#strings.toLowerCase(type)},
             pageNum=${boardSearch.pageNum},

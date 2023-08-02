@@ -12,9 +12,12 @@ import lombok.Setter;
  * - String categoryName: 카테고리명
  * - String writer: 작성자
  * - String title: 제목
+ * - String answer: 답변
  * - String views: 조회수
  * - String createdAt: 작성일
- * - String status: 상테 (비밀글, 알림글)
+ * - boolean notificationFlag: 알림글 여부
+ * - boolean secretFlag: 비밀글 여부
+ * - BoardType type: 타입
  */
 @Getter
 @Setter
@@ -27,6 +30,8 @@ public class BoardResponseDto {
     private String writer; // 작성자
 
     private String title; // 제목
+
+    private String answer; //
 
     private String views; // 조회수
 

@@ -25,7 +25,7 @@
                 ON u.user_id = b.user_id
             LEFT JOIN admin a
                 ON a.admin_id = b.admin_id
-            JOIN category c
+            LEFT JOIN category c
                 ON c.category_id = b.category_id
         <where>
             <if test="type.code != null and type.code != ''">

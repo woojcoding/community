@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="fileRow" th:if="${type.code == 'f'}">
+<div th:fragment="fileRow" th:if="${type.code == 'f' and type.code == 'g'}">
   <table>
     <tr th:if="${fileDtoList == null}">
       <td>

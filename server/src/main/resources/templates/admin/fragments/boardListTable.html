@@ -39,13 +39,18 @@
         </td>
         <td>
           <a th:href="@{/admin/boards/{type}/{boardId}
-            (type=${#strings.toLowerCase(type)},
-            boardId=${board.boardId},
-            pageNum=${boardSearch.pageNum},
-            startDate=${boardSearch.startDate},
-            endDate=${boardSearch.endDate},
-            category=${boardSearch.category},
-            keyword=${boardSearch.keyword})}" style="text-decoration:none;" th:text="${board.title}"></a>
+    (type=${#strings.toLowerCase(type)},
+    boardId=${board.boardId},
+    pageNum=${boardSearch.pageNum},
+    startDate=${boardSearch.startDate},
+    endDate=${boardSearch.endDate},
+    category=${boardSearch.category},
+    keyword=${boardSearch.keyword})}" style="text-decoration:none;">
+            <span th:text="${board.title}"></span>
+            <span th:if="${type.code == 'h' && board.answer != null}">(답변완료)</span>
+            <span th:if="${type.code == 'h' && board.answer == null}">(미답변)</span>
+            <span th:if="${type.code == 'h' && board.secretFlag}" class="fas fa-lock"></span>
+          </a>
         </td>
         <td th:text="${board.views}"></td>
         <td th:text="${board.createdAt}"></td>
