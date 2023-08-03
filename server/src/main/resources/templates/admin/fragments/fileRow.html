@@ -6,33 +6,114 @@
         <tr>
             <td>첨부</td>
             <td>
-                <table>
+                <input type="file" name="files" style="display: none;">
+                <table id="fileInputTable">
                     <tbody>
-                    <!-- 기존의 파일 행 -->
                     <tr th:each="file : ${fileDtoList}">
                         <td>
-                            <a th:href="@{/admin/board/free/files/{fileId}(fileId=${file.fileId})}">
+                            <a th:id="'downloadTag_' + ${file.fileId}"
+                               th:href="@{/admin/board/free/files/{fileId}(fileId=${file.fileId})}">
                                 <p th:text="${file.originalName}"></p>
                             </a>
                         </td>
                         <td>
-                            삭제<input type="checkbox" name="deleteFileIdList"
-                                     th:value="${file.fileId}">
-                        </td>
-                    </tr>
-                    <!-- 추가 입력란 -->
-                    <tr th:each="i : ${#numbers.sequence(fileDtoList.size(), 4)}"
-                        th:unless="${fileDtoList.size() >= 5}">
-                        <td>
-                            <input type="file" name="files"
-                                   accept=".jpg, .jpeg, .gif, .png, .zip">
+                            <button type="button"
+                                    th:onclick="'removeFile(' + ${file.fileId} + ')'">
+                                X
+                            </button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                <button type="button" onclick="addFileInput()">추가</button>
             </td>
         </tr>
     </table>
+
+    <script th:inline="javascript">
+        let fileCount = [[${fileDtoList.size()}]];
+
+        let type = [[${type.code}]];
+
+        let MAX_FILES = 5;
+
+        if (type == 'g') {
+            MAX_FILES = 20;
+        }
+
+        function addFileInput() {
+            if (fileCount >= MAX_FILES) {
+                alert('최대' + (MAX_FILES) + '개까지만 첨부 가능합니다.');
+                return;
+            }
+
+            var fileInputTable = document.getElementById('fileInputTable');
+
+            var newRow = document.createElement('tr');
+
+            var inputCell = document.createElement('td');
+
+            var inputField = document.createElement('input');
+            inputField.setAttribute('type', 'file');
+            inputField.setAttribute('name', 'files');
+
+            if (type == 'g') {
+                inputField.setAttribute('accept', '.jpg, .jpeg, .gif, .png');
+            } else {
+                inputField.setAttribute('accept', '.jpg, .jpeg, .gif, .png, .zip');
+            }
+
+            // tr을 없애는 버튼 생성
+            var removeButton = document.createElement('button');
+            removeButton.setAttribute('type', 'button');
+            removeButton.innerText = 'X';
+
+            removeButton.addEventListener('click', function () {
+                fileInputTable.removeChild(newRow);
+                fileCount--;
+            });
+
+            inputCell.appendChild(inputField);
+            inputCell.appendChild(removeButton);
+
+            newRow.appendChild(inputCell);
+
+            fileInputTable.appendChild(newRow);
+
+            fileCount++;
+        }
+
+        function removeFile(fileId) {
+            // <a> 태그를 숨김 처리
+            var downloadTag = document.getElementById('downloadTag_' + fileId);
+
+            if (downloadTag) {
+                downloadTag.style.display = 'none';
+            }
+
+            // X 버튼 숨김처리
+            var button = document.querySelector('button[onclick*="' + fileId + '"]');
+
+            if (button) {
+                var td = button.closest('td');
+
+                if (td) {
+                    td.remove();
+                }
+            }
+
+            fileCount--;
+
+            // 숨겨진 input 필드에 값을 추가하여 서버로 전달
+            var deleteFileIdInput = document.createElement('input');
+
+            deleteFileIdInput.setAttribute('type', 'hidden');
+            deleteFileIdInput.setAttribute('name', 'deleteFileIdList');
+            deleteFileIdInput.setAttribute('value', fileId);
+
+            document.getElementById('fileInputTable').appendChild(deleteFileIdInput);
+        }
+    </script>
 </div>
 
 </html>
