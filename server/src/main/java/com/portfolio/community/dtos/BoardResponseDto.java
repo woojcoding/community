@@ -18,6 +18,10 @@ import lombok.Setter;
  * - boolean notificationFlag: 알림글 여부
  * - boolean secretFlag: 비밀글 여부
  * - BoardType type: 타입
+ * - String thumbnailName: 썸네일 이름
+ * - int imageCount: 이미지 개수
+ * - int commentCount: 댓글 개수
+ * - boolean isAttached: 파일 첨부 여부
  */
 @Getter
 @Setter
