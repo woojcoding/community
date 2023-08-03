@@ -42,4 +42,12 @@ public class BoardResponseDto {
     private boolean secretFlag; // 비밀글 여부
 
     private BoardType type; // 타입
+
+    private String thumbnailName; // 썸네일 이름
+
+    private int imageCount; // 이미지 개수
+
+    private int commentCount; // 댓글 개수
+
+    private boolean isAttached; //파일 첨부 여부
 }
