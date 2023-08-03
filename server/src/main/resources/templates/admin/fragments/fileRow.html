@@ -11,14 +11,17 @@
                     <tbody>
                     <tr th:each="file : ${fileDtoList}">
                         <td>
-                            <img th:if="${type.code == 'g'}">
+                            <img th:if="${file.thumbnailName}"
+                                 th:src="@{'/thumbnails/' + ${file.thumbnailName}}"
+                                 alt="thumbnail">
                             <a th:id="'downloadTag_' + ${file.fileId}"
-                               th:href="@{/admin/board/free/files/{fileId}(fileId=${file.fileId})}">
+                               th:href="@{/admin/files/{fileId}(fileId=${file.fileId})}">
                                 <p th:text="${file.originalName}"></p>
                             </a>
                         </td>
                         <td>
                             <button type="button"
+                                    th:id="'removeFileButton_' + ${file.fileId}"
                                     th:onclick="'removeFile(' + ${file.fileId} + ')'">
                                 X
                             </button>
@@ -66,8 +69,8 @@
 
                 var thumbnailImg = document.createElement('img');
                 thumbnailImg.setAttribute('id', 'thumbnailImg_' + fileCount);
-                thumbnailImg.style.width = '100px';
-                thumbnailImg.style.height = '100px';
+                thumbnailImg.style.width = '30px';
+                thumbnailImg.style.height = '30px';
 
                 inputCell.appendChild(thumbnailImg);
             } else {
@@ -96,28 +99,14 @@
 
         // 파일을 삭제하는 메서드
         function removeFile(fileId) {
-            // <a> 태그를 숨김 처리
+            // <a> 태그가 속한 tr제거
             var downloadTag = document.getElementById('downloadTag_' + fileId);
 
             if (downloadTag) {
-                downloadTag.style.display = 'none';
-            }
+                var tr = downloadTag.closest('tr');
 
-            // img 태그 숨김 처리
-            var imageTag = document.getElementsByClassName('img');
-
-            if (imageTag) {
-                imageTag.style.display = 'none';
-            }
-
-            // X 버튼 숨김처리
-            var button = document.querySelector('button[onclick*="' + fileId + '"]');
-
-            if (button) {
-                var td = button.closest('td');
-
-                if (td) {
-                    td.remove();
+                if (tr) {
+                    tr.remove();
                 }
             }
 

@@ -13,6 +13,7 @@ import lombok.Setter;
  * - Integer fileId: 파일 ID
  * - String originalName: 원본 파일명
  * - String savedName: 저장된 파일명
+ * - String thumbnailName: 저장된 썸네일명
  * - int boardId: 게시글 ID
  */
 @Getter
@@ -27,6 +28,8 @@ public class FileDto {
     private String originalName; // 원본 파일명
 
     private String savedName; // 저장된 파일명
+
+    private String thumbnailName; // 저장된 썸네일명
 
     private int boardId; // 게시글 Id
 }

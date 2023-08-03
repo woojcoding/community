@@ -150,7 +150,8 @@ public class GalleryBoardController {
         // 게시글에 첨부된 파일 업로드
         MultipartFile[] files = boardRequestDto.getFiles();
 
-        List<FileDto> fileDtoList = fileService.saveFiles(files, savedBoardId);
+        List<FileDto> fileDtoList =
+                fileService.saveFilesWithThumbnail(files, savedBoardId);
 
         fileService.uploadFiles(fileDtoList);
 
@@ -193,7 +194,8 @@ public class GalleryBoardController {
         // 파일 업로드 적용
         MultipartFile[] files = boardRequestDto.getFiles();
 
-        List<FileDto> fileDtoList = fileService.saveFiles(files, boardId);
+        List<FileDto> fileDtoList =
+                fileService.saveFilesWithThumbnail(files, boardId);
 
         fileService.uploadFiles(fileDtoList);
 

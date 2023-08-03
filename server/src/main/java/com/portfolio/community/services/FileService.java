@@ -3,6 +3,7 @@ package com.portfolio.community.services;
 import com.portfolio.community.dtos.FileDto;
 import com.portfolio.community.repositories.FileRepository;
 import lombok.RequiredArgsConstructor;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,6 +77,54 @@ public class FileService {
     }
 
     /**
+     * 파일을 지정된 폴더에 저장하고 정보를 List로 반환해주는 메서드
+     * 썸네일도 함께 생성하여 저장
+     *
+     * @param files   파일들
+     * @param boardId 게시글 Id
+     * @return FileDto List
+     * @throws IOException the io exception
+     */
+    public List<FileDto> saveFilesWithThumbnail(
+            MultipartFile[] files,
+            int boardId
+    ) throws IOException {
+        List<FileDto> savedFileList = new ArrayList<>();
+
+        for (MultipartFile multipartFile : files) {
+            if (multipartFile.getSize() != 0) {
+                // 저장파일명을 만들어주어 폴더에 저장
+                String originalName = multipartFile.getOriginalFilename();
+                String savedName = getSavedName(originalName);
+                String fullPath = getFullPath(savedName);
+
+                // 원본 파일 저장
+                multipartFile.transferTo(new File(fullPath));
+
+                // 썸네일 생성 및 저장
+                String thumbnailName = "t_" + savedName;
+                String thumbnailFullPath = getFullPath(thumbnailName);
+
+                Thumbnails.of(fullPath)
+                        .size(30, 30)
+                        .toFile(thumbnailFullPath);
+
+                // db에 반영하기 위해 FileDto를 만들어 List에 담아줌
+                FileDto fileDto = FileDto.builder()
+                        .originalName(originalName)
+                        .savedName(savedName)
+                        .thumbnailName(thumbnailName)
+                        .boardId(boardId)
+                        .build();
+
+                savedFileList.add(fileDto);
+            }
+        }
+
+        return savedFileList;
+    }
+
+    /**
      * 파일 이름을 포함한 저장 경로를 가져오는 메서드
      *
      * @param fileName 저장 파일명
@@ -88,7 +137,7 @@ public class FileService {
     /**
      * 원본 파일명에서 확장자를 얻어 UUID형태의 저장 파일명을 지정하주는 메서드
      *
-     * @param originalName  원본 파일명
+     * @param originalName 원본 파일명
      * @return 저장시킬 파일명
      */
     private String getSavedName(String originalName) {
@@ -100,7 +149,7 @@ public class FileService {
     /**
      * 원본 파일명에서 확장자를 추출하는 메서드
      *
-     * @param originalName  원본 파일명
+     * @param originalName 원본 파일명
      * @return 확장자명
      */
     private String extractExtension(String originalName) {
