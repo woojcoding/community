@@ -11,6 +11,7 @@
                     <tbody>
                     <tr th:each="file : ${fileDtoList}">
                         <td>
+                            <img th:if="${type.code == 'g'}">
                             <a th:id="'downloadTag_' + ${file.fileId}"
                                th:href="@{/admin/board/free/files/{fileId}(fileId=${file.fileId})}">
                                 <p th:text="${file.originalName}"></p>
@@ -41,6 +42,7 @@
             MAX_FILES = 20;
         }
 
+        // File Input을 추가하는 메서드
         function addFileInput() {
             if (fileCount >= MAX_FILES) {
                 alert('최대' + (MAX_FILES) + '개까지만 첨부 가능합니다.');
@@ -56,9 +58,18 @@
             var inputField = document.createElement('input');
             inputField.setAttribute('type', 'file');
             inputField.setAttribute('name', 'files');
+            inputField.setAttribute('id', 'fileInput_' + fileCount);
 
             if (type == 'g') {
                 inputField.setAttribute('accept', '.jpg, .jpeg, .gif, .png');
+                inputField.setAttribute('onchange', 'showThumbnail(' + fileCount + ')');
+
+                var thumbnailImg = document.createElement('img');
+                thumbnailImg.setAttribute('id', 'thumbnailImg_' + fileCount);
+                thumbnailImg.style.width = '100px';
+                thumbnailImg.style.height = '100px';
+
+                inputCell.appendChild(thumbnailImg);
             } else {
                 inputField.setAttribute('accept', '.jpg, .jpeg, .gif, .png, .zip');
             }
@@ -83,12 +94,20 @@
             fileCount++;
         }
 
+        // 파일을 삭제하는 메서드
         function removeFile(fileId) {
             // <a> 태그를 숨김 처리
             var downloadTag = document.getElementById('downloadTag_' + fileId);
 
             if (downloadTag) {
                 downloadTag.style.display = 'none';
+            }
+
+            // img 태그 숨김 처리
+            var imageTag = document.getElementsByClassName('img');
+
+            if (imageTag) {
+                imageTag.style.display = 'none';
             }
 
             // X 버튼 숨김처리
@@ -112,6 +131,28 @@
             deleteFileIdInput.setAttribute('value', fileId);
 
             document.getElementById('fileInputTable').appendChild(deleteFileIdInput);
+        }
+
+        // 썸네일을 보여주는 메서드
+        function showThumbnail(fileIndex) {
+            const fileInput = document.getElementById('fileInput_' + fileIndex);
+
+            const thumbnailImg = document.getElementById('thumbnailImg_' + fileIndex);
+            thumbnailImg.innerHTML = '';
+
+            const file = fileInput.files[0];
+
+            const imageTypes = ['image/jpeg', 'image/gif', 'image/png'];
+
+            if (file && imageTypes.includes(file.type)) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    thumbnailImg.src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            }
         }
     </script>
 </div>
