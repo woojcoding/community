@@ -3,6 +3,8 @@ package com.portfolio.community.dtos;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 댓글 작성 및 수정에 사용되는 DTO 클래스입니다.
  *
@@ -22,6 +24,7 @@ public class CommentRequestDto {
 
     private Integer boardId; // 게시글 Id
 
+    @NotBlank
     private String content; // 본문 내용
 
     private String writer; // 작성자

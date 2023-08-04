@@ -5,6 +5,7 @@ import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.CategoryDto;
 import com.portfolio.community.dtos.CommentRequestDto;
 import com.portfolio.community.dtos.FileDto;
+import com.portfolio.community.dtos.Free;
 import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import com.portfolio.community.services.CategoryService;
@@ -15,6 +16,9 @@ import com.portfolio.community.utils.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,7 +60,6 @@ public class FreeBoardController {
      */
     private final CommentService commentService;
 
-
     /**
      * 자유 게시글 목록을 조회하는데 사용되는 메서드
      *
@@ -87,16 +90,16 @@ public class FreeBoardController {
     /**
      * 게시글 작성/수정 폼을 가져오는 메서드
      *
-     * @param boardSearchCondition 검색조건
      * @param boardId              게시글 Id - 수정인 경우에 필수
+     * @param boardSearchCondition 검색조건
      * @param model                the model
      * @return writeView 반환
      */
     @GetMapping(value = {"/boards/free/{boardId}", "/board/free"})
     public String getFreeWriteForm(
+            @PathVariable(value = "boardId", required = false) Integer boardId,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @PathVariable(value = "boardId", required = false) String boardId,
             Model model
     ) {
         List<CategoryDto> categoryList =
@@ -137,14 +140,34 @@ public class FreeBoardController {
      *
      * @param boardSearchCondition 검색 조건
      * @param boardRequestDto      게시글 정보 Dto
+     * @param bindingResult        검증오류 보관 객체
+     * @param model                the model
      * @return 작성된 게시글 페이지로 redirect
+     * @throws IOException the io exception
      */
     @PostMapping("/board/free")
     public String postFreeBoard(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @ModelAttribute BoardRequestDto boardRequestDto
+            @Validated(Free.class) @ModelAttribute
+            BoardRequestDto boardRequestDto,
+            BindingResult bindingResult,
+            Model model
     ) throws IOException {
+        // 유효성 검증 실패 시
+        if (bindingResult.hasErrors()) {
+            List<FileDto> fileDtoList = new ArrayList<>();
+
+            List<CategoryDto> categoryList =
+                    categoryService.getCategoryList(BoardType.FREE);
+
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("fileDtoList", fileDtoList);
+            model.addAttribute("type", BoardType.FREE);
+
+            return "admin/views/writeView";
+        }
+
         int adminId = AuthenticationUtil.getAdminId();
 
         boardRequestDto.setAdminId(adminId);
@@ -177,18 +200,38 @@ public class FreeBoardController {
     /**
      * 자유 게시글을 update
      *
+     * @param boardId              게시글 Id
      * @param boardSearchCondition 검색 조건
      * @param boardRequestDto      게시글 정보 Dto
-     * @param boardId              the board id
+     * @param bindingResult        검증오류 보관 객체
+     * @param model                the model
      * @return 작성된 게시글 페이지로 redirect
+     * @throws IOException the io exception
      */
     @PostMapping("/boards/free/{boardId}")
     public String updateFreeBoard(
+            @PathVariable("boardId") Integer boardId,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @ModelAttribute BoardRequestDto boardRequestDto,
-            @PathVariable("boardId") int boardId
+            @Validated(Free.class) @ModelAttribute
+            BoardRequestDto boardRequestDto,
+            BindingResult bindingResult,
+            Model model
     ) throws IOException {
+        // 유효성 검증 실패 시
+        if (bindingResult.hasErrors()) {
+            List<CategoryDto> categoryList =
+                    categoryService.getCategoryList(BoardType.FREE);
+
+            List<FileDto> fileDtoList = fileService.getFileList(boardId);
+
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("fileDtoList", fileDtoList);
+            model.addAttribute("type", BoardType.FREE);
+
+            return "admin/views/writeView";
+        }
+
         boardRequestDto.setBoardId(boardId);
 
         // 게시글 업데이트
@@ -215,5 +258,96 @@ public class FreeBoardController {
 
         return "redirect:" +
                 builder.buildAndExpand(boardId).toUriString();
+    }
+
+    /**
+     * 댓글을 작성하는 메서드
+     *
+     * @param boardId              게시글 Id
+     * @param boardSearchCondition 검색 조건
+     * @param commentRequestDto    댓글 정보 Dto
+     * @param bindingResult        검증오류 보관 객체
+     * @param model                the model
+     * @return 작성된 글 상세보기 페이지
+     */
+    @PostMapping("/boards/free/{boardId}/comment")
+    public String postComment(
+            @PathVariable("boardId") int boardId,
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition,
+            @Validated @ModelAttribute("commentRequestDto")
+            CommentRequestDto commentRequestDto,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        // 유효성 검증 실패 시
+        if (bindingResult.hasErrors()) {
+            BoardRequestDto boardRequestDto =
+                    freeBoardService.getFreeBoard(boardId);
+
+            List<FileDto> fileDtoList = fileService.getFileList(boardId);
+
+            List<CommentRequestDto> commentList =
+                    commentService.getCommentList(boardId);
+
+            model.addAttribute("boardRequestDto", boardRequestDto);
+            model.addAttribute("fileDtoList", fileDtoList);
+            model.addAttribute("commentList", commentList);
+            model.addAttribute("mode", "modify");
+            model.addAttribute("type", BoardType.FREE);
+
+            return "admin/views/writeView";
+        }
+
+        // 댓글을 post
+        int adminId = AuthenticationUtil.getAdminId();
+
+        commentRequestDto.setBoardId(boardId);
+        commentRequestDto.setAdminId(adminId);
+
+        commentService.postComment(commentRequestDto);
+
+        // model에 값 지정
+        model.addAttribute("boardSearch", boardSearchCondition);
+
+        // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromPath("/admin/boards/free/{boardId}")
+                .queryParam("pageNum", boardSearchCondition.getPageNum())
+                .queryParam("startDate", boardSearchCondition.getStartDate())
+                .queryParam("endDate", boardSearchCondition.getEndDate())
+                .queryParam("category", boardSearchCondition.getCategory())
+                .queryParam("keyword", boardSearchCondition.getKeyword());
+
+        return "redirect:" + builder.buildAndExpand(boardId).toUriString();
+    }
+
+    /**
+     * 게시글에 작성된 댓글을 삭제하는 메서드
+     *
+     * @param boardId              게시글 Id
+     * @param commentId            댓글 Id
+     * @param boardSearchCondition 검색 조건
+     * @return 작성된 글 상세보기 페이지
+     */
+    @DeleteMapping("/boards/free/{boardId}/comments/{commentId}")
+    public String deleteComment(
+            @PathVariable("boardId") int boardId,
+            @PathVariable("commentId") int commentId,
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition
+    ) {
+        commentService.deleteComment(commentId);
+
+        // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromPath("/admin/boards/free/{boardId}")
+                .queryParam("pageNum", boardSearchCondition.getPageNum())
+                .queryParam("startDate", boardSearchCondition.getStartDate())
+                .queryParam("endDate", boardSearchCondition.getEndDate())
+                .queryParam("category", boardSearchCondition.getCategory())
+                .queryParam("keyword", boardSearchCondition.getKeyword());
+
+        return "redirect:" + builder.buildAndExpand(boardId).toUriString();
     }
 }

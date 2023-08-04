@@ -164,7 +164,7 @@ public class FileService {
      * @param boardId 게시글Id
      * @return 파일 List
      */
-    public List<FileDto> getFileList(String boardId) {
+    public List<FileDto> getFileList(int boardId) {
         return fileRepository.getFileList(boardId);
     }
 

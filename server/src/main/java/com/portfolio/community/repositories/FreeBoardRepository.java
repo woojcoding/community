@@ -54,7 +54,7 @@ public class FreeBoardRepository {
      * @param boardId
      * @return
      */
-    public BoardRequestDto getFreeBoard(String boardId) {
+    public BoardRequestDto getFreeBoard(int boardId) {
         return freeBoardMapper.getFreeBoard(boardId);
     }
 

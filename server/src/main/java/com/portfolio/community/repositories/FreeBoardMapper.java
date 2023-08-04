@@ -29,5 +29,5 @@ public interface FreeBoardMapper {
      * @param boardId 게시글 Id
      * @return BoardRequestDto 게시글 정보
      */
-    BoardRequestDto getFreeBoard(String boardId);
+    BoardRequestDto getFreeBoard(int boardId);
 }

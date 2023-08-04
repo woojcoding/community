@@ -2,6 +2,7 @@ package com.portfolio.community.admin.controller;
 
 import com.portfolio.community.dtos.BoardListDto;
 import com.portfolio.community.dtos.BoardRequestDto;
+import com.portfolio.community.dtos.Help;
 import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import com.portfolio.community.services.HelpBoardService;
@@ -9,6 +10,8 @@ import com.portfolio.community.utils.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,16 +59,16 @@ public class HelpBoardController {
     /**
      * 게시글 수정 폼을 가져오는 메서드
      *
-     * @param boardSearchCondition 검색조건
      * @param boardId              게시글 Id
+     * @param boardSearchCondition 검색조건
      * @param model                the model
      * @return writeView 반환
      */
     @GetMapping("/boards/help/{boardId}")
     public String getFreeWriteForm(
+            @PathVariable(value = "boardId") String boardId,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @PathVariable(value = "boardId") String boardId,
             Model model
     ) {
         // 게시글 정보를 조회
@@ -81,18 +84,29 @@ public class HelpBoardController {
     /**
      * 문의글에 답변을 달아 업데이트 하는 메서드
      *
+     * @param boardId              게시글 Id
      * @param boardSearchCondition 검색 조건
      * @param boardRequestDto      게시글 정보 Dto
-     * @param boardId              the board id
+     * @param bindingResult        검증오류 보관 객체
+     * @param model                the model
      * @return 답변을 단 게시글 페이지로 redirect
      */
     @PostMapping("/boards/help/{boardId}")
     public String answerHelpBoard(
+            @PathVariable("boardId") int boardId,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @ModelAttribute BoardRequestDto boardRequestDto,
-            @PathVariable("boardId") int boardId
+            @Validated(Help.class) @ModelAttribute
+            BoardRequestDto boardRequestDto,
+            BindingResult bindingResult,
+            Model model
     ){
+        // 유효성 검증 실패 시
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("type", BoardType.HELP);
+
+            return "admin/views/writeView";
+        }
         int adminId = AuthenticationUtil.getAdminId();
 
         boardRequestDto.setAdminId(adminId);

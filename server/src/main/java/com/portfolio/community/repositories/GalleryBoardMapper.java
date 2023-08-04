@@ -29,5 +29,5 @@ public interface GalleryBoardMapper {
      * @param boardId 게시글 Id
      * @return BoardRequestDto 게시글 정보
      */
-    BoardRequestDto getGalleryBoard(String boardId);
+    BoardRequestDto getGalleryBoard(int boardId);
 }

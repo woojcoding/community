@@ -34,7 +34,7 @@
       </th:block>
       <tr th:each="board, iterStat : ${boardListDto.boardResponseDtoList}">
         <td th:text="${boardListDto.totalBoardCount - ((boardSearch.pageNum - 1) * boardSearch.pageSize) - iterStat.count + 1}"></td>
-        <td th:if="${type != 'h'}"
+        <td th:if="${type.code != 'h'}"
             th:text="${board.categoryName}">
         </td>
         <td>

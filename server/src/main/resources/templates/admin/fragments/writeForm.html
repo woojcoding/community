@@ -16,6 +16,7 @@
                                 th:text="${category.name}"
                                 th:selected="${category.categoryId == boardRequestDto.categoryId}"></option>
                     </select>
+                    <div th:errors="*{categoryId}"></div>
                 </td>
             </tr>
             <!-- 제목 -->
@@ -26,6 +27,7 @@
                               style="resize: none; overflow: hidden"
                               th:value="*{title}"
                               th:field="*{title}"></textarea>
+                    <div th:errors="*{title}"></div>
                     <span th:if="${type.code == 'h' && boardRequestDto.answer != null}">(답변완료)</span>
                     <span th:if="${type.code == 'h' && boardRequestDto.answer == null}">(미답변)</span>
                 </td>
@@ -38,6 +40,7 @@
                               style="resize: none"
                               th:value="*{content}"
                               th:field="*{content}"></textarea>
+                    <div th:errors="*{content}"></div>
                 </td>
             </tr>
             <!-- 문의게시판에서만 사용되는 답변 -->
@@ -48,6 +51,7 @@
                               style="resize: none"
                               th:value="*{answer}"
                               th:field="*{answer}"></textarea>
+                    <div th:errors="*{answer}"></div>
                 </td>
             </tr>
             <!-- 공지글에서만 사용되는 알림글 체크 -->

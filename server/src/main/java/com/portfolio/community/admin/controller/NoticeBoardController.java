@@ -3,6 +3,7 @@ package com.portfolio.community.admin.controller;
 import com.portfolio.community.dtos.BoardListDto;
 import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.CategoryDto;
+import com.portfolio.community.dtos.Notice;
 import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import com.portfolio.community.services.CategoryService;
@@ -11,6 +12,8 @@ import com.portfolio.community.utils.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -114,14 +117,30 @@ public class NoticeBoardController {
      *
      * @param boardSearchCondition 검색 조건
      * @param boardRequestDto      게시글 정보 Dto
+     * @param bindingResult        검증오류 보관 객체
+     * @param model                the model
      * @return 작성된 게시글 페이지로 redirect
      */
     @PostMapping("/board/notice")
     public String postNoticeBoard(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @ModelAttribute BoardRequestDto boardRequestDto
+            @Validated(Notice.class) @ModelAttribute
+            BoardRequestDto boardRequestDto,
+            BindingResult bindingResult,
+            Model model
     ) {
+        // 유효성 검증 실패 시
+        if (bindingResult.hasErrors()) {
+            List<CategoryDto> categoryList =
+                    categoryService.getCategoryList(BoardType.NOTICE);
+
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("type", BoardType.NOTICE);
+
+            return "admin/views/writeView";
+        }
+
         int adminId = AuthenticationUtil.getAdminId();
 
         boardRequestDto.setAdminId(adminId);
@@ -146,18 +165,34 @@ public class NoticeBoardController {
     /**
      * 공지글을 update
      *
+     * @param boardId              the board id
      * @param boardSearchCondition 검색 조건
      * @param boardRequestDto      게시글 정보 Dto
-     * @param boardId              the board id
+     * @param bindingResult        검증오류 보관 객체
+     * @param model                the model
      * @return 작성된 게시글 페이지로 redirect
      */
     @PostMapping("/boards/notice/{boardId}")
     public String updateNoticeBoard(
+            @PathVariable("boardId") int boardId,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @ModelAttribute BoardRequestDto boardRequestDto,
-            @PathVariable("boardId") int boardId
+            @Validated(Notice.class) @ModelAttribute
+            BoardRequestDto boardRequestDto,
+            BindingResult bindingResult,
+            Model model
     ) {
+        // 유효성 검증 실패 시
+        if (bindingResult.hasErrors()) {
+            List<CategoryDto> categoryList =
+                    categoryService.getCategoryList(BoardType.NOTICE);
+
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("type", BoardType.NOTICE);
+
+            return "admin/views/writeView";
+        }
+
         boardRequestDto.setBoardId(boardId);
 
         noticeBoardService.updateNoticeBoard(boardRequestDto);

@@ -24,7 +24,7 @@ public class CommentRepository {
      * @param boardId 게시글 Id
      * @return List<CommentResponseDto>  댓글 List
      */
-    public List<CommentRequestDto> getCommentList(String boardId) {
+    public List<CommentRequestDto> getCommentList(int boardId) {
         return commentMapper.getCommentList(boardId);
     }
 

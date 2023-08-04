@@ -82,7 +82,7 @@ public class GalleryBoardService {
      * @param boardId
      * @return BoardRequestDto 게시글 정보
      */
-    public BoardRequestDto getGalleryBoard(String boardId) {
+    public BoardRequestDto getGalleryBoard(int boardId) {
         return galleryBoardRepository.getGalleryBoard(boardId);
     }
 }

@@ -54,7 +54,7 @@ public class GalleryBoardRepository {
      * @param boardId
      * @return
      */
-    public BoardRequestDto getGalleryBoard(String boardId) {
+    public BoardRequestDto getGalleryBoard(int boardId) {
         return galleryBoardMapper.getGalleryBoard(boardId);
     }
 

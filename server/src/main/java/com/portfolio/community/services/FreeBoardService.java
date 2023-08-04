@@ -45,8 +45,8 @@ public class FreeBoardService {
         List<BoardResponseDto> boardResponseDtoList =
                 freeBoardRepository.getBoardList(boardSearchCondition);
 
-        int totalBoardCount
-                = freeBoardRepository.getTotalBoardCount(boardSearchCondition);
+        int totalBoardCount =
+                freeBoardRepository.getTotalBoardCount(boardSearchCondition);
 
         return BoardListDto.builder()
                 .boardResponseDtoList(boardResponseDtoList)
@@ -82,7 +82,7 @@ public class FreeBoardService {
      * @param boardId
      * @return BoardRequestDto 게시글 정보
      */
-    public BoardRequestDto getFreeBoard(String boardId) {
+    public BoardRequestDto getFreeBoard(int boardId) {
         return freeBoardRepository.getFreeBoard(boardId);
     }
 }

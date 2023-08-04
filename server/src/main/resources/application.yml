@@ -14,7 +14,7 @@ spring:
     password: admin!32
 
   messages:
-    basename: messages
+    basename: messages, errors
     encoding: utf-8
 
   thymeleaf:

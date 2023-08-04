@@ -10,6 +10,7 @@
                     <textarea
                             th:field="${commentRequestDto.content}"
                             placeholder="댓글을 입력해주세요."></textarea>
+                    <div th:errors="${commentRequestDto.content}"></div>
                 </td>
                 <td>
                     <button type="submit">등록</button>

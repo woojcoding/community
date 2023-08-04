@@ -4,6 +4,7 @@ import com.portfolio.community.dtos.BoardListDto;
 import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.CategoryDto;
 import com.portfolio.community.dtos.FileDto;
+import com.portfolio.community.dtos.Gallery;
 import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import com.portfolio.community.services.CategoryService;
@@ -17,6 +18,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -95,7 +98,7 @@ public class GalleryBoardController {
     public String getGalleryWriteForm(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @PathVariable(value = "boardId", required = false) String boardId,
+            @PathVariable(value = "boardId", required = false) Integer boardId,
             Model model
     ) {
         List<CategoryDto> categoryList =
@@ -130,14 +133,33 @@ public class GalleryBoardController {
      *
      * @param boardSearchCondition 검색 조건
      * @param boardRequestDto      게시글 정보 Dto
+     * @param bindingResult        검증오류 보관 객체
+     * @param model                the model
      * @return 작성된 게시글 페이지로 redirect
+     * @throws IOException the io exception
      */
     @PostMapping("/board/gallery")
     public String postGalleryBoard(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @ModelAttribute BoardRequestDto boardRequestDto
+            @Validated(Gallery.class) @ModelAttribute
+            BoardRequestDto boardRequestDto,
+            BindingResult bindingResult,
+            Model model
     ) throws IOException {
+        // 유효성 검증 실패 시
+        if (bindingResult.hasErrors()) {
+            List<FileDto> fileDtoList = new ArrayList<>();
+
+            List<CategoryDto> categoryList =
+                    categoryService.getCategoryList(BoardType.GALLERY);
+
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("fileDtoList", fileDtoList);
+            model.addAttribute("type", BoardType.GALLERY);
+
+            return "admin/views/writeView";
+        }
         int adminId = AuthenticationUtil.getAdminId();
 
         boardRequestDto.setAdminId(adminId);
@@ -171,18 +193,38 @@ public class GalleryBoardController {
     /**
      * 갤러리 게시글을 update
      *
+     * @param boardId              the board id
      * @param boardSearchCondition 검색 조건
      * @param boardRequestDto      게시글 정보 Dto
-     * @param boardId              the board id
+     * @param bindingResult        검증오류 보관 객체
+     * @param model                the model
      * @return 작성된 게시글 페이지로 redirect
+     * @throws IOException the io exception
      */
     @PostMapping("/boards/gallery/{boardId}")
     public String updateFreeBoard(
+            @PathVariable("boardId") int boardId,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
+            @Validated(Gallery.class)
             @ModelAttribute BoardRequestDto boardRequestDto,
-            @PathVariable("boardId") int boardId
+            BindingResult bindingResult,
+            Model model
     ) throws IOException {
+        // 유효성 검증 실패 시
+        if (bindingResult.hasErrors()) {
+            List<CategoryDto> categoryList =
+                    categoryService.getCategoryList(BoardType.GALLERY);
+
+            List<FileDto> fileDtoList = fileService.getFileList(boardId);
+
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("fileDtoList", fileDtoList);
+            model.addAttribute("type", BoardType.GALLERY);
+
+            return "admin/views/writeView";
+        }
+
         boardRequestDto.setBoardId(boardId);
 
         // 게시글 업데이트

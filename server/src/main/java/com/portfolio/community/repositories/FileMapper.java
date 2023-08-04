@@ -17,7 +17,7 @@ public interface FileMapper {
      * @param boardId 게시글 Id
      * @return List<File>     파일 List
      */
-    List<FileDto> getFileList(String boardId);
+    List<FileDto> getFileList(int boardId);
 
     /**
      * 파일 정보를 db에 저장하는 메서드

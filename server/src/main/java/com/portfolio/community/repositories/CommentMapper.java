@@ -17,7 +17,7 @@ public interface CommentMapper {
      * @param boardId 게시글 Id
      * @return List<CommentResponseDto>  댓글 List
      */
-    List<CommentRequestDto> getCommentList(String boardId);
+    List<CommentRequestDto> getCommentList(int boardId);
 
     /**
      * 댓글을 저장하는 메서드
