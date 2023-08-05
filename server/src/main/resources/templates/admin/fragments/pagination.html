@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+<div th:fragment="pagination">
+    <p id="paging">
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            // 보드 타입
+            var type = [[${type}]].toLowerCase();
+
+            // 현재 페이지
+            var currentPage = [[${boardSearch.pageNum}]];
+
+            // 총 게시글 수
+            var totalBoardCount = [[${boardListDto.totalBoardCount}]];
+
+            // 페이지에 보여질 게시글 수
+            var pageSize = [[${boardSearch.pageSize}]];
+
+            // 페이지 블록의 크기
+            var pageLimit = 10;
+
+            // 시작 페이지
+            var startPage = Math.floor((currentPage - 1) / pageLimit) * pageLimit + 1;
+
+            // 마지막 페이지
+            var endPage = startPage + pageLimit - 1;
+
+            // 총 페이지 수
+            var pageCount = Math.ceil(totalBoardCount / pageSize);
+
+            if (endPage > pageCount) {
+                endPage = pageCount
+            }
+
+            var pagingElement = document.getElementById("paging");
+
+            // 널(null) 값일 경우 빈 문자열로 처리하는 함수
+            function nullToEmptyString(value) {
+                return value == null ? '' : value;
+            }
+
+            var startDate = nullToEmptyString([[${boardSearch.startDate}]]);
+            var endDate = nullToEmptyString([[${boardSearch.endDate}]]);
+            var category = nullToEmptyString([[${boardSearch.category}]]);
+            var keyword = nullToEmptyString([[${boardSearch.keyword}]]);
+
+            var linkTemplate = "/admin/boards/" + type +
+                "?pageNum={pageNum}" +
+                "&startDate=" + encodeURIComponent(startDate) +
+                "&endDate=" + encodeURIComponent(endDate) +
+                "&category=" + encodeURIComponent(category) +
+                "&keyword=" + encodeURIComponent(keyword);
+
+            // 1페이지로 이동
+            var firstLink = document.createElement("a");
+
+            firstLink.href = linkTemplate.replace("{pageNum}", 1);
+            firstLink.textContent = "<<";
+
+            pagingElement.appendChild(firstLink);
+
+            // 이전 페이지 블록으로 이동
+            var prevLink = document.createElement("a");
+
+            prevLink.href = linkTemplate.replace("{pageNum}", Math.max(startPage - pageLimit, 1));
+            prevLink.textContent = "<";
+
+            if (startPage === 1) {
+                prevLink.style.display = "none";
+            }
+
+            pagingElement.appendChild(prevLink);
+
+            // 페이지 번호
+            for (var pageNum = startPage; pageNum <= endPage && pageNum <= pageCount; pageNum++) {
+                var pageLink = document.createElement("a");
+
+                pageLink.href = linkTemplate.replace("{pageNum}", pageNum);
+                pageLink.textContent = pageNum;
+
+                pagingElement.appendChild(pageLink);
+            }
+
+            // 다음 페이지 블록으로 이동
+            var nextLink = document.createElement("a");
+
+            nextLink.href = linkTemplate.replace("{pageNum}", Math.min(startPage + pageLimit, pageCount));
+            nextLink.textContent = ">";
+
+            if (endPage === pageCount) {
+                nextLink.style.display = "none";
+            }
+
+            pagingElement.appendChild(nextLink);
+
+            // 마지막 페이지 블록으로 이동
+            var lastLink = document.createElement("a");
+
+            lastLink.href = linkTemplate.replace("{pageNum}", pageCount);
+            lastLink.textContent = ">>";
+
+            pagingElement.appendChild(lastLink);
+        });
+    </script>
+    </p>
+</div>
+
+</html>
+
