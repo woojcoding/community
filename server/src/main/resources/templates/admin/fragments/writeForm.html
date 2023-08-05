@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="writeForm">
     <form id="writeForm" th:object="${boardRequestDto}"
+          onsubmit="return validateForm();"
           enctype="multipart/form-data" method="post">
         <table>
             <!-- 카테고리 (문의게시글 미사용) -->
             <tr th:unless="${type.code == 'h'}">
                 <td>분류</td>
                 <td>
-                    <select name="categoryId" th:field="*{categoryId}">
+                    <select name="categoryId" id="categoryId"
+                            th:field="*{categoryId}">
                         <option value="all">카테고리 선택</option>
                         <option th:each="category : ${categoryList}"
                                 th:value="${category.categoryId}"
@@ -23,7 +25,7 @@
             <tr>
                 <td>제목</td>
                 <td>
-                    <textarea rows="1" cols="100" name="title"
+                    <textarea rows="1" cols="100" name="title" id="title"
                               style="resize: none; overflow: hidden"
                               th:value="*{title}"
                               th:field="*{title}"></textarea>
@@ -37,6 +39,7 @@
                 <td th:text="${type.code == 'h' ? '질문' : '내용' }"></td>
                 <td>
                     <textarea rows="20" cols="100" name="content"
+                              id="content"
                               style="resize: none"
                               th:value="*{content}"
                               th:field="*{content}"></textarea>
@@ -48,6 +51,7 @@
                 <td>답변</td>
                 <td>
                     <textarea rows="20" cols="100" name="answer"
+                              id="answer"
                               style="resize: none"
                               th:value="*{answer}"
                               th:field="*{answer}"></textarea>
@@ -69,14 +73,7 @@
             <th:block
                     th:replace="admin/fragments/fileRow :: fileRow"></th:block>
         </table>
-    </form>
-
-    <!-- 자유게시판에서 사용되는 댓글 -->
-    <th:block
-            th:replace="admin/fragments/commentForm :: commentForm"></th:block>
-
-    <div>
-        <button type="submit" form="writeForm"
+        <button
                 th:text="${type.code == 'h' ? '답변완료' : '등록 / 수정'}"></button>
         <a th:href="@{/admin/boards/{type}/
             (type=${#strings.toLowerCase(type)},
@@ -90,31 +87,65 @@
         <a>
             <button>삭제</button>
         </a>
-    </div>
-</div>
 
-<script th:inline="javascript">
-    function setFormAction() {
-        var form = document.getElementById('writeForm');
+    </form>
+    <!-- 자유게시판에서 사용되는 댓글 -->
+    <th:block
+            th:replace="admin/fragments/commentForm :: commentForm"></th:block>
 
-        var boardId = null;
+    <script th:inline="javascript">
+        function validateForm() {
+            var type = [[${type.code}]];
 
-        boardId = [[${boardRequestDto.boardId}]];
+            var category = null;
 
-        var type = Strings.toLowerCase([[${type}]]);
+            var answer = null;
 
-        var actionUrl;
+            var title = document.getElementById("title").value;
 
-        if (boardId) {
-            actionUrl = '/admin/boards/' + type + '/' + boardId
-        } else {
-            actionUrl = '/admin/board/' + type
+            var content = document.getElementById("content").value;
+
+            var formType = [[${formType.code}]];
+
+            // 카테고리 필수 선택 검증
+            if (type !== 'h') {
+                category = document.getElementById("categoryId").value;
+
+                if (category === "all") {
+                    alert("카테고리를 선택해주세요.");
+
+                    return false;
+                }
+            }
+
+            // 제목 필수, 글자 수 검증
+            if (title.length === 0 || title.length >= 100) {
+                alert("제목은 필수 사항이며, 100글자 미만으로 입력해주세요.");
+
+                return false;
+            }
+
+            // 내용 필수, 글자 수 검증
+            if (content.length === 0 || content.length >= 2000) {
+                alert("내용은 필수 사항이며, 2000글자 미만으로 입력해주세요.");
+
+                return false;
+            }
+
+            // 답변 필수, 글자 수 검증
+            if (type === 'h') {
+                answer = document.getElementById("answer").value;
+
+                if (answer.length === 0 || answer.length >= 4000) {
+                    alert("답변은 필수 사항이며, 4000글자 미만으로 입력해주세요.");
+
+                    return false;
+                }
+            }
+
+            return confirm("정말로 " + formType + " 하시겠습니까?");
         }
-
-        form.action = actionUrl;
-    }
-
-    document.addEventListener('DOMContentLoaded', setFormAction);
-</script>
+    </script>
+</div>
 
 </html>

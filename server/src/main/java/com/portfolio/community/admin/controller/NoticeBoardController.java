@@ -5,6 +5,7 @@ import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.CategoryDto;
 import com.portfolio.community.dtos.Notice;
 import com.portfolio.community.enums.BoardType;
+import com.portfolio.community.enums.FormType;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import com.portfolio.community.services.CategoryService;
 import com.portfolio.community.services.NoticeBoardService;
@@ -103,8 +104,10 @@ public class NoticeBoardController {
                     noticeBoardService.getNoticeBoard(boardId);
 
             model.addAttribute("boardRequestDto", boardRequestDto);
+            model.addAttribute("formType", FormType.MODIFY);
         } else {
             model.addAttribute("boardRequestDto", new BoardRequestDto());
+            model.addAttribute("formType", FormType.POST);
         }
 
         model.addAttribute("type", BoardType.NOTICE);
@@ -137,6 +140,7 @@ public class NoticeBoardController {
 
             model.addAttribute("categoryList", categoryList);
             model.addAttribute("type", BoardType.NOTICE);
+            model.addAttribute("formType", FormType.POST);
 
             return "admin/views/writeView";
         }
@@ -189,6 +193,7 @@ public class NoticeBoardController {
 
             model.addAttribute("categoryList", categoryList);
             model.addAttribute("type", BoardType.NOTICE);
+            model.addAttribute("formType", FormType.MODIFY);
 
             return "admin/views/writeView";
         }

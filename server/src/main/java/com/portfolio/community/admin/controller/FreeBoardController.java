@@ -7,6 +7,7 @@ import com.portfolio.community.dtos.CommentRequestDto;
 import com.portfolio.community.dtos.FileDto;
 import com.portfolio.community.dtos.Free;
 import com.portfolio.community.enums.BoardType;
+import com.portfolio.community.enums.FormType;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import com.portfolio.community.services.CategoryService;
 import com.portfolio.community.services.CommentService;
@@ -122,12 +123,13 @@ public class FreeBoardController {
             model.addAttribute("fileDtoList", fileDtoList);
             model.addAttribute("commentList", commentList);
             model.addAttribute("commentRequestDto", new CommentRequestDto());
-            model.addAttribute("mode", "modify");
+            model.addAttribute("formType", FormType.MODIFY);
         } else {
             List<FileDto> fileDtoList = new ArrayList<>();
 
             model.addAttribute("boardRequestDto", new BoardRequestDto());
             model.addAttribute("fileDtoList", fileDtoList);
+            model.addAttribute("formType", FormType.POST);
         }
 
         model.addAttribute("type", BoardType.FREE);
@@ -164,6 +166,7 @@ public class FreeBoardController {
             model.addAttribute("categoryList", categoryList);
             model.addAttribute("fileDtoList", fileDtoList);
             model.addAttribute("type", BoardType.FREE);
+            model.addAttribute("formType", FormType.POST);
 
             return "admin/views/writeView";
         }
@@ -225,8 +228,14 @@ public class FreeBoardController {
 
             List<FileDto> fileDtoList = fileService.getFileList(boardId);
 
+            List<CommentRequestDto> commentList =
+                    commentService.getCommentList(boardId);
+
             model.addAttribute("categoryList", categoryList);
             model.addAttribute("fileDtoList", fileDtoList);
+            model.addAttribute("commentList", commentList);
+            model.addAttribute("commentRequestDto", new CommentRequestDto());
+            model.addAttribute("formType", FormType.MODIFY);
             model.addAttribute("type", BoardType.FREE);
 
             return "admin/views/writeView";
@@ -293,7 +302,7 @@ public class FreeBoardController {
             model.addAttribute("boardRequestDto", boardRequestDto);
             model.addAttribute("fileDtoList", fileDtoList);
             model.addAttribute("commentList", commentList);
-            model.addAttribute("mode", "modify");
+            model.addAttribute("formType", FormType.MODIFY);
             model.addAttribute("type", BoardType.FREE);
 
             return "admin/views/writeView";

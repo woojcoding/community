@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="commentForm" th:if="${type.code == 'f' and mode == 'modify'}">
+<div th:fragment="commentForm" th:if="${type.code == 'f' and formType.toString() == 'MODIFY'}">
     <form th:action="@{/admin/boards/free/{boardId}/comment(boardId=${boardId})}"
           th:object="${commentRequestDto}" method="post">
         <table>

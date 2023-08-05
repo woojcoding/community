@@ -4,6 +4,7 @@ import com.portfolio.community.dtos.BoardListDto;
 import com.portfolio.community.dtos.BoardRequestDto;
 import com.portfolio.community.dtos.Help;
 import com.portfolio.community.enums.BoardType;
+import com.portfolio.community.enums.FormType;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import com.portfolio.community.services.HelpBoardService;
 import com.portfolio.community.utils.AuthenticationUtil;
@@ -65,7 +66,7 @@ public class HelpBoardController {
      * @return writeView 반환
      */
     @GetMapping("/boards/help/{boardId}")
-    public String getFreeWriteForm(
+    public String getHelpWriteForm(
             @PathVariable(value = "boardId") String boardId,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
@@ -77,6 +78,7 @@ public class HelpBoardController {
 
         model.addAttribute("boardRequestDto", boardRequestDto);
         model.addAttribute("type", BoardType.HELP);
+        model.addAttribute("formType", FormType.ANSWER);
 
         return "admin/views/writeView";
     }
@@ -104,6 +106,7 @@ public class HelpBoardController {
         // 유효성 검증 실패 시
         if (bindingResult.hasErrors()) {
             model.addAttribute("type", BoardType.HELP);
+            model.addAttribute("formType", FormType.ANSWER);
 
             return "admin/views/writeView";
         }
