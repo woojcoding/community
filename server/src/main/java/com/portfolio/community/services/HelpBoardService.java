@@ -75,4 +75,13 @@ public class HelpBoardService {
     public BoardRequestDto getHelpBoard(String boardId) {
         return helpBoardRepository.getHelpBoard(boardId);
     }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @param boardId
+     */
+    public void deleteHelpBoard(int boardId) {
+        helpBoardRepository.deleteHelpBoard(boardId);
+    }
 }

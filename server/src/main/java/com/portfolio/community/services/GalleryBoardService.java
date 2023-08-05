@@ -85,4 +85,13 @@ public class GalleryBoardService {
     public BoardRequestDto getGalleryBoard(int boardId) {
         return galleryBoardRepository.getGalleryBoard(boardId);
     }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @param boardId
+     */
+    public void deleteGalleryBoard(int boardId) {
+        galleryBoardRepository.deleteGalleryBoard(boardId);
+    }
 }

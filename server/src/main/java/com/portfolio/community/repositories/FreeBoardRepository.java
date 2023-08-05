@@ -75,4 +75,13 @@ public class FreeBoardRepository {
     public void updateFreeBoard(BoardRequestDto boardRequestDto) {
         freeBoardMapper.updateFreeBoard(boardRequestDto);
     }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @param boardId
+     */
+    public void deleteFreeBoard(int boardId) {
+        boardMapper.deleteBoard(boardId);
+    }
 }

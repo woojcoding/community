@@ -84,4 +84,13 @@ public class NoticeBoardRepository {
     public void updateNoticeBoard(BoardRequestDto boardRequestDto) {
         noticeBoardMapper.updateNoticeBoard(boardRequestDto);
     }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @param boardId
+     */
+    public void deleteNoticeBoard(int boardId) {
+        boardMapper.deleteBoard(boardId);
+    }
 }

@@ -27,4 +27,10 @@ public interface BoardMapper {
      */
     int getTotalBoardCount(BoardSearchCondition boardSearchCondition);
 
+    /**
+     * db에서 게시글을 삭제하는 메서드
+     *
+     * @param boardId
+     */
+    void deleteBoard(int boardId);
 }

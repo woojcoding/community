@@ -51,7 +51,7 @@
             endDate=${boardSearch.endDate},
             category=${boardSearch.category},
             keyword=${boardSearch.keyword})}">
-                <button>등록</button>
+                <button th:if="${type.code != 'h'}">등록</button>
             </a>
         </div>
         <div th:replace="admin/fragments/boardListTable :: boardListTable"></div>

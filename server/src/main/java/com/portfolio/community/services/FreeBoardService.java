@@ -85,4 +85,13 @@ public class FreeBoardService {
     public BoardRequestDto getFreeBoard(int boardId) {
         return freeBoardRepository.getFreeBoard(boardId);
     }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @param boardId
+     */
+    public void deleteFreeBoard(int boardId) {
+        freeBoardRepository.deleteFreeBoard(boardId);
+    }
 }

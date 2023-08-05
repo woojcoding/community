@@ -75,4 +75,13 @@ public class GalleryBoardRepository {
     public void updateGalleryBoard(BoardRequestDto boardRequestDto) {
         galleryBoardMapper.updateGalleryBoard(boardRequestDto);
     }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @param boardId
+     */
+    public void deleteGalleryBoard(int boardId) {
+        boardMapper.deleteBoard(boardId);
+    }
 }

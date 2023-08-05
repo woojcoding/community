@@ -44,11 +44,4 @@
         FROM file
         WHERE file_id = #{fileId}
     </delete>
-
-    <!-- 게시글 Id에 해당하는 파일 삭제 -->
-    <delete id="deleteFileByBoardId">
-        DELETE
-        FROM file
-        WHERE board_id = #{boardId}
-    </delete>
 </mapper>

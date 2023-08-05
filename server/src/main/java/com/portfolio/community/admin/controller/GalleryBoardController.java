@@ -260,6 +260,35 @@ public class GalleryBoardController {
     }
 
     /**
+     * 갤러리 게시글을 삭제하는 메서드
+     *
+     * @param boardId              게시글 Id
+     * @param boardSearchCondition 검색 조건
+
+     * @return 삭제 후 게시글 목록으로 이동
+     */
+    @GetMapping("/board/gallery/delete/{boardId}")
+    public String deleteGalleryBoard(
+            @PathVariable("boardId") int boardId,
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition
+    ) {
+        // 게시글을 삭제
+        galleryBoardService.deleteGalleryBoard(boardId);
+
+        // 검색 조건을 유지시켜 게시글 리스트 페이지로 리다이렉트
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromPath("/admin/boards/gallery/")
+                .queryParam("pageNum", boardSearchCondition.getPageNum())
+                .queryParam("startDate", boardSearchCondition.getStartDate())
+                .queryParam("endDate", boardSearchCondition.getEndDate())
+                .queryParam("category", boardSearchCondition.getCategory())
+                .queryParam("keyword", boardSearchCondition.getKeyword());
+
+        return "redirect:" + builder.build().toUriString();
+    }
+
+    /**
      * 파일 다운로드
      *
      * @param fileId 파일 Id

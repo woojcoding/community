@@ -67,4 +67,13 @@ public class HelpBoardRepository {
     public void answerFreeBoard(BoardRequestDto boardRequestDto) {
         helpBoardMapper.answerHelpBoard(boardRequestDto);
     }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @param boardId
+     */
+    public void deleteHelpBoard(int boardId) {
+        boardMapper.deleteBoard(boardId);
+    }
 }

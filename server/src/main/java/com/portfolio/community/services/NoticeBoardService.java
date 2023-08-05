@@ -100,4 +100,13 @@ public class NoticeBoardService {
     public BoardRequestDto getNoticeBoard(String boardId) {
         return noticeBoardRepository.getNoticeBoard(boardId);
     }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @param boardId
+     */
+    public void deleteNoticeBoard(int boardId) {
+        noticeBoardRepository.deleteNoticeBoard(boardId);
+    }
 }
