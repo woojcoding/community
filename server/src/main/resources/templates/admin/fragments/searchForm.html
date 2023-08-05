@@ -6,14 +6,15 @@
         <p>등록일시</p>
         <input type="date" name="startDate" th:value="${param.startDate}">
         <input type="date" name="endDate" th:value="${param.endDate}">
-        <select name="category">
+        <select th:if="${type.code != 'h'}" name="category">
             <option value="all">전체 카테고리</option>
             <option th:each="category : ${categoryList}"
                     th:value="${category.categoryId}"
                     th:text="${category.name}"></option>
         </select>
         <input type="text" name="keyword"
-               th:placeholder="${type.code == 'n' ? '제목 or 내용' : '제목 or 내용 or 작성자'}"
+               th:placeholder="${type.code == 'n' ? '제목 or 내용' :
+               (type.code == 'h' ? '제목 or 내용 or 등록자' : '제목 or 내용 or 작성자')}"
                th:value="${param.keyword}">
         <button>검색</button>
     </form>
