@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+<div th:fragment="sortOption">
+    <div>
+        <select id="pageSize">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+        </select>
+        <p>개씩 보기</p>
+
+        <p>정렬</p>
+        <select id="sortBy">
+            <option value="createdAt">등록일시</option>
+            <option th:if="${type.code} != 'h'" value="category">분류</option>
+            <option value="title">제목</option>
+            <option value="views">조회수</option>
+        </select>
+        <select id="sortOrder">
+            <option value="desc">내림차순</option>
+            <option value="asc">오름차순</option>
+        </select>
+        <script>
+
+            var currentUrl = window.location.href.split('?')[0];
+
+            var pageSizeSelect = document.getElementById('pageSize');
+
+            var sortBySelect = document.getElementById('sortBy');
+
+            var sortOrderSelect = document.getElementById('sortOrder');
+
+            // URL 매개변수에서 값을 가져와 선택 상태로 설정
+            var urlParams = new URLSearchParams(window.location.search);
+
+            pageSizeSelect.value = urlParams.get('pageSize') || 10;
+
+            sortBySelect.value = urlParams.get('sortBy') || 'createdAt';
+
+            sortOrderSelect.value = urlParams.get('sortOrder') || 'desc';
+
+            pageSizeSelect.addEventListener('change', applySearch);
+
+            sortBySelect.addEventListener('change', applySearch);
+
+            sortOrderSelect.addEventListener('change', applySearch);
+
+            function nullToEmptyString(value) {
+                return value == null ? '' : value;
+            }
+
+            function applySearch() {
+                var pageSize = pageSizeSelect.value;
+
+                var sortBy = sortBySelect.value;
+
+                var sortOrder = sortOrderSelect.value;
+
+                var startDate = nullToEmptyString("[[${boardSearch.startDate}]]");
+
+                var endDate = nullToEmptyString("[[${boardSearch.endDate}]]");
+
+                var category = nullToEmptyString("[[${boardSearch.category}]]");
+
+                var keyword = nullToEmptyString("[[${boardSearch.keyword}]]");
+
+                var linkTemplate = currentUrl +
+                    "?pageNum=1" +
+                    "&startDate=" + encodeURIComponent(startDate) +
+                    "&endDate=" + encodeURIComponent(endDate) +
+                    "&category=" + encodeURIComponent(category) +
+                    "&keyword=" + encodeURIComponent(keyword);
+
+                linkTemplate +=
+                    "&pageSize=" + pageSize +
+                    "&sortBy=" + sortBy +
+                    "&sort=" + sortOrder;
+
+                window.location.href = linkTemplate;
+            }
+        </script>
+    </div>
+</div>
+</html>
+

@@ -42,16 +42,28 @@
             }
 
             var startDate = nullToEmptyString([[${boardSearch.startDate}]]);
+
             var endDate = nullToEmptyString([[${boardSearch.endDate}]]);
+
             var category = nullToEmptyString([[${boardSearch.category}]]);
+
             var keyword = nullToEmptyString([[${boardSearch.keyword}]]);
+
+            var sortBy = nullToEmptyString([[${boardSearch.sortBy}]]);
+
+            pageSize = nullToEmptyString([[${boardSearch.pageSize}]]);
+
+            var sort = nullToEmptyString([[${boardSearch.sort}]]);
 
             var linkTemplate = "/admin/boards/" + type +
                 "?pageNum={pageNum}" +
+                "&pageSize=" + encodeURIComponent(pageSize) +
                 "&startDate=" + encodeURIComponent(startDate) +
                 "&endDate=" + encodeURIComponent(endDate) +
                 "&category=" + encodeURIComponent(category) +
-                "&keyword=" + encodeURIComponent(keyword);
+                "&keyword=" + encodeURIComponent(keyword) +
+                "&sortBy=" + encodeURIComponent(sortBy) +
+                "&sort=" + encodeURIComponent(sort);
 
             // 1페이지로 이동
             var firstLink = document.createElement("a");

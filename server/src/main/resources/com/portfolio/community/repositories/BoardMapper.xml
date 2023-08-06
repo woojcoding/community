@@ -56,14 +56,28 @@
                             )
         <include refid="whereClause"></include>
         <!-- 순서 -->
-        <if test="orderOption != null and orderOption != ''">
-            ORDER BY #{orderOption}
-        </if>
-        <if test="orderOption == null or orderOption == ''">
+        <if test="sortBy == 'createdAt'">
             ORDER BY b.created_at
         </if>
-        <if test="sort != null and sort != ''">
-            #{sort}
+        <if test="sortBy == 'category'">
+            ORDER BY c.name
+        </if>
+        <if test="sortBy == 'title'">
+            ORDER BY title
+        </if>
+        <if test="sortBy == 'views'">
+            ORDER BY views
+        </if>
+
+        <!-- 정렬 순서도 적용 -->
+        <if test="sortBy == null or sortBy == ''">
+            ORDER BY b.created_at
+        </if>
+        <if test="sort == 'desc'">
+            DESC
+        </if>
+        <if test="sort == 'asc'">
+            ASC
         </if>
         <if test="sort == null or sort == ''">
             DESC

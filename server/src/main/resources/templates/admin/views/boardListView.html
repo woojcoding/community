@@ -12,37 +12,19 @@
 <div>
     <th:block layout:fragment="content">
         <div th:replace="admin/fragments/searchForm :: common-search-container"></div>
-        <div>
-            <select>
-                <option>10</option>
-                <option>20</option>
-                <option>30</option>
-                <option>40</option>
-                <option>50</option>
-            </select>
-            <p>개씩 보기</p>
-
-            <p>정렬</p>
-            <select>
-                <option>등록일시</option>
-                <option>분류</option>
-                <option>제목</option>
-                <option>조회수</option>
-            </select>
-            <select>
-                <option>내림차순</option>
-                <option>오름차순</option>
-            </select>
+        <div th:replace="admin/fragments/sortOption :: sortOption"></div>
             <a th:href="@{/admin/board/{type}
             (type=${#strings.toLowerCase(type)},
             pageNum=${boardSearch.pageNum},
+            pageSize=${boardSearch.pageSize},
             startDate=${boardSearch.startDate},
             endDate=${boardSearch.endDate},
             category=${boardSearch.category},
-            keyword=${boardSearch.keyword})}">
+            keyword=${boardSearch.keyword},
+            sortBy=${boardSearch.sortBy},
+            sort=${boardSearch.sort})}">
                 <button th:if="${type.code != 'h'}">등록</button>
             </a>
-        </div>
         <div th:replace="admin/fragments/boardListTable :: boardListTable"></div>
         <div th:replace="admin/fragments/pagination :: pagination"></div>
     </th:block>

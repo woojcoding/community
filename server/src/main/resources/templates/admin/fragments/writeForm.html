@@ -85,20 +85,26 @@
     <a th:href="@{/admin/boards/{type}/
             (type=${#strings.toLowerCase(type)},
             pageNum=${boardSearch.pageNum},
+            pageSize=${boardSearch.pageSize},
             startDate=${boardSearch.startDate},
             endDate=${boardSearch.endDate},
             category=${boardSearch.category},
-            keyword=${boardSearch.keyword})}">
+            keyword=${boardSearch.keyword},
+            sortBy=${boardSearch.sortBy},
+            sort=${boardSearch.sort})}">
         <button>목록</button>
     </a>
     <a th:href="@{/admin/board/{type}/delete/{boardId}
             (type=${#strings.toLowerCase(type)},
             boardId=${boardId},
             pageNum=${boardSearch.pageNum},
+            pageSize=${boardSearch.pageSize},
             startDate=${boardSearch.startDate},
             endDate=${boardSearch.endDate},
             category=${boardSearch.category},
-            keyword=${boardSearch.keyword})}">
+            keyword=${boardSearch.keyword},
+            sortBy=${boardSearch.sortBy},
+            sort=${boardSearch.sort})}">
         <button onclick="return deleteConfirm()">삭제</button>
     </a>
 

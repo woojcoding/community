@@ -121,10 +121,13 @@ public class HelpBoardController {
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromPath("/admin/boards/help/{boardId}")
                 .queryParam("pageNum", boardSearchCondition.getPageNum())
+                .queryParam("pageSize", boardSearchCondition.getPageSize())
                 .queryParam("startDate", boardSearchCondition.getStartDate())
                 .queryParam("endDate", boardSearchCondition.getEndDate())
                 .queryParam("category", boardSearchCondition.getCategory())
-                .queryParam("keyword", boardSearchCondition.getKeyword());
+                .queryParam("keyword", boardSearchCondition.getKeyword())
+                .queryParam("sortBy", boardSearchCondition.getSortBy())
+                .queryParam("sort", boardSearchCondition.getSort());
 
         return "redirect:" +
                 builder.buildAndExpand(boardId).toUriString();
@@ -151,10 +154,13 @@ public class HelpBoardController {
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromPath("/admin/boards/help/")
                 .queryParam("pageNum", boardSearchCondition.getPageNum())
+                .queryParam("pageSize", boardSearchCondition.getPageSize())
                 .queryParam("startDate", boardSearchCondition.getStartDate())
                 .queryParam("endDate", boardSearchCondition.getEndDate())
                 .queryParam("category", boardSearchCondition.getCategory())
-                .queryParam("keyword", boardSearchCondition.getKeyword());
+                .queryParam("keyword", boardSearchCondition.getKeyword())
+                .queryParam("sortBy", boardSearchCondition.getSortBy())
+                .queryParam("sort", boardSearchCondition.getSort());
 
         return "redirect:" + builder.build().toUriString();
     }

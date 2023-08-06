@@ -44,7 +44,7 @@ public class BoardSearchCondition {
     /**
      * 정렬 조건 (예: "created_at")
      */
-    private String orderOption;
+    private String sortBy;
 
     /**
      * 정렬 방식 (내림차순: "DESC", 오름차순: "ASC")

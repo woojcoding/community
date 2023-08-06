@@ -4,6 +4,7 @@
 <div th:fragment="common-search-container">
     <form th:action="@{'/admin/boards/' + ${#strings.toLowerCase(type)}}" method="get">
         <p>등록일시</p>
+        <input type="hidden" name="pageSize" th:value="${boardSearch.pageSize}">
         <input type="date" name="startDate" th:value="${param.startDate}">
         <input type="date" name="endDate" th:value="${param.endDate}">
         <select th:if="${type.code != 'h'}" name="category">
@@ -16,6 +17,8 @@
                th:placeholder="${type.code == 'n' ? '제목 or 내용' :
                (type.code == 'h' ? '제목 or 내용 or 등록자' : '제목 or 내용 or 작성자')}"
                th:value="${param.keyword}">
+        <input type="hidden" name="sortBy" th:value="${boardSearch.sortBy}">
+        <input type="hidden" name="sort" th:value="${boardSearch.sort}">
         <button>검색</button>
     </form>
 </div>

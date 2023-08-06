@@ -22,10 +22,13 @@
             (type=${#strings.toLowerCase(type)},
             boardId=${notification.boardId},
             pageNum=${boardSearch.pageNum},
+            pageSize=${boardSearch.pageSize},
             startDate=${boardSearch.startDate},
             endDate=${boardSearch.endDate},
             category=${boardSearch.category},
-            keyword=${boardSearch.keyword})}" style="text-decoration:none;" th:text="${notification.title}"></a>
+            keyword=${boardSearch.keyword},
+            sortBy=${boardSearch.sortBy},
+            sort=${boardSearch.sort})}" style="text-decoration:none;" th:text="${notification.title}"></a>
           </td>
           <td th:text="${notification.views}"></td>
           <td th:text="${notification.createdAt}"></td>
@@ -46,10 +49,13 @@
            (type=${#strings.toLowerCase(type)},
            boardId=${board.boardId},
            pageNum=${boardSearch.pageNum},
+           pageSize=${boardSearch.pageSize},
            startDate=${boardSearch.startDate},
            endDate=${boardSearch.endDate},
            category=${boardSearch.category},
-           keyword=${boardSearch.keyword})}" style="text-decoration:none;">
+           keyword=${boardSearch.keyword},
+           sortBy=${boardSearch.sortBy},
+           sort=${boardSearch.sort})}" style="text-decoration:none;">
             <span th:text="${board.title}"></span>
             <span th:if="${type.code == 'h' && board.answer != null}">(답변완료)</span>
             <span th:if="${type.code == 'h' && board.answer == null}">(미답변)</span>
