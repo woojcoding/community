@@ -82,7 +82,7 @@ public class GalleryBoardController {
         model.addAttribute("boardListDto", boardListDto);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("boardSearch", boardSearchCondition);
-        model.addAttribute("type", BoardType.GALLERY);
+        model.addAttribute("type", BoardType.GALLERY.toString());
 
         return "admin/views/boardListView";
     }
@@ -126,7 +126,7 @@ public class GalleryBoardController {
             model.addAttribute("formType", FormType.POST);
         }
 
-        model.addAttribute("type", BoardType.GALLERY);
+        model.addAttribute("type", BoardType.GALLERY.toString());
 
         return "admin/views/writeView";
     }
@@ -159,7 +159,7 @@ public class GalleryBoardController {
 
             model.addAttribute("categoryList", categoryList);
             model.addAttribute("fileDtoList", fileDtoList);
-            model.addAttribute("type", BoardType.GALLERY);
+            model.addAttribute("type", BoardType.GALLERY.toString());
             model.addAttribute("formType", FormType.POST);
 
             return "admin/views/writeView";
@@ -227,7 +227,7 @@ public class GalleryBoardController {
 
             model.addAttribute("categoryList", categoryList);
             model.addAttribute("fileDtoList", fileDtoList);
-            model.addAttribute("type", BoardType.GALLERY);
+            model.addAttribute("type", BoardType.GALLERY.toString());
             model.addAttribute("formType", FormType.MODIFY);
 
             return "admin/views/writeView";

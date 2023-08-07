@@ -6,7 +6,7 @@
           enctype="multipart/form-data" method="post">
         <table>
             <!-- 카테고리 (문의게시글 미사용) -->
-            <tr th:unless="${type.code == 'h'}">
+            <tr th:unless="${type == 'HELP'}">
                 <td>분류</td>
                 <td>
                     <select name="categoryId" id="categoryId"
@@ -29,13 +29,13 @@
                               th:value="*{title}"
                               th:field="*{title}"></textarea>
                     <div th:errors="*{title}"></div>
-                    <span th:if="${type.code == 'h' && boardRequestDto.answer != null}">(답변완료)</span>
-                    <span th:if="${type.code == 'h' && boardRequestDto.answer == null}">(미답변)</span>
+                    <span th:if="${type == 'HELP' && boardRequestDto.answer != null}">(답변완료)</span>
+                    <span th:if="${type == 'HELP' && boardRequestDto.answer == null}">(미답변)</span>
                 </td>
             </tr>
             <!--내용 (문의 게시판의 경우 질문) -->
             <tr>
-                <td th:text="${type.code == 'h' ? '질문' : '내용' }"></td>
+                <td th:text="${type == 'HELP' ? '질문' : '내용' }"></td>
                 <td>
                     <textarea rows="20" cols="100" name="content"
                               id="content"
@@ -46,7 +46,7 @@
                 </td>
             </tr>
             <!-- 문의게시판에서만 사용되는 답변 -->
-            <tr th:if="${type.code == 'h'}">
+            <tr th:if="${type == 'HELP'}">
                 <td>답변</td>
                 <td>
                     <textarea rows="20" cols="100" name="answer"
@@ -58,7 +58,7 @@
                 </td>
             </tr>
             <!-- 공지글에서만 사용되는 알림글 체크 -->
-            <tr th:if="${type.code == 'n'}">
+            <tr th:if="${type == 'NOTICE'}">
                 <td>알림글</td>
                 <td>
                     <input type="checkbox"
@@ -81,7 +81,7 @@
     <button
             onclick="return validateForm()"
             form="writeForm"
-            th:text="${type.code == 'h' ? '답변완료' : '등록 / 수정'}"></button>
+            th:text="${type == 'HELP' ? '답변완료' : '등록 / 수정'}"></button>
     <a th:href="@{/admin/boards/{type}/
             (type=${#strings.toLowerCase(type)},
             pageNum=${boardSearch.pageNum},
@@ -110,20 +110,30 @@
 
     <script th:inline="javascript">
         function validateForm() {
-            var type = [[${type.code}]];
+            const type = [[${type}]];
 
-            var category = null;
+            let category = null;
 
-            var answer = null;
+            let answer = null;
 
-            var title = document.getElementById("title").value;
+            const title = document.getElementById("title").value;
 
-            var content = document.getElementById("content").value;
+            const content = document.getElementById("content").value;
 
-            var formType = [[${formType.code}]];
+            const formType = [[${formType}]];
+
+            let message = null;
+
+            if (formType === 'MODIFY') {
+                message = '수정'
+            } else if (formType === 'POST') {
+                message = '등록'
+            } else if (formType === 'ANSWER') {
+                message = '답변'
+            }
 
             // 카테고리 필수 선택 검증
-            if (type !== 'h') {
+            if (type !== 'HELP') {
                 category = document.getElementById("categoryId").value;
 
                 if (category === "all") {
@@ -148,7 +158,7 @@
             }
 
             // 답변 필수, 글자 수 검증
-            if (type === 'h') {
+            if (type === 'HELP') {
                 answer = document.getElementById("answer").value;
 
                 if (answer.length === 0 || answer.length >= 4000) {
@@ -158,7 +168,7 @@
                 }
             }
 
-            return confirm("정말로 " + formType + " 하시겠습니까?");
+            return confirm("정말로 " + message + " 하시겠습니까?");
         }
 
         function deleteConfirm() {

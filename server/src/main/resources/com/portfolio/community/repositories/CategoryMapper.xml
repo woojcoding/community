@@ -8,6 +8,6 @@
         SELECT category_id,
                name
         FROM category c
-        WHERE board_type = #{type.code}
+        WHERE board_type = #{type}
     </select>
 </mapper>

@@ -7,55 +7,55 @@
     <script th:inline="javascript">
         document.addEventListener("DOMContentLoaded", function () {
             // 보드 타입
-            var type = [[${type}]].toLowerCase();
+            const type = [[${type}]].toLowerCase();
 
             // 현재 페이지
-            var currentPage = [[${boardSearch.pageNum}]];
+            const currentPage = [[${boardSearch.pageNum}]];
 
             // 총 게시글 수
-            var totalBoardCount = [[${boardListDto.totalBoardCount}]];
+            const totalBoardCount = [[${boardListDto.totalBoardCount}]];
 
             // 페이지에 보여질 게시글 수
-            var pageSize = [[${boardSearch.pageSize}]];
+            let pageSize = [[${boardSearch.pageSize}]];
 
             // 페이지 블록의 크기
-            var pageLimit = 10;
+            const pageLimit = 10;
 
             // 시작 페이지
-            var startPage = Math.floor((currentPage - 1) / pageLimit) * pageLimit + 1;
+            const startPage = Math.floor((currentPage - 1) / pageLimit) * pageLimit + 1;
 
             // 마지막 페이지
-            var endPage = startPage + pageLimit - 1;
+            let endPage = startPage + pageLimit - 1;
 
             // 총 페이지 수
-            var pageCount = Math.ceil(totalBoardCount / pageSize);
+            const pageCount = Math.ceil(totalBoardCount / pageSize);
 
             if (endPage > pageCount) {
                 endPage = pageCount
             }
 
-            var pagingElement = document.getElementById("paging");
+            const pagingElement = document.getElementById("paging");
 
             // 널(null) 값일 경우 빈 문자열로 처리하는 함수
             function nullToEmptyString(value) {
                 return value == null ? '' : value;
             }
 
-            var startDate = nullToEmptyString([[${boardSearch.startDate}]]);
+            const startDate = nullToEmptyString([[${boardSearch.startDate}]]);
 
-            var endDate = nullToEmptyString([[${boardSearch.endDate}]]);
+            const endDate = nullToEmptyString([[${boardSearch.endDate}]]);
 
-            var category = nullToEmptyString([[${boardSearch.category}]]);
+            const category = nullToEmptyString([[${boardSearch.category}]]);
 
-            var keyword = nullToEmptyString([[${boardSearch.keyword}]]);
+            const keyword = nullToEmptyString([[${boardSearch.keyword}]]);
 
-            var sortBy = nullToEmptyString([[${boardSearch.sortBy}]]);
+            const sortBy = nullToEmptyString([[${boardSearch.sortBy}]]);
 
             pageSize = nullToEmptyString([[${boardSearch.pageSize}]]);
 
-            var sort = nullToEmptyString([[${boardSearch.sort}]]);
+            const sort = nullToEmptyString([[${boardSearch.sort}]]);
 
-            var linkTemplate = "/admin/boards/" + type +
+            const linkTemplate = "/admin/boards/" + type +
                 "?pageNum={pageNum}" +
                 "&pageSize=" + encodeURIComponent(pageSize) +
                 "&startDate=" + encodeURIComponent(startDate) +
@@ -66,7 +66,7 @@
                 "&sort=" + encodeURIComponent(sort);
 
             // 1페이지로 이동
-            var firstLink = document.createElement("a");
+            const firstLink = document.createElement("a");
 
             firstLink.href = linkTemplate.replace("{pageNum}", 1);
             firstLink.textContent = "<<";
@@ -74,7 +74,7 @@
             pagingElement.appendChild(firstLink);
 
             // 이전 페이지 블록으로 이동
-            var prevLink = document.createElement("a");
+            const prevLink = document.createElement("a");
 
             prevLink.href = linkTemplate.replace("{pageNum}", Math.max(startPage - pageLimit, 1));
             prevLink.textContent = "<";
@@ -86,8 +86,8 @@
             pagingElement.appendChild(prevLink);
 
             // 페이지 번호
-            for (var pageNum = startPage; pageNum <= endPage && pageNum <= pageCount; pageNum++) {
-                var pageLink = document.createElement("a");
+            for (let pageNum = startPage; pageNum <= endPage && pageNum <= pageCount; pageNum++) {
+                const pageLink = document.createElement("a");
 
                 pageLink.href = linkTemplate.replace("{pageNum}", pageNum);
                 pageLink.textContent = pageNum;
@@ -96,7 +96,7 @@
             }
 
             // 다음 페이지 블록으로 이동
-            var nextLink = document.createElement("a");
+            const nextLink = document.createElement("a");
 
             nextLink.href = linkTemplate.replace("{pageNum}", Math.min(startPage + pageLimit, pageCount));
             nextLink.textContent = ">";
@@ -108,7 +108,7 @@
             pagingElement.appendChild(nextLink);
 
             // 마지막 페이지 블록으로 이동
-            var lastLink = document.createElement("a");
+            const lastLink = document.createElement("a");
 
             lastLink.href = linkTemplate.replace("{pageNum}", pageCount);
             lastLink.textContent = ">>";

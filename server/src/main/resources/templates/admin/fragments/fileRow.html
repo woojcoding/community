@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="fileRow" th:if="${type.code == 'f' or type.code == 'g'}">
+<div th:fragment="fileRow" th:if="${type == 'FREE' or type == 'GALLERY'}">
     <table>
         <tr>
             <td>첨부</td>
@@ -37,7 +37,7 @@
     <script th:inline="javascript">
         let fileCount = [[${fileDtoList.size()}]];
 
-        let type = [[${type.code}]];
+        const type = [[${type}]];
 
         let MAX_FILES = 5;
 
@@ -52,22 +52,22 @@
                 return;
             }
 
-            var fileInputTable = document.getElementById('fileInputTable');
+            const fileInputTable = document.getElementById('fileInputTable');
 
-            var newRow = document.createElement('tr');
+            const newRow = document.createElement('tr');
 
-            var inputCell = document.createElement('td');
+            const inputCell = document.createElement('td');
 
-            var inputField = document.createElement('input');
+            const inputField = document.createElement('input');
             inputField.setAttribute('type', 'file');
             inputField.setAttribute('name', 'files');
             inputField.setAttribute('id', 'fileInput_' + fileCount);
 
-            if (type == 'g') {
+            if (type === 'GALLERY') {
                 inputField.setAttribute('accept', '.jpg, .jpeg, .gif, .png');
                 inputField.setAttribute('onchange', 'showThumbnail(' + fileCount + ')');
 
-                var thumbnailImg = document.createElement('img');
+                const thumbnailImg = document.createElement('img');
                 thumbnailImg.setAttribute('id', 'thumbnailImg_' + fileCount);
                 thumbnailImg.style.width = '30px';
                 thumbnailImg.style.height = '30px';
@@ -78,7 +78,7 @@
             }
 
             // tr을 없애는 버튼 생성
-            var removeButton = document.createElement('button');
+            const removeButton = document.createElement('button');
             removeButton.setAttribute('type', 'button');
             removeButton.innerText = 'X';
 
@@ -100,10 +100,10 @@
         // 파일을 삭제하는 메서드
         function removeFile(fileId) {
             // <a> 태그가 속한 tr제거
-            var downloadTag = document.getElementById('downloadTag_' + fileId);
+            const downloadTag = document.getElementById('downloadTag_' + fileId);
 
             if (downloadTag) {
-                var tr = downloadTag.closest('tr');
+                const tr = downloadTag.closest('tr');
 
                 if (tr) {
                     tr.remove();
@@ -113,7 +113,7 @@
             fileCount--;
 
             // 숨겨진 input 필드에 값을 추가하여 서버로 전달
-            var deleteFileIdInput = document.createElement('input');
+            const deleteFileIdInput = document.createElement('input');
 
             deleteFileIdInput.setAttribute('type', 'hidden');
             deleteFileIdInput.setAttribute('name', 'deleteFileIdList');

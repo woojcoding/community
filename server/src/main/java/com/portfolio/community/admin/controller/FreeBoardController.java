@@ -83,7 +83,7 @@ public class FreeBoardController {
         model.addAttribute("boardListDto", boardListDto);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("boardSearch", boardSearchCondition);
-        model.addAttribute("type", BoardType.FREE);
+        model.addAttribute("type", BoardType.FREE.toString());
 
         return "admin/views/boardListView";
     }
@@ -132,7 +132,7 @@ public class FreeBoardController {
             model.addAttribute("formType", FormType.POST);
         }
 
-        model.addAttribute("type", BoardType.FREE);
+        model.addAttribute("type", BoardType.FREE.toString());
 
         return "admin/views/writeView";
     }
@@ -165,7 +165,7 @@ public class FreeBoardController {
 
             model.addAttribute("categoryList", categoryList);
             model.addAttribute("fileDtoList", fileDtoList);
-            model.addAttribute("type", BoardType.FREE);
+            model.addAttribute("type", BoardType.FREE.toString());
             model.addAttribute("formType", FormType.POST);
 
             return "admin/views/writeView";
@@ -239,7 +239,7 @@ public class FreeBoardController {
             model.addAttribute("commentList", commentList);
             model.addAttribute("commentRequestDto", new CommentRequestDto());
             model.addAttribute("formType", FormType.MODIFY);
-            model.addAttribute("type", BoardType.FREE);
+            model.addAttribute("type", BoardType.FREE.toString());
 
             return "admin/views/writeView";
         }
@@ -341,7 +341,7 @@ public class FreeBoardController {
             model.addAttribute("fileDtoList", fileDtoList);
             model.addAttribute("commentList", commentList);
             model.addAttribute("formType", FormType.MODIFY);
-            model.addAttribute("type", BoardType.FREE);
+            model.addAttribute("type", BoardType.FREE.toString());
 
             return "admin/views/writeView";
         }

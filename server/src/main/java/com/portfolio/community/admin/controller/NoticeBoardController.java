@@ -139,7 +139,7 @@ public class NoticeBoardController {
                     categoryService.getCategoryList(BoardType.NOTICE);
 
             model.addAttribute("categoryList", categoryList);
-            model.addAttribute("type", BoardType.NOTICE);
+            model.addAttribute("type", BoardType.NOTICE.toString());
             model.addAttribute("formType", FormType.POST);
 
             return "admin/views/writeView";
@@ -195,7 +195,7 @@ public class NoticeBoardController {
                     categoryService.getCategoryList(BoardType.NOTICE);
 
             model.addAttribute("categoryList", categoryList);
-            model.addAttribute("type", BoardType.NOTICE);
+            model.addAttribute("type", BoardType.NOTICE.toString());
             model.addAttribute("formType", FormType.MODIFY);
 
             return "admin/views/writeView";

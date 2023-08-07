@@ -23,7 +23,7 @@
             keyword=${boardSearch.keyword},
             sortBy=${boardSearch.sortBy},
             sort=${boardSearch.sort})}">
-                <button th:if="${type.code != 'h'}">등록</button>
+                <button th:if="${type != 'HELP'}">등록</button>
             </a>
         <div th:replace="admin/fragments/boardListTable :: boardListTable"></div>
         <div th:replace="admin/fragments/pagination :: pagination"></div>

@@ -106,8 +106,8 @@
 
     <sql id="whereClause">
     <where>
-        <if test="type.code != null and type.code != ''">
-            AND b.type = #{type.code}
+        <if test="type != null and type.toString != ''">
+            AND b.type = #{type}
         </if>
         <if test="startDate != null and startDate != ''">
             AND DATE(b.created_at) &gt;= DATE(#{startDate})
@@ -120,7 +120,7 @@
         </if>
         <if test="keyword != null and keyword != ''">
             AND (
-            <if test='type.code != "n"'>
+            <if test='type != "NOTICE"'>
                 u.name LIKE CONCAT('%', #{keyword}, '%') OR
                 a.name LIKE CONCAT('%', #{keyword}, '%') OR
             </if>

@@ -5,7 +5,7 @@
     <table class="boardList">
       <tr>
         <td>번호</td>
-        <td th:if="${type.code != 'h'}">
+        <td th:if="${type != 'HELP'}">
           분류
         </td>
         <td>제목</td>
@@ -13,7 +13,7 @@
         <td>등록 일시</td>
         <td>작성자</td>
       </tr>
-      <th:block th:if="${type.code == 'n' and notificationListDto != null}">
+      <th:block th:if="${type == 'NOTICE' and notificationListDto != null}">
         <tr th:each="notification : ${notificationListDto.boardResponseDtoList}">
           <td></td>
           <td th:text="'알림'"></td>
@@ -37,14 +37,14 @@
       </th:block>
       <tr th:each="board, iterStat : ${boardListDto.boardResponseDtoList}">
         <td th:text="${boardListDto.totalBoardCount - ((boardSearch.pageNum - 1) * boardSearch.pageSize) - iterStat.count + 1}"></td>
-        <td th:if="${type.code != 'h'}"
+        <td th:if="${type!= 'HELP'}"
             th:text="${board.categoryName}">
         </td>
         <td>
           <img th:if="${board.thumbnailName}"
                th:src="@{'/thumbnails/' + ${board.thumbnailName}}"
                alt="thumbnail">
-            <span th:if="${type.code == 'g'}" th:text="'+' + ${board.imageCount}"></span>
+            <span th:if="${type == 'GALLERY'}" th:text="'+' + ${board.imageCount}"></span>
           <a th:href="@{/admin/boards/{type}/{boardId}
            (type=${#strings.toLowerCase(type)},
            boardId=${board.boardId},
@@ -57,11 +57,11 @@
            sortBy=${boardSearch.sortBy},
            sort=${boardSearch.sort})}" style="text-decoration:none;">
             <span th:text="${board.title}"></span>
-            <span th:if="${type.code == 'h' && board.answer != null}">(답변완료)</span>
-            <span th:if="${type.code == 'h' && board.answer == null}">(미답변)</span>
-            <span th:if="${type.code == 'h' && board.secretFlag}" class="fas fa-lock"></span>
-            <span th:if="${type.code == 'f'}" th:text="'(' + ${board.commentCount} + ')'"></span>
-            <span th:if="${type.code == 'f' && board.isAttached}" class="fas fa-paperclip"></span>
+            <span th:if="${type == 'HELP' && board.answer != null}">(답변완료)</span>
+            <span th:if="${type == 'HELP' && board.answer == null}">(미답변)</span>
+            <span th:if="${type == 'HELP' && board.secretFlag}" class="fas fa-lock"></span>
+            <span th:if="${type == 'FREE'}" th:text="'(' + ${board.commentCount} + ')'"></span>
+            <span th:if="${type == 'FREE' && board.isAttached}" class="fas fa-paperclip"></span>
           </a>
         </td>
         <td th:text="${board.views}"></td>

@@ -52,7 +52,7 @@ public class HelpBoardController {
 
         model.addAttribute("boardListDto", boardListDto);
         model.addAttribute("boardSearch", boardSearchCondition);
-        model.addAttribute("type", BoardType.HELP);
+        model.addAttribute("type", BoardType.HELP.toString());
 
         return "admin/views/boardListView";
     }
@@ -77,7 +77,7 @@ public class HelpBoardController {
                 helpBoardService.getHelpBoard(boardId);
 
         model.addAttribute("boardRequestDto", boardRequestDto);
-        model.addAttribute("type", BoardType.HELP);
+        model.addAttribute("type", BoardType.HELP.toString());
         model.addAttribute("formType", FormType.ANSWER);
 
         return "admin/views/writeView";
@@ -105,7 +105,7 @@ public class HelpBoardController {
     ){
         // 유효성 검증 실패 시
         if (bindingResult.hasErrors()) {
-            model.addAttribute("type", BoardType.HELP);
+            model.addAttribute("type", BoardType.HELP.toString());
             model.addAttribute("formType", FormType.ANSWER);
 
             return "admin/views/writeView";

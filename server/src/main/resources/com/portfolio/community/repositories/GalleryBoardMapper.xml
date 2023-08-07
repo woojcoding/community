@@ -16,7 +16,7 @@
                 #{title},
                 #{content},
                 #{categoryId},
-                #{type.code},
+                #{type},
                 #{adminId}
                 )
     </insert>

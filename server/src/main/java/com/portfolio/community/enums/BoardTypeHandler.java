@@ -1,8 +1,8 @@
 package com.portfolio.community.enums;
 
+import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
-import org.apache.ibatis.type.TypeHandler;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -13,46 +13,31 @@ import java.sql.SQLException;
  * boardType Enum을 처리하기위한 타입 핸들러
  */
 @MappedTypes(BoardType.class)
-public class BoardTypeHandler implements TypeHandler<BoardType> {
+public class BoardTypeHandler extends BaseTypeHandler<BoardType> {
 
     @Override
-    public void setParameter(PreparedStatement ps, int i, BoardType parameter, JdbcType jdbcType) throws SQLException {
-        ps.setString(i, parameter.getCode());
+    public void setNonNullParameter(PreparedStatement ps, int i, BoardType parameter, JdbcType jdbcType) throws SQLException {
+        ps.setString(i, parameter.name());
     }
 
     @Override
-    public BoardType getResult(ResultSet rs, String columnName) throws SQLException {
-        String code = rs.getString(columnName);
+    public BoardType getNullableResult(ResultSet rs, String columnName) throws SQLException {
+        String value = rs.getString(columnName);
 
-        return getCodeEnum(code);
+        return BoardType.valueOf(value);
     }
 
     @Override
-    public BoardType getResult(ResultSet rs, int columnIndex) throws SQLException {
-        String code = rs.getString(columnIndex);
+    public BoardType getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+        String value = rs.getString(columnIndex);
 
-        return getCodeEnum(code);
+        return BoardType.valueOf(value);
     }
 
     @Override
-    public BoardType getResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String code = cs.getString(columnIndex);
+    public BoardType getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+        String value = cs.getString(columnIndex);
 
-        return getCodeEnum(code);
-    }
-
-    private BoardType getCodeEnum(String code) {
-        switch (code) {
-            case "n":
-                return BoardType.NOTICE;
-            case "f":
-                return BoardType.FREE;
-            case "h":
-                return BoardType.HELP;
-            case "g":
-                return BoardType.GALLERY;
-        }
-
-        return null;
+        return BoardType.valueOf(value);
     }
 }

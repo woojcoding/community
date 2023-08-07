@@ -7,15 +7,15 @@
         <input type="hidden" name="pageSize" th:value="${boardSearch.pageSize}">
         <input type="date" name="startDate" th:value="${param.startDate}">
         <input type="date" name="endDate" th:value="${param.endDate}">
-        <select th:if="${type.code != 'h'}" name="category">
+        <select th:if="${type!= 'HELP'}" name="category">
             <option value="all">전체 카테고리</option>
             <option th:each="category : ${categoryList}"
                     th:value="${category.categoryId}"
                     th:text="${category.name}"></option>
         </select>
         <input type="text" name="keyword"
-               th:placeholder="${type.code == 'n' ? '제목 or 내용' :
-               (type.code == 'h' ? '제목 or 내용 or 등록자' : '제목 or 내용 or 작성자')}"
+               th:placeholder="${type == 'NOTICE' ? '제목 or 내용' :
+               (type == 'HELP' ? '제목 or 내용 or 등록자' : '제목 or 내용 or 작성자')}"
                th:value="${param.keyword}">
         <input type="hidden" name="sortBy" th:value="${boardSearch.sortBy}">
         <input type="hidden" name="sort" th:value="${boardSearch.sort}">

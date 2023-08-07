@@ -35,7 +35,7 @@
                 #{content},
                 #{notificationFlag},
                 #{categoryId},
-                #{type.code},
+                #{type},
                 #{adminId}
                 )
     </insert>
