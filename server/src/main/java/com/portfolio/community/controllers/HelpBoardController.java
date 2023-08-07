@@ -1,7 +1,6 @@
-package com.portfolio.community.admin.controller;
+package com.portfolio.community.controllers;
 
-import com.portfolio.community.dtos.BoardListDto;
-import com.portfolio.community.dtos.BoardRequestDto;
+import com.portfolio.community.dtos.BoardDto;
 import com.portfolio.community.dtos.Help;
 import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.enums.FormType;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 
 /**
@@ -47,10 +48,14 @@ public class HelpBoardController {
             BoardSearchCondition boardSearchCondition,
             Model model
     ) {
-        BoardListDto boardListDto =
+        List<BoardDto> boardDtoList =
                 helpBoardService.getHelpBoardList(boardSearchCondition);
 
-        model.addAttribute("boardListDto", boardListDto);
+        int totalBoardCount =
+                helpBoardService.getTotalBoardCount(boardSearchCondition);
+
+        model.addAttribute("boardDtoList", boardDtoList);
+        model.addAttribute("totalBoardCount", totalBoardCount);
         model.addAttribute("boardSearch", boardSearchCondition);
         model.addAttribute("type", BoardType.HELP.toString());
 
@@ -73,10 +78,10 @@ public class HelpBoardController {
             Model model
     ) {
         // 게시글 정보를 조회
-        BoardRequestDto boardRequestDto =
+        BoardDto boardDto =
                 helpBoardService.getHelpBoard(boardId);
 
-        model.addAttribute("boardRequestDto", boardRequestDto);
+        model.addAttribute("boardDto", boardDto);
         model.addAttribute("type", BoardType.HELP.toString());
         model.addAttribute("formType", FormType.ANSWER);
 
@@ -88,7 +93,7 @@ public class HelpBoardController {
      *
      * @param boardId              게시글 Id
      * @param boardSearchCondition 검색 조건
-     * @param boardRequestDto      게시글 정보 Dto
+     * @param boardDto      게시글 정보 Dto
      * @param bindingResult        검증오류 보관 객체
      * @param model                the model
      * @return 답변을 단 게시글 페이지로 redirect
@@ -99,7 +104,7 @@ public class HelpBoardController {
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
             @Validated(Help.class) @ModelAttribute
-            BoardRequestDto boardRequestDto,
+            BoardDto boardDto,
             BindingResult bindingResult,
             Model model
     ){
@@ -113,10 +118,10 @@ public class HelpBoardController {
 
         String adminId = AuthenticationUtil.getAdminId();
 
-        boardRequestDto.setAdminId(adminId);
-        boardRequestDto.setBoardId(boardId);
+        boardDto.setAdminId(adminId);
+        boardDto.setBoardId(boardId);
 
-        helpBoardService.answerHelpBoard(boardRequestDto);
+        helpBoardService.answerHelpBoard(boardDto);
 
         // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder

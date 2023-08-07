@@ -13,8 +13,8 @@
         <td>등록 일시</td>
         <td>작성자</td>
       </tr>
-      <th:block th:if="${type == 'NOTICE' and notificationListDto != null}">
-        <tr th:each="notification : ${notificationListDto.boardResponseDtoList}">
+      <th:block th:if="${type == 'NOTICE' and notificationDtoList != null}">
+        <tr th:each="notification : ${notificationDtoList}">
           <td></td>
           <td th:text="'알림'"></td>
           <td>
@@ -35,8 +35,8 @@
           <td th:text="${notification.writer}"></td>
         </tr>
       </th:block>
-      <tr th:each="board, iterStat : ${boardListDto.boardResponseDtoList}">
-        <td th:text="${boardListDto.totalBoardCount - ((boardSearch.pageNum - 1) * boardSearch.pageSize) - iterStat.count + 1}"></td>
+      <tr th:each="board, iterStat : ${boardDtoList}">
+        <td th:text="${totalBoardCount - ((boardSearch.pageNum - 1) * boardSearch.pageSize) - iterStat.count + 1}"></td>
         <td th:if="${type!= 'HELP'}"
             th:text="${board.categoryName}">
         </td>

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="writeForm">
-    <form id="writeForm" th:object="${boardRequestDto}"
+    <form id="writeForm" th:object="${boardDto}"
           enctype="multipart/form-data" method="post">
         <table>
             <!-- 카테고리 (문의게시글 미사용) -->
@@ -15,7 +15,7 @@
                         <option th:each="category : ${categoryList}"
                                 th:value="${category.categoryId}"
                                 th:text="${category.name}"
-                                th:selected="${category.categoryId == boardRequestDto.categoryId}"></option>
+                                th:selected="${category.categoryId == boardDto.categoryId}"></option>
                     </select>
                     <div th:errors="*{categoryId}"></div>
                 </td>
@@ -29,8 +29,8 @@
                               th:value="*{title}"
                               th:field="*{title}"></textarea>
                     <div th:errors="*{title}"></div>
-                    <span th:if="${type == 'HELP' && boardRequestDto.answer != null}">(답변완료)</span>
-                    <span th:if="${type == 'HELP' && boardRequestDto.answer == null}">(미답변)</span>
+                    <span th:if="${type == 'HELP' && boardDto.answer != null}">(답변완료)</span>
+                    <span th:if="${type == 'HELP' && boardDto.answer == null}">(미답변)</span>
                 </td>
             </tr>
             <!--내용 (문의 게시판의 경우 질문) -->
@@ -63,8 +63,8 @@
                 <td>
                     <input type="checkbox"
                            name="notificationFlag"
-                           th:field="${boardRequestDto.notificationFlag}"
-                           th:checked="${boardRequestDto.notificationFlag == 1}">
+                           th:field="${boardDto.notificationFlag}"
+                           th:checked="${boardDto.notificationFlag == 1}">
                 </td>
             </tr>
 

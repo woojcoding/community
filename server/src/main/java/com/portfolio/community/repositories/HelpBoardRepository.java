@@ -1,7 +1,6 @@
 package com.portfolio.community.repositories;
 
-import com.portfolio.community.dtos.BoardRequestDto;
-import com.portfolio.community.dtos.BoardResponseDto;
+import com.portfolio.community.dtos.BoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +29,7 @@ public class HelpBoardRepository {
      * @param boardSearchCondition 검색 조건
      * @return List<BoardResponseDto>       게시글 정보 List
      */
-    public List<BoardResponseDto> getBoardList(
+    public List<BoardDto> getBoardList(
             BoardSearchCondition boardSearchCondition
     ) {
         return boardMapper.getBoardList(boardSearchCondition);
@@ -54,7 +53,7 @@ public class HelpBoardRepository {
      * @param boardId
      * @return
      */
-    public BoardRequestDto getHelpBoard(String boardId) {
+    public BoardDto getHelpBoard(String boardId) {
         return helpBoardMapper.getHelpBoard(boardId);
     }
 
@@ -62,10 +61,10 @@ public class HelpBoardRepository {
     /**
      * 답변을 달아 업데이트 하는 메서드
      *
-     * @param boardRequestDto 게시글 정보
+     * @param boardDto 게시글 정보
      */
-    public void answerFreeBoard(BoardRequestDto boardRequestDto) {
-        helpBoardMapper.answerHelpBoard(boardRequestDto);
+    public void answerFreeBoard(BoardDto boardDto) {
+        helpBoardMapper.answerHelpBoard(boardDto);
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.portfolio.community.repositories;
 
-import com.portfolio.community.dtos.BoardResponseDto;
+import com.portfolio.community.dtos.BoardDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public interface BoardMapper {
      * @param boardSearchCondition 검색 조건
      * @return List<BoardResponseDto>           게시글 정보 List
      */
-    List<BoardResponseDto> getBoardList(BoardSearchCondition boardSearchCondition);
+    List<BoardDto> getBoardList(BoardSearchCondition boardSearchCondition);
 
     /**
      * 게시글 목록 조회에서  검색 조건에 따라 검색 되는 게시글의 총 수

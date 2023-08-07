@@ -1,7 +1,6 @@
-package com.portfolio.community.admin.controller;
+package com.portfolio.community.controllers;
 
-import com.portfolio.community.dtos.BoardListDto;
-import com.portfolio.community.dtos.BoardRequestDto;
+import com.portfolio.community.dtos.BoardDto;
 import com.portfolio.community.dtos.CategoryDto;
 import com.portfolio.community.dtos.Notice;
 import com.portfolio.community.enums.BoardType;
@@ -57,23 +56,27 @@ public class NoticeBoardController {
             BoardSearchCondition boardSearchCondition,
             Model model
     ) {
-        BoardListDto boardListDto =
+        List<BoardDto> boardDtoList =
                 noticeBoardService.getNoticeBoardList(boardSearchCondition);
 
+        int totalBoardCount =
+                noticeBoardService.getTotalBoardCount(boardSearchCondition);
+
         // 공지사항에서는 알림글을 가져와줌
-        BoardListDto notificationListDto =
+        List<BoardDto> notificationDtoList =
                 noticeBoardService.getNotificationList();
 
-        model.addAttribute("notificationListDto", notificationListDto);
+        model.addAttribute("notificationDtoList", notificationDtoList);
 
 
         List<CategoryDto> categoryList =
                 categoryService.getCategoryList(BoardType.NOTICE);
 
-        model.addAttribute("boardListDto", boardListDto);
+        model.addAttribute("boardDtoList", boardDtoList);
+        model.addAttribute("totalBoardCount", totalBoardCount);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("boardSearch", boardSearchCondition);
-        model.addAttribute("type", BoardType.NOTICE);
+        model.addAttribute("type", BoardType.NOTICE.toString());
 
         return "admin/views/boardListView";
     }
@@ -100,17 +103,17 @@ public class NoticeBoardController {
 
         // boardId가 있다면 수정폼이므로 게시글 정보들을 model에 지정
         if (boardId != null) {
-            BoardRequestDto boardRequestDto =
+            BoardDto boardDto =
                     noticeBoardService.getNoticeBoard(boardId);
 
-            model.addAttribute("boardRequestDto", boardRequestDto);
+            model.addAttribute("boardDto", boardDto);
             model.addAttribute("formType", FormType.MODIFY);
         } else {
-            model.addAttribute("boardRequestDto", new BoardRequestDto());
+            model.addAttribute("boardDto", new BoardDto());
             model.addAttribute("formType", FormType.POST);
         }
 
-        model.addAttribute("type", BoardType.NOTICE);
+        model.addAttribute("type", BoardType.NOTICE.toString());
 
         return "admin/views/writeView";
     }
@@ -119,7 +122,7 @@ public class NoticeBoardController {
      * 게시글을 post
      *
      * @param boardSearchCondition 검색 조건
-     * @param boardRequestDto      게시글 정보 Dto
+     * @param boardDto      게시글 정보 Dto
      * @param bindingResult        검증오류 보관 객체
      * @param model                the model
      * @return 작성된 게시글 페이지로 redirect
@@ -129,7 +132,7 @@ public class NoticeBoardController {
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
             @Validated(Notice.class) @ModelAttribute
-            BoardRequestDto boardRequestDto,
+            BoardDto boardDto,
             BindingResult bindingResult,
             Model model
     ) {
@@ -147,11 +150,11 @@ public class NoticeBoardController {
 
         String adminId = AuthenticationUtil.getAdminId();
 
-        boardRequestDto.setAdminId(adminId);
+        boardDto.setAdminId(adminId);
 
-        noticeBoardService.postNoticeBoard(boardRequestDto);
+        noticeBoardService.postNoticeBoard(boardDto);
 
-        Integer savedBoardId = boardRequestDto.getBoardId();
+        Integer savedBoardId = boardDto.getBoardId();
 
         // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
@@ -174,7 +177,7 @@ public class NoticeBoardController {
      *
      * @param boardId              the board id
      * @param boardSearchCondition 검색 조건
-     * @param boardRequestDto      게시글 정보 Dto
+     * @param boardDto      게시글 정보 Dto
      * @param bindingResult        검증오류 보관 객체
      * @param model                the model
      * @return 작성된 게시글 페이지로 redirect
@@ -185,7 +188,7 @@ public class NoticeBoardController {
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
             @Validated(Notice.class) @ModelAttribute
-            BoardRequestDto boardRequestDto,
+            BoardDto boardDto,
             BindingResult bindingResult,
             Model model
     ) {
@@ -201,9 +204,9 @@ public class NoticeBoardController {
             return "admin/views/writeView";
         }
 
-        boardRequestDto.setBoardId(boardId);
+        boardDto.setBoardId(boardId);
 
-        noticeBoardService.updateNoticeBoard(boardRequestDto);
+        noticeBoardService.updateNoticeBoard(boardDto);
 
         // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder

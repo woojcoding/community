@@ -10,7 +10,13 @@ import lombok.Setter;
 @Setter
 public class LoginDto {
 
+    /**
+     * 계정 Id
+     */
     private String accountId;
 
+    /**
+     * 비밀번호
+     */
     private String password;
 }

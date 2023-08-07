@@ -1,9 +1,8 @@
-package com.portfolio.community.admin.controller;
+package com.portfolio.community.controllers;
 
-import com.portfolio.community.dtos.BoardListDto;
-import com.portfolio.community.dtos.BoardRequestDto;
+import com.portfolio.community.dtos.BoardDto;
 import com.portfolio.community.dtos.CategoryDto;
-import com.portfolio.community.dtos.CommentRequestDto;
+import com.portfolio.community.dtos.CommentDto;
 import com.portfolio.community.dtos.FileDto;
 import com.portfolio.community.dtos.Free;
 import com.portfolio.community.enums.BoardType;
@@ -74,13 +73,17 @@ public class FreeBoardController {
             BoardSearchCondition boardSearchCondition,
             Model model
     ) {
-        BoardListDto boardListDto =
+        List<BoardDto> boardDtoList =
                 freeBoardService.getFreeBoardList(boardSearchCondition);
+
+        int totalBoardCount =
+                freeBoardService.getTotalBoardCount(boardSearchCondition);
 
         List<CategoryDto> categoryList =
                 categoryService.getCategoryList(BoardType.FREE);
 
-        model.addAttribute("boardListDto", boardListDto);
+        model.addAttribute("boardDtoList", boardDtoList);
+        model.addAttribute("totalBoardCount", totalBoardCount);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("boardSearch", boardSearchCondition);
         model.addAttribute("type", BoardType.FREE.toString());
@@ -111,23 +114,23 @@ public class FreeBoardController {
         // boardId가 있다면 수정폼이므로 게시글 정보들을 model에 지정
         if (boardId != null) {
             // 게시글 정보를 조회
-            BoardRequestDto boardRequestDto =
+            BoardDto boardDto =
                     freeBoardService.getFreeBoard(boardId);
 
             List<FileDto> fileDtoList = fileService.getFileList(boardId);
 
-            List<CommentRequestDto> commentList =
+            List<CommentDto> commentList =
                     commentService.getCommentList(boardId);
 
-            model.addAttribute("boardRequestDto", boardRequestDto);
+            model.addAttribute("boardDto", boardDto);
             model.addAttribute("fileDtoList", fileDtoList);
             model.addAttribute("commentList", commentList);
-            model.addAttribute("commentRequestDto", new CommentRequestDto());
+            model.addAttribute("commentDto", new CommentDto());
             model.addAttribute("formType", FormType.MODIFY);
         } else {
             List<FileDto> fileDtoList = new ArrayList<>();
 
-            model.addAttribute("boardRequestDto", new BoardRequestDto());
+            model.addAttribute("boardDto", new BoardDto());
             model.addAttribute("fileDtoList", fileDtoList);
             model.addAttribute("formType", FormType.POST);
         }
@@ -141,7 +144,7 @@ public class FreeBoardController {
      * 자유 게시글을 post
      *
      * @param boardSearchCondition 검색 조건
-     * @param boardRequestDto      게시글 정보 Dto
+     * @param boardDto      게시글 정보 Dto
      * @param bindingResult        검증오류 보관 객체
      * @param model                the model
      * @return 작성된 게시글 페이지로 redirect
@@ -152,7 +155,7 @@ public class FreeBoardController {
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
             @Validated(Free.class) @ModelAttribute
-            BoardRequestDto boardRequestDto,
+            BoardDto boardDto,
             BindingResult bindingResult,
             Model model
     ) throws IOException {
@@ -173,15 +176,15 @@ public class FreeBoardController {
 
         String adminId = AuthenticationUtil.getAdminId();
 
-        boardRequestDto.setAdminId(adminId);
+        boardDto.setAdminId(adminId);
 
         // 게시글 저장
-        freeBoardService.postFreeBoard(boardRequestDto);
+        freeBoardService.postFreeBoard(boardDto);
 
-        int savedBoardId = boardRequestDto.getBoardId();
+        int savedBoardId = boardDto.getBoardId();
 
         // 게시글에 첨부된 파일 업로드
-        MultipartFile[] files = boardRequestDto.getFiles();
+        MultipartFile[] files = boardDto.getFiles();
 
         List<FileDto> fileDtoList = fileService.saveFiles(files, savedBoardId);
 
@@ -208,7 +211,7 @@ public class FreeBoardController {
      *
      * @param boardId              게시글 Id
      * @param boardSearchCondition 검색 조건
-     * @param boardRequestDto      게시글 정보 Dto
+     * @param boardDto      게시글 정보 Dto
      * @param bindingResult        검증오류 보관 객체
      * @param model                the model
      * @return 작성된 게시글 페이지로 redirect
@@ -220,7 +223,7 @@ public class FreeBoardController {
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
             @Validated(Free.class) @ModelAttribute
-            BoardRequestDto boardRequestDto,
+            BoardDto boardDto,
             BindingResult bindingResult,
             Model model
     ) throws IOException {
@@ -231,29 +234,29 @@ public class FreeBoardController {
 
             List<FileDto> fileDtoList = fileService.getFileList(boardId);
 
-            List<CommentRequestDto> commentList =
+            List<CommentDto> commentList =
                     commentService.getCommentList(boardId);
 
             model.addAttribute("categoryList", categoryList);
             model.addAttribute("fileDtoList", fileDtoList);
             model.addAttribute("commentList", commentList);
-            model.addAttribute("commentRequestDto", new CommentRequestDto());
+            model.addAttribute("commentDto", new CommentDto());
             model.addAttribute("formType", FormType.MODIFY);
             model.addAttribute("type", BoardType.FREE.toString());
 
             return "admin/views/writeView";
         }
 
-        boardRequestDto.setBoardId(boardId);
+        boardDto.setBoardId(boardId);
 
         // 게시글 업데이트
-        freeBoardService.updateFreeBoard(boardRequestDto);
+        freeBoardService.updateFreeBoard(boardDto);
 
         // 파일 삭제 적용
-        fileService.deleteFiles(boardRequestDto.getDeleteFileIdList());
+        fileService.deleteFiles(boardDto.getDeleteFileIdList());
 
         // 파일 업로드 적용
-        MultipartFile[] files = boardRequestDto.getFiles();
+        MultipartFile[] files = boardDto.getFiles();
 
         List<FileDto> fileDtoList = fileService.saveFiles(files, boardId);
 
@@ -312,7 +315,7 @@ public class FreeBoardController {
      *
      * @param boardId              게시글 Id
      * @param boardSearchCondition 검색 조건
-     * @param commentRequestDto    댓글 정보 Dto
+     * @param commentDto    댓글 정보 Dto
      * @param bindingResult        검증오류 보관 객체
      * @param model                the model
      * @return 작성된 글 상세보기 페이지
@@ -322,22 +325,22 @@ public class FreeBoardController {
             @PathVariable("boardId") int boardId,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
-            @Validated @ModelAttribute("commentRequestDto")
-            CommentRequestDto commentRequestDto,
+            @Validated @ModelAttribute("commentDto")
+            CommentDto commentDto,
             BindingResult bindingResult,
             Model model
     ) {
         // 유효성 검증 실패 시
         if (bindingResult.hasErrors()) {
-            BoardRequestDto boardRequestDto =
+            BoardDto boardDto =
                     freeBoardService.getFreeBoard(boardId);
 
             List<FileDto> fileDtoList = fileService.getFileList(boardId);
 
-            List<CommentRequestDto> commentList =
+            List<CommentDto> commentList =
                     commentService.getCommentList(boardId);
 
-            model.addAttribute("boardRequestDto", boardRequestDto);
+            model.addAttribute("boardDto", boardDto);
             model.addAttribute("fileDtoList", fileDtoList);
             model.addAttribute("commentList", commentList);
             model.addAttribute("formType", FormType.MODIFY);
@@ -349,10 +352,10 @@ public class FreeBoardController {
         // 댓글을 post
         String adminId = AuthenticationUtil.getAdminId();
 
-        commentRequestDto.setBoardId(boardId);
-        commentRequestDto.setAdminId(adminId);
+        commentDto.setBoardId(boardId);
+        commentDto.setAdminId(adminId);
 
-        commentService.postComment(commentRequestDto);
+        commentService.postComment(commentDto);
 
         // model에 값 지정
         model.addAttribute("boardSearch", boardSearchCondition);

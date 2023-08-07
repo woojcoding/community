@@ -3,14 +3,14 @@
 
 <div th:fragment="commentForm" th:if="${type== 'FREE' and formType.toString() == 'MODIFY'}">
     <form th:action="@{/admin/boards/free/{boardId}/comment(boardId=${boardId})}"
-          th:object="${commentRequestDto}" method="post">
+          th:object="${commentDto}" method="post">
         <table>
             <tr class="commentEnd">
                 <td>
                     <textarea
-                            th:field="${commentRequestDto.content}"
+                            th:field="${commentDto.content}"
                             placeholder="댓글을 입력해주세요."></textarea>
-                    <div th:errors="${commentRequestDto.content}"></div>
+                    <div th:errors="${commentDto.content}"></div>
                 </td>
                 <td>
                     <button type="submit">등록</button>

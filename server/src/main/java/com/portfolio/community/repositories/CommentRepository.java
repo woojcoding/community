@@ -1,6 +1,6 @@
 package com.portfolio.community.repositories;
 
-import com.portfolio.community.dtos.CommentRequestDto;
+import com.portfolio.community.dtos.CommentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -24,17 +24,17 @@ public class CommentRepository {
      * @param boardId 게시글 Id
      * @return List<CommentResponseDto>  댓글 List
      */
-    public List<CommentRequestDto> getCommentList(int boardId) {
+    public List<CommentDto> getCommentList(int boardId) {
         return commentMapper.getCommentList(boardId);
     }
 
     /**
      * 댓글을 저장하는 메서드
      *
-     * @param commentRequestDto 게시글 본문을 담은 Dto
+     * @param commentDto 게시글 본문을 담은 Dto
      */
-    public void postComment(CommentRequestDto commentRequestDto) {
-        commentMapper.postComment(commentRequestDto);
+    public void postComment(CommentDto commentDto) {
+        commentMapper.postComment(commentDto);
     }
 
     /**

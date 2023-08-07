@@ -1,7 +1,6 @@
 package com.portfolio.community.repositories;
 
-import com.portfolio.community.dtos.BoardRequestDto;
-import com.portfolio.community.dtos.BoardResponseDto;
+import com.portfolio.community.dtos.BoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +29,7 @@ public class NoticeBoardRepository {
      * @param boardSearchCondition 검색 조건
      * @return List<BoardResponseDto>       게시글 정보 List
      */
-    public List<BoardResponseDto> getBoardList(
+    public List<BoardDto> getBoardList(
             BoardSearchCondition boardSearchCondition
     ) {
         return boardMapper.getBoardList(boardSearchCondition);
@@ -54,7 +53,7 @@ public class NoticeBoardRepository {
      * @param boardId
      * @return
      */
-    public BoardRequestDto getNoticeBoard(String boardId) {
+    public BoardDto getNoticeBoard(String boardId) {
         return noticeBoardMapper.getNoticeBoard(boardId);
     }
 
@@ -63,26 +62,26 @@ public class NoticeBoardRepository {
      *
      * @return 알림글 List
      */
-    public List<BoardResponseDto> getNotificationList() {
+    public List<BoardDto> getNotificationList() {
         return noticeBoardMapper.getNotificationList();
     }
 
     /**
      * 게시글을 저장하는 메서드
      *
-     * @param boardRequestDto 게시글 정보
+     * @param boardDto 게시글 정보
      */
-    public void postNoticeBoard(BoardRequestDto boardRequestDto) {
-        noticeBoardMapper.postNoticeBoard(boardRequestDto);
+    public void postNoticeBoard(BoardDto boardDto) {
+        noticeBoardMapper.postNoticeBoard(boardDto);
     }
 
     /**
      * 게시글을 업데이트 하는 메서드
      *
-     * @param boardRequestDto 게시글 정보
+     * @param boardDto 게시글 정보
      */
-    public void updateNoticeBoard(BoardRequestDto boardRequestDto) {
-        noticeBoardMapper.updateNoticeBoard(boardRequestDto);
+    public void updateNoticeBoard(BoardDto boardDto) {
+        noticeBoardMapper.updateNoticeBoard(boardDto);
     }
 
     /**

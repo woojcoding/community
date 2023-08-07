@@ -1,8 +1,6 @@
 package com.portfolio.community.services;
 
-import com.portfolio.community.dtos.BoardListDto;
-import com.portfolio.community.dtos.BoardRequestDto;
-import com.portfolio.community.dtos.BoardResponseDto;
+import com.portfolio.community.dtos.BoardDto;
 import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import com.portfolio.community.repositories.NoticeBoardRepository;
@@ -30,7 +28,7 @@ public class NoticeBoardService {
      * @param boardSearchCondition 검색 조건
      * @return BoardListDto 게시글 정보 List
      */
-    public BoardListDto getNoticeBoardList(
+    public List<BoardDto> getNoticeBoardList(
             BoardSearchCondition boardSearchCondition) {
         boardSearchCondition.setType(BoardType.NOTICE);
 
@@ -42,16 +40,17 @@ public class NoticeBoardService {
 
         boardSearchCondition.setOffSet(offset);
 
-        List<BoardResponseDto> boardResponseDtoList =
-                noticeBoardRepository.getBoardList(boardSearchCondition);
+        return noticeBoardRepository.getBoardList(boardSearchCondition);
+    }
 
-        int totalBoardCount =
-                noticeBoardRepository.getTotalBoardCount(boardSearchCondition);
-
-        return BoardListDto.builder()
-                .boardResponseDtoList(boardResponseDtoList)
-                .totalBoardCount(totalBoardCount)
-                .build();
+    /**
+     * 검색조건에 따른 게시글 수를 조회하는 메서드
+     *
+     * @param boardSearchCondition 검색조건
+     * @return int 조회수
+     */
+    public int getTotalBoardCount(BoardSearchCondition boardSearchCondition) {
+        return noticeBoardRepository.getTotalBoardCount(boardSearchCondition);
     }
 
     /**
@@ -60,44 +59,39 @@ public class NoticeBoardService {
      *
      * @return BoardListDto 알림글 정보 List
      */
-    public BoardListDto getNotificationList() {
-        List<BoardResponseDto> boardResponseDtoList =
-                noticeBoardRepository.getNotificationList();
-
-        return BoardListDto.builder()
-                .boardResponseDtoList(boardResponseDtoList)
-                .build();
+    public List<BoardDto> getNotificationList() {
+        return noticeBoardRepository.getNotificationList();
     }
 
     /**
      * 공지글을 업데이트하는 메서드
      *
-     * @param boardRequestDto 게시글 정보
+     * @param boardDto 게시글 정보
      */
-    public void updateNoticeBoard(BoardRequestDto boardRequestDto) {
-        boardRequestDto.setType(BoardType.NOTICE);
+    public void updateNoticeBoard(BoardDto boardDto) {
+        boardDto.setType(BoardType.NOTICE);
 
-        noticeBoardRepository.updateNoticeBoard(boardRequestDto);
+        noticeBoardRepository.updateNoticeBoard(boardDto);
     }
 
     /**
      * 공지글을 작성하는 메서드
      *
-     * @param boardRequestDto
+     * @param boardDto
      */
-    public void postNoticeBoard(BoardRequestDto boardRequestDto) {
-        boardRequestDto.setType(BoardType.NOTICE);
+    public void postNoticeBoard(BoardDto boardDto) {
+        boardDto.setType(BoardType.NOTICE);
 
-        noticeBoardRepository.postNoticeBoard(boardRequestDto);
+        noticeBoardRepository.postNoticeBoard(boardDto);
     }
 
     /**
      * 게시글Id로 공지글을 가져오는 메서드
      *
      * @param boardId
-     * @return BoardRequestDto 공지글 정보
+     * @return boardDto 공지글 정보
      */
-    public BoardRequestDto getNoticeBoard(String boardId) {
+    public BoardDto getNoticeBoard(String boardId) {
         return noticeBoardRepository.getNoticeBoard(boardId);
     }
 

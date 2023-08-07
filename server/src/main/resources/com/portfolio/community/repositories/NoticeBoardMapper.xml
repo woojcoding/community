@@ -4,7 +4,7 @@
 <mapper namespace="com.portfolio.community.repositories.NoticeBoardMapper">
 
     <!-- 알림글만 가져옴-->
-    <select id="getNotificationList" resultType="BoardResponseDto">
+    <select id="getNotificationList" resultType="BoardDto">
         SELECT b.board_id,
                b.title,
                b.content,
@@ -41,7 +41,7 @@
     </insert>
 
     <!-- 게시글 수정에 필요한 정보들을 조회 -->
-    <select id="getNoticeBoard" resultType="BoardRequestDto">
+    <select id="getNoticeBoard" resultType="BoardDto">
         SELECT title,
                content,
                notification_flag,

@@ -1,4 +1,4 @@
-package com.portfolio.community.admin.controller;
+package com.portfolio.community.controllers;
 
 import com.portfolio.community.dtos.FileDto;
 import com.portfolio.community.services.FileService;

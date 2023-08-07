@@ -22,7 +22,7 @@
     </insert>
 
     <!-- 게시글 수정에 필요한 정보들을 조회 -->
-    <select id="getGalleryBoard" resultType="BoardRequestDto">
+    <select id="getGalleryBoard" resultType="BoardDto">
         SELECT title,
                content,
                category_id

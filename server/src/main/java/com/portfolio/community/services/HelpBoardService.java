@@ -1,8 +1,6 @@
 package com.portfolio.community.services;
 
-import com.portfolio.community.dtos.BoardListDto;
-import com.portfolio.community.dtos.BoardRequestDto;
-import com.portfolio.community.dtos.BoardResponseDto;
+import com.portfolio.community.dtos.BoardDto;
 import com.portfolio.community.enums.BoardType;
 import com.portfolio.community.repositories.BoardSearchCondition;
 import com.portfolio.community.repositories.HelpBoardRepository;
@@ -30,7 +28,7 @@ public class HelpBoardService {
      * @param boardSearchCondition 검색 조건
      * @return BoardListDto 게시글 정보 List
      */
-    public BoardListDto getHelpBoardList(
+    public List<BoardDto> getHelpBoardList(
             BoardSearchCondition boardSearchCondition) {
         boardSearchCondition.setType(BoardType.HELP);
 
@@ -42,27 +40,28 @@ public class HelpBoardService {
 
         boardSearchCondition.setOffSet(offset);
 
-        List<BoardResponseDto> boardResponseDtoList =
-                helpBoardRepository.getBoardList(boardSearchCondition);
+        return helpBoardRepository.getBoardList(boardSearchCondition);
+    }
 
-        int totalBoardCount =
-                helpBoardRepository.getTotalBoardCount(boardSearchCondition);
-
-        return BoardListDto.builder()
-                .boardResponseDtoList(boardResponseDtoList)
-                .totalBoardCount(totalBoardCount)
-                .build();
+    /**
+     * 검색조건에 따른 게시글 수를 조회하는 메서드
+     *
+     * @param boardSearchCondition 검색조건
+     * @return int 조회수
+     */
+    public int getTotalBoardCount(BoardSearchCondition boardSearchCondition) {
+        return helpBoardRepository.getTotalBoardCount(boardSearchCondition);
     }
 
     /**
      * 답변을 달아 업데이트하는 메서드
      *
-     * @param boardRequestDto 게시글 정보
+     * @param boardDto 게시글 정보
      */
-    public void answerHelpBoard(BoardRequestDto boardRequestDto) {
-        boardRequestDto.setType(BoardType.HELP);
+    public void answerHelpBoard(BoardDto boardDto) {
+        boardDto.setType(BoardType.HELP);
 
-        helpBoardRepository.answerFreeBoard(boardRequestDto);
+        helpBoardRepository.answerFreeBoard(boardDto);
     }
 
 
@@ -70,9 +69,9 @@ public class HelpBoardService {
      * 답변을 달기 위해 게시글Id로 문의글을 가져오는 메서드
      *
      * @param boardId
-     * @return BoardRequestDto 게시글 정보
+     * @return boardDto 게시글 정보
      */
-    public BoardRequestDto getHelpBoard(String boardId) {
+    public BoardDto getHelpBoard(String boardId) {
         return helpBoardRepository.getHelpBoard(boardId);
     }
 

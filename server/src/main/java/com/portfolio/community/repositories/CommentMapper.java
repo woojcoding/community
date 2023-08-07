@@ -1,6 +1,6 @@
 package com.portfolio.community.repositories;
 
-import com.portfolio.community.dtos.CommentRequestDto;
+import com.portfolio.community.dtos.CommentDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,14 +17,14 @@ public interface CommentMapper {
      * @param boardId 게시글 Id
      * @return List<CommentResponseDto>  댓글 List
      */
-    List<CommentRequestDto> getCommentList(int boardId);
+    List<CommentDto> getCommentList(int boardId);
 
     /**
      * 댓글을 저장하는 메서드
      *
-     * @param commentRequestDto 게시글 본문을 담은 Dto
+     * @param commentDto 게시글 본문을 담은 Dto
      */
-    void postComment(CommentRequestDto commentRequestDto);
+    void postComment(CommentDto commentDto);
 
     /**
      *  댓글을 삭제하는 메서드

@@ -4,7 +4,7 @@
 <mapper namespace="com.portfolio.community.repositories.BoardMapper">
 
     <!-- 검색 조건에 맞는 게시글을 페이지네이션 적용하여 조회-->
-    <select id="getBoardList" resultType="BoardResponseDto">
+    <select id="getBoardList" resultType="BoardDto">
         SELECT
             b.board_id,
             b.title,
