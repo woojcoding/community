@@ -2,11 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="common-search-container">
-    <form th:action="@{'/admin/boards/' + ${#strings.toLowerCase(type)}}" method="get">
+    <form th:action="@{'/admin/boards/' + ${#strings.toLowerCase(type)}}"
+          method="get">
         <p>등록일시</p>
         <input type="hidden" name="pageSize" th:value="${boardSearch.pageSize}">
-        <input type="date" name="startDate" th:value="${param.startDate}">
-        <input type="date" name="endDate" th:value="${param.endDate}">
+        <input type="date" id="startDate" name="startDate"
+               th:value="${param.startDate}">
+        <input type="date" id="endDate" name="endDate"
+               th:value="${param.endDate}">
         <select th:if="${type!= 'HELP'}" name="category">
             <option value="all">전체 카테고리</option>
             <option th:each="category : ${categoryList}"
@@ -21,6 +24,43 @@
         <input type="hidden" name="sort" th:value="${boardSearch.sort}">
         <button>검색</button>
     </form>
-</div>
+    <script th:inline="javascript">
+        const startDateInput = document.getElementById('startDate');
 
+        const endDateInput = document.getElementById('endDate');
+
+        // 오늘 날짜를 기준으로 day.js 객체 생성
+        const today = dayjs();
+
+        // 기본값으로 15일을 뺀 값들을 지정
+        const startDateValue = today.subtract(15, 'day');
+
+        const endDateValue = today.add(15, 'day')
+
+        if (startDateInput.value === '') {
+            startDateInput.value = startDateValue.format('YYYY-MM-DD');
+        }
+
+        if (endDateInput.value === '') {
+            endDateInput.value = endDateValue.format('YYYY-MM-DD');
+        }
+
+        // startDateInput과 endDateInput에 이벤트 리스너를 추가하여 min과 max를 1년으로
+        startDateInput.addEventListener('change', function() {
+            const selectedStartDate = dayjs(this.value);
+
+            const maxDate = selectedStartDate.add(1, 'year');
+
+            endDateInput.setAttribute('max', maxDate.format('YYYY-MM-DD'));
+        });
+
+        endDateInput.addEventListener('change', function() {
+            const selectedEndDate = dayjs(this.value);
+
+            const minDate = selectedEndDate.subtract(1, 'year');
+
+            startDateInput.setAttribute('min', minDate.format('YYYY-MM-DD'));
+        });
+    </script>
+</div>
 </html>
