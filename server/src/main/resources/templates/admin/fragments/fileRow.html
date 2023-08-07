@@ -9,6 +9,10 @@
                 <input type="file" name="files" style="display: none;">
                 <table id="fileInputTable">
                     <tbody>
+                    <tr>
+                        <td th:if="${type == 'FREE'}">jpg, gif, png, zip 파일만 파일사이즈 2MB까지 업로드 가능합니다.</td>
+                        <td th:if="${type == 'GALLERY'}">jpg, gif, png 파일만 파일사이즈 2MB까지 업로드 가능합니다.</td>
+                    </tr>
                     <tr th:each="file : ${fileDtoList}">
                         <td>
                             <img th:if="${file.thumbnailName}"
@@ -41,7 +45,7 @@
 
         let MAX_FILES = 5;
 
-        if (type == 'g') {
+        if (type == 'GALLERY') {
             MAX_FILES = 20;
         }
 
@@ -74,7 +78,7 @@
 
                 inputCell.appendChild(thumbnailImg);
             } else {
-                inputField.setAttribute('accept', '.jpg, .jpeg, .gif, .png, .zip');
+                inputField.setAttribute('accept', '.jpg, .jpeg, .gif, .png, application/zip');
             }
 
             // tr을 없애는 버튼 생성

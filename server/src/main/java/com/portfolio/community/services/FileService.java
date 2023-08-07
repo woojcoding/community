@@ -5,6 +5,7 @@ import com.portfolio.community.repositories.FileRepository;
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,7 +55,9 @@ public class FileService {
         List<FileDto> savedFileList = new ArrayList<>();
 
         for (MultipartFile multipartFile : files) {
-            if (multipartFile.getSize() != 0) {
+            if (multipartFile.getSize() != 0 &&
+                    isAllowedFileType(multipartFile, true)
+            ) {
                 // 저장파일명을 만들어주어 폴더에 저장
                 String originalName = multipartFile.getOriginalFilename();
 
@@ -76,6 +79,30 @@ public class FileService {
         return savedFileList;
     }
 
+    private boolean isAllowedFileType(MultipartFile file, boolean allowZip) {
+        String contentType = file.getContentType();
+
+        if (contentType != null) {
+            // 이미지 파일인지 체크
+            if (contentType.equals(MediaType.IMAGE_JPEG_VALUE) ||
+                    contentType.equals(MediaType.IMAGE_PNG_VALUE) ||
+                    contentType.equals(MediaType.IMAGE_PNG_VALUE) ||
+                    contentType.equals(MediaType.IMAGE_GIF_VALUE)
+            ) {
+                return true;
+            }
+
+            // zip 파일인지 체크
+            String extension = extractExtension(file.getOriginalFilename());
+
+            if (allowZip && extension.equals("zip")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * 파일을 지정된 폴더에 저장하고 정보를 List로 반환해주는 메서드
      * 썸네일도 함께 생성하여 저장
@@ -92,7 +119,9 @@ public class FileService {
         List<FileDto> savedFileList = new ArrayList<>();
 
         for (MultipartFile multipartFile : files) {
-            if (multipartFile.getSize() != 0) {
+            if (multipartFile.getSize() != 0 &&
+                    isAllowedFileType(multipartFile, false)
+            ) {
                 // 저장파일명을 만들어주어 폴더에 저장
                 String originalName = multipartFile.getOriginalFilename();
                 String savedName = getSavedName(originalName);

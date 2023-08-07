@@ -28,6 +28,11 @@ spring:
         restart:
           enabled: true
 
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 40MB
+
 jwt:
   secret: wooj123wooj123wooj123wooj
 
