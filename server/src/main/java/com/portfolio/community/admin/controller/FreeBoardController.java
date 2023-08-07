@@ -171,7 +171,7 @@ public class FreeBoardController {
             return "admin/views/writeView";
         }
 
-        int adminId = AuthenticationUtil.getAdminId();
+        String adminId = AuthenticationUtil.getAdminId();
 
         boardRequestDto.setAdminId(adminId);
 
@@ -347,7 +347,7 @@ public class FreeBoardController {
         }
 
         // 댓글을 post
-        int adminId = AuthenticationUtil.getAdminId();
+        String adminId = AuthenticationUtil.getAdminId();
 
         commentRequestDto.setBoardId(boardId);
         commentRequestDto.setAdminId(adminId);

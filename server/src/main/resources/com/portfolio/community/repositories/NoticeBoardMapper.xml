@@ -14,7 +14,7 @@
                a.name AS writer
         FROM board b
                  JOIN admin a
-                     ON b.admin_id = a.admin_id
+                     ON b.admin_id = a.account_id
         WHERE b.notification_flag = 1
         ORDER BY b.created_at DESC
         LIMIT 5

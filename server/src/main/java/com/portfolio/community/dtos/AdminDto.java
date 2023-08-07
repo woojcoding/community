@@ -14,8 +14,6 @@ import java.util.Collection;
 @Setter
 public class AdminDto implements UserDetails {
 
-    private Integer adminId;
-
     private String accountId;
 
     private String password;

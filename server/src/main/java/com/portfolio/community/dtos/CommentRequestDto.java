@@ -20,7 +20,7 @@ public class CommentRequestDto {
 
     private Integer commentId; // 댓글 Id
 
-    private Integer adminId; // 어드민 Id
+    private String adminId; // 어드민 Id
 
     private Integer boardId; // 게시글 Id
 

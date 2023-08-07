@@ -14,10 +14,10 @@ public class AuthenticationUtil {
      *
      * @return the admin id
      */
-    public static int getAdminId() {
+    public static String getAdminId() {
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
 
-        return ((AdminDto) authentication.getPrincipal()).getAdminId();
+        return ((AdminDto) authentication.getPrincipal()).getAccountId();
     }
 }

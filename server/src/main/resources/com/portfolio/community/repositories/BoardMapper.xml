@@ -42,9 +42,9 @@
             END AS isAttached
         FROM board b
             LEFT JOIN user u
-                ON u.user_id = b.user_id
+                ON u.account_id = b.user_id
             LEFT JOIN admin a
-                ON a.admin_id = b.admin_id
+                ON a.account_id = b.admin_id
             LEFT JOIN category c
                 ON c.category_id = b.category_id
             LEFT JOIN file f
@@ -91,9 +91,9 @@
         SELECT COUNT(*) AS totalBoardCount
         FROM board AS b
             LEFT JOIN user u
-                ON u.user_id = b.user_id
+                ON u.account_id = b.user_id
             LEFT JOIN admin a
-                ON a.admin_id = b.admin_id
+                ON a.account_id = b.admin_id
         <include refid="whereClause"></include>
     </select>
 

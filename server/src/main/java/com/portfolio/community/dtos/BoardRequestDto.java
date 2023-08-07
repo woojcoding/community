@@ -37,7 +37,7 @@ public class BoardRequestDto {
 
     private Integer boardId; // 반환되는 게시글 Id
 
-    private int adminId; // 게시글 작성 admin Id
+    private String adminId; // 게시글 작성 admin Id
 
     @Pattern(regexp = "^(?!all$).*$",
             groups = {Free.class, Notice.class, Gallery.class})

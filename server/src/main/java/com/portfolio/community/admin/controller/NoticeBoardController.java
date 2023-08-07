@@ -145,7 +145,7 @@ public class NoticeBoardController {
             return "admin/views/writeView";
         }
 
-        int adminId = AuthenticationUtil.getAdminId();
+        String adminId = AuthenticationUtil.getAdminId();
 
         boardRequestDto.setAdminId(adminId);
 

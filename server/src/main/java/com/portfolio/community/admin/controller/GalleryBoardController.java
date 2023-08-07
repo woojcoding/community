@@ -164,7 +164,7 @@ public class GalleryBoardController {
 
             return "admin/views/writeView";
         }
-        int adminId = AuthenticationUtil.getAdminId();
+        String adminId = AuthenticationUtil.getAdminId();
 
         boardRequestDto.setAdminId(adminId);
 

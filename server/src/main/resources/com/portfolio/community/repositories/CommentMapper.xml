@@ -12,7 +12,7 @@
         VALUES (
                 #{content},
                 #{boardId},
-                ${adminId}
+                #{adminId}
                 )
     </insert>
 
@@ -27,9 +27,9 @@
                END AS writer
         FROM comment c
             LEFT JOIN admin a
-                ON c.admin_id = a.admin_id
+                ON c.admin_id = a.account_id
             LEFT JOIN user u
-                ON u.user_id = c.user_id
+                ON c.user_id = u.account_id
         WHERE board_id = #{boardId}
         ORDER BY comment_id DESC
     </select>
