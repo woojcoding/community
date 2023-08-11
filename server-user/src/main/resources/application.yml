@@ -13,7 +13,7 @@ spring:
     password: admin!32
 
   messages:
-    basename: messages
+    basename: errors, messages
     encoding: utf-8
 
   servlet:

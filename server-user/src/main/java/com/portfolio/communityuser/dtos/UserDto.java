@@ -5,6 +5,9 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 
 /**
@@ -13,19 +16,29 @@ import java.util.Collection;
 @Getter
 @Setter
 public class UserDto implements UserDetails {
+
     /**
      * 계정 Id
      */
+    @NotBlank(message = "{NotBlank.userDto.accountId}")
+    @Size(min = 4, max = 11, message = "{Size.userDto.accountId}")
+    @Pattern(regexp = "^[a-zA-Z0-9-_]+$", message = "{Pattern.userDto.accountId}")
     private String accountId;
 
     /**
-     * 비밀번호
+     * 패스워드
      */
+    @NotBlank(message = "{NotBlank.userDto.password}")
+    @Size(min = 4, max = 11, message = "{Size.userDto.password}")
+    @Pattern(regexp = "^(?!.*(.)\\1\\1)[a-zA-Z0-9!@#$%^&*()-_+=]{4,11}$",
+            message = "{Pattern.userDto.password}")
     private String password;
 
     /**
      * 이름
      */
+    @NotBlank(message = "{NotBlank.userDto.name}")
+    @Size(min = 2, max = 4, message = "{Size.userDto.name}")
     private String name;
 
     @Override

@@ -1,7 +1,9 @@
 package com.portfolio.communityuser.dtos;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -10,7 +12,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginDto {
+
     /**
      * 계정 Id
      */
@@ -25,10 +30,4 @@ public class LoginDto {
      * 로그인 후 반환되는 엑세스토큰
      */
     private String accessToken;
-
-    /**
-     * 기본 생성자
-     */
-    private LoginDto() {
-    }
 }

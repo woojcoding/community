@@ -1,15 +1,18 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <the-header></the-header>
+  <the-navigator></the-navigator>
+  <router-view></router-view>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TheHeader from "@/components/layout/TheHeader";
+import TheNavigator from "@/components/layout/TheNavigator";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    TheNavigator,
+    TheHeader,
   }
 }
 </script>
