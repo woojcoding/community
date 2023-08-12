@@ -81,7 +81,7 @@ public class SecurityConfiguration {
                 .accessDeniedHandler(new UserAccessDeniedHandler(errorResponder))
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers("/api/v1/login", "/**").permitAll()
+                        .antMatchers("/**").permitAll()
                         .antMatchers("/api/v1/**").permitAll());
 
         return http.build();
