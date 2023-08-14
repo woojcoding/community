@@ -42,29 +42,8 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity<ApiResult> signUp(
-            @Valid @RequestBody UserDto userDto,
-            BindingResult bindingResult) {
-        // spring Bean validation 실패한 경우
-        if (bindingResult.hasErrors()) {
-            StringBuilder errorMessageBuilder = new StringBuilder();
-
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                errorMessageBuilder.append(fieldError.getDefaultMessage());
-                errorMessageBuilder.append("\n");
-            }
-
-            String combinedErrorMessage = errorMessageBuilder.toString();
-
-            ApiResult apiResult = ApiResult.builder()
-                    .status(ApiStatus.FAIL)
-                    .message(combinedErrorMessage)
-                    .build();
-
-            return ResponseEntity
-                    .badRequest()
-                    .body(apiResult);
-        }
-
+            @Valid @RequestBody UserDto userDto
+    ) {
         // 회원아이디 중복 검증
         if (userService.verifyExistAccountId(userDto.getAccountId())) {
             throw new DuplicatedAccountIdException();
@@ -97,8 +76,7 @@ public class UserController {
     public ResponseEntity<ApiResult> confirmAccountIdDuplication(
             @Valid @ModelAttribute IdCheckDto idCheckDto,
             BindingResult bindingResult
-            ) {
-
+    ) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMessageBuilder = new StringBuilder();
 
@@ -122,22 +100,18 @@ public class UserController {
         boolean isDuplicated =
                 userService.verifyExistAccountId(idCheckDto.getAccountId());
 
-        ApiStatus apiStatus = ApiStatus.SUCCESS;
-
         String message = "";
 
         if (isDuplicated) {
             message = messageSource.getMessage("duplicated.account.id.exception",
                     null, LocaleContextHolder.getLocale());
-
-            apiStatus = ApiStatus.FAIL;
-        } else  {
+        } else {
             message = messageSource.getMessage("account.id.can.use",
                     null, LocaleContextHolder.getLocale());
         }
 
         ApiResult apiResult = ApiResult.builder()
-                .status(apiStatus)
+                .status(ApiStatus.SUCCESS)
                 .message(message)
                 .data(isDuplicated)
                 .build();
