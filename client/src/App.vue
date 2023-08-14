@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import TheHeader from "@/components/layout/TheHeader";
-import TheNavigator from "@/components/layout/TheNavigator";
+import TheHeader from "@/components/TheHeader";
+import TheNavigator from "@/components/TheNavigator";
 
 export default {
   name: 'App',

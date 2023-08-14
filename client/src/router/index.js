@@ -1,21 +1,28 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import userLogin from "@/pages/UserLogin";
 import UserSignUp from "@/pages/UserSignUp";
-import BoardList from "@/pages/BoardList";
 import CommunityHome from "@/pages/CommunityHome";
 import store from "@/store/index"
+import FreeBoardListView from "@/pages/board/free/FreeBoardListView";
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes: [
         {path: '/login', component: userLogin},
         {path: '/signUp', component: UserSignUp},
-        {path: '/boards', component: BoardList},
+        {
+            path: '/boards/free',
+            component: FreeBoardListView,
+            props: {type: "free"}
+        },
+        {path: '/boards/notice', component: FreeBoardListView},
+        {path: '/boards/gallery', component: FreeBoardListView},
+        {path: '/boards/help', component: FreeBoardListView},
         {path: '/home', component: CommunityHome},
     ]
 })
 
-router.beforeEach((to,_, next) => {
+router.beforeEach((to, _, next) => {
     const isAuthenticated = store.getters.isAuthenticated;
 
     // 로그인 페이지에 접근하려고 하면, 로그인 후에 다른 주소로 리다이렉트

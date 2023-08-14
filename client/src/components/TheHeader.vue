@@ -1,5 +1,7 @@
 <template>
-  <h1> 커뮤니티 </h1>
+  <header>
+    <h1> 커뮤니티 </h1>
+  </header>
 </template>
 
 <script>

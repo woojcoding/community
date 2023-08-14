@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portfolio.communityuser.repositories.BoardMapper">
+
+    <!-- 검색 조건에 맞는 게시글을 페이지네이션 적용하여 조회-->
+    <select id="getBoardList" resultType="BoardDto">
+        SELECT
+            b.board_id,
+            b.title,
+            b.content,
+            b.views,
+            b.notification_flag,
+            b.secret_flag,
+            b.answer,
+            b.type,
+            b.created_at,
+            c.name AS categoryName,
+            f.thumbnail_name,
+            CASE
+                WHEN b.user_id IS NOT NULL THEN u.name
+                WHEN b.admin_id IS NOT NULL THEN a.name
+            END AS writer,
+            (
+            SELECT COUNT(*)
+            FROM file f
+            WHERE f.board_id = b.board_id
+            ) AS imageCount,
+            (
+            SELECT COUNT(*)
+            FROM comment co
+            WHERE co.board_id = b.board_id
+            ) AS commentCount,
+            CASE WHEN EXISTS
+                (
+                SELECT 1
+                FROM file
+                WHERE board_id = b.board_id
+                )
+                THEN 1
+                ELSE 0
+            END AS isAttached
+        FROM board b
+            LEFT JOIN user u
+                ON u.account_id = b.user_id
+            LEFT JOIN admin a
+                ON a.account_id = b.admin_id
+            LEFT JOIN category c
+                ON c.category_id = b.category_id
+            LEFT JOIN file f
+                ON b.board_id = f.board_id
+                       AND f.file_id = (
+                            SELECT MIN(f2.file_id)
+                            FROM file f2
+                            WHERE f2.board_id = f.board_id
+                            )
+        <include refid="whereClause"></include>
+        <!-- 순서 -->
+        <if test="sortBy == 'createdAt'">
+            ORDER BY b.created_at
+        </if>
+        <if test="sortBy == 'category'">
+            ORDER BY c.name
+        </if>
+        <if test="sortBy == 'title'">
+            ORDER BY title
+        </if>
+        <if test="sortBy == 'views'">
+            ORDER BY views
+        </if>
+
+        <!-- 정렬 순서도 적용 -->
+        <if test="sortBy == null or sortBy == ''">
+            ORDER BY b.created_at
+        </if>
+        <if test="sort == 'desc'">
+            DESC
+        </if>
+        <if test="sort == 'asc'">
+            ASC
+        </if>
+        <if test="sort == null or sort == ''">
+            DESC
+        </if>
+        <!-- 페이지네이션 -->
+        LIMIT #{pageSize} OFFSET #{offSet}
+    </select>
+
+    <!-- 검색 조건을 적용하여 게시글의 총 개수를 조회 -->
+    <select id="getTotalBoardCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) AS totalBoardCount
+        FROM board AS b
+            LEFT JOIN user u
+                ON u.account_id = b.user_id
+            LEFT JOIN admin a
+                ON a.account_id = b.admin_id
+        <include refid="whereClause"></include>
+    </select>
+
+    <!-- 게시글을 삭제 -->
+    <delete id="deleteBoard">
+        DELETE
+        FROM board
+        WHERE board_id = #{boardId}
+    </delete>
+
+    <sql id="whereClause">
+    <where>
+        <if test="type != null and type.toString != ''">
+            AND b.type = #{type}
+        </if>
+        <if test="startDate != null and startDate != ''">
+            AND DATE(b.created_at) &gt;= DATE(#{startDate})
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND DATE(b.created_at) &lt;= DATE(#{endDate})
+        </if>
+        <if test="category != null and category != '' and category != 'all'">
+            AND b.category_id = #{category}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND (
+            <if test='type != "NOTICE"'>
+                u.name LIKE CONCAT('%', #{keyword}, '%') OR
+                a.name LIKE CONCAT('%', #{keyword}, '%') OR
+            </if>
+            b.title LIKE CONCAT('%', #{keyword}, '%') OR
+            b.content LIKE CONCAT('%', #{keyword}, '%')
+            )
+        </if>
+    </where>
+    </sql>
+</mapper>

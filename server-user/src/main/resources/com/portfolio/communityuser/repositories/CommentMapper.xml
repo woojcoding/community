@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portfolio.communityuser.repositories.CommentMapper">
+    <!-- 댓글을 db에 저장 -->
+    <insert id="postComment">
+        INSERT INTO comment(
+                            content,
+                            board_id,
+                            user_id
+                            )
+        VALUES (
+                #{content},
+                #{boardId},
+                #{userId}
+                )
+    </insert>
+
+    <!-- 게시글 Id에 해당하는 댓글 목록 조회 -->
+    <select id="getCommentList" resultType="CommentDto">
+        SELECT c.comment_id,
+               c.content,
+               c.created_at,
+               CASE
+                    WHEN c.user_id IS NOT NULL THEN u.name
+                    WHEN c.admin_id IS NOT NULL THEN a.name
+               END AS writer
+        FROM comment c
+            LEFT JOIN admin a
+                ON c.admin_id = a.account_id
+            LEFT JOIN user u
+                ON c.user_id = u.account_id
+        WHERE board_id = #{boardId}
+        ORDER BY comment_id DESC
+    </select>
+
+    <!-- comment 삭제 -->
+    <delete id="deleteComment">
+        DELETE
+        FROM comment
+        WHERE comment_id = #{commentId}
+    </delete>
+</mapper>
