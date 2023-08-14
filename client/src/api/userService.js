@@ -11,33 +11,22 @@ const instance = axios.create({
  * @param accountId 계정Id
  * @returns {Promise<boolean|*>}
  */
-export async function confirmIdDuplication(accountId) {
-    try {
-        const response = await instance.get("/api/v1/user/accountId", {
-            params: {
-                accountId: encodeURIComponent(accountId)
-            }
-        });
-
-        alert(response.data.message);
-
+export function confirmIdDuplication(accountId) {
+    return instance.get("/api/v1/user/accountId", {
+        params: {
+            accountId: encodeURIComponent(accountId)
+        }
+    }).then((response) => {
         if (response.data.status === 'SUCCESS') {
-            return response.data.data;
-        }
-    } catch (error) {
-        console.log(error);
-
-        if (error.response && error.response.status === 400) {
-            const errors = error.response.data.errors;
-
-            const message = errors.map(e => e.defaultMessage).join('\n');
-
-            alert(message);
+            return response.data;
         } else {
-            alert('잠시 후 다시 시도해주세요.');
+            throw {
+                response: response
+            };
         }
-    }
-    return true; // 중복 여부 확인 실패 시 기본값 반환
+    }).catch((error) => {
+        throw error.response.data.message
+    });
 }
 
 /**
@@ -45,26 +34,12 @@ export async function confirmIdDuplication(accountId) {
  * @param userDto 회원정보
  * @returns {Promise<boolean>}
  */
-export async function signUpUser(userDto) {
-    try {
-        const response = await instance.post("/api/v1/user", userDto);
-
-        alert(response.data.message);
-        return true; // 성공 시 true 반환
-    } catch (error) {
-        if (error.response && error.response.status === 400) {
-            const errors = error.response.data.errors;
-
-            const message = errors.map(e => e.defaultMessage).join('\n');
-
-            alert(message);
-
-            return false;
-        } else {
-            alert('잠시 후 다시 시도해주세요.');
-
-            return false;
-        }
-    }
+export function signUpUser(userDto) {
+    return instance.post("/api/v1/user", userDto)
+        .then((response) => {
+            return response.data;
+        }).catch((error) => {
+            throw error.response.data.message
+        });
 }
 

@@ -13,10 +13,7 @@ export default {
   components: {
     TheNavigator,
     TheHeader,
-  },
-  created() {
-    this.$store.dispatch('tryLogin');
-  },
+  }
 }
 </script>
 

@@ -3,7 +3,7 @@
   <form @submit.prevent="signUp">
     <div>
       <input type="text" v-model="userDto.accountId" placeholder="아이디">
-      <button type="button" @click="confirmIdDuplication">중복확인</button>
+      <button type="button" @click="idDuplicationCheck">중복확인</button>
     </div>
     <div>
       <input type="password" v-model="userDto.password" placeholder="비밀번호">
@@ -57,17 +57,21 @@ export default {
       if (this.isAccountIdDuplicated) {
         alert("아이디 중복체크를 통과해주세요.");
       } else {
-        this.validateForm();
+        try {
+          this.validateForm();
+          if (this.errorMessages.length === 0) {
+            const response = await signUpUser(this.userDto);
 
-        if (this.errorMessages.length === 0) {
-          const isSuccess = await signUpUser(this.userDto);
+            alert(response.message);
 
-          if (isSuccess) {
             this.$router.push("/login"); // 성공 시에만 라우터 이동
+          } else {
+            alert(this.errorMessages.join("\n"));
+
+            this.errorMessages.length = 0;
           }
-        } else {
-          alert(this.errorMessages.join("\n"));
-          this.errorMessages.length = 0;
+        } catch (error) {
+          alert(error);
         }
       }
     },
@@ -76,9 +80,16 @@ export default {
      *
      * @returns {Promise<void>}
      */
-    async confirmIdDuplication() {
-      const isDuplicated = await confirmIdDuplication(this.userDto.accountId);
-      this.handleIsAccountIdDuplicated(isDuplicated);
+    async idDuplicationCheck() {
+      try {
+        const response = await confirmIdDuplication(this.userDto.accountId);
+
+        this.handleIsAccountIdDuplicated(response.data);
+
+        alert(response.message);
+      } catch (error) {
+        alert(error); // 에러 메시지 alert
+      }
     },
     /**
      * IsAccountId의 중복 여부를 바꾸는 메서드
