@@ -4,6 +4,7 @@ import UserSignUp from "@/pages/UserSignUp";
 import CommunityHome from "@/pages/CommunityHome";
 import store from "@/store/index"
 import FreeBoardListView from "@/pages/board/free/FreeBoardListView";
+import FreeBoardDetail from "@/pages/board/free/FreeBoardDetail";
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
@@ -14,6 +15,14 @@ const router = createRouter({
             path: '/boards/free',
             component: FreeBoardListView,
             props: {type: "free"}
+        },
+        {
+            path: '/boards/free/:boardId',
+            component: FreeBoardDetail,
+            props: (route) => ({
+                boardId: route.params.boardId,
+                query: route.query
+            })
         },
         {path: '/boards/notice', component: FreeBoardListView},
         {path: '/boards/gallery', component: FreeBoardListView},

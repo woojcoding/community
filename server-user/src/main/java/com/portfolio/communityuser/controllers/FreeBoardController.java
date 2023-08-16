@@ -2,6 +2,8 @@ package com.portfolio.communityuser.controllers;
 
 import com.portfolio.communityuser.dtos.BoardDto;
 import com.portfolio.communityuser.dtos.CategoryDto;
+import com.portfolio.communityuser.dtos.CommentDto;
+import com.portfolio.communityuser.dtos.FileDto;
 import com.portfolio.communityuser.enums.BoardType;
 import com.portfolio.communityuser.repositories.BoardSearchCondition;
 import com.portfolio.communityuser.services.CategoryService;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +32,7 @@ import java.util.Map;
 public class FreeBoardController {
 
     /**
-     *  자유 게시글에 대한 로직을 처리하는 freeBoardService를 의존성 주입
+     * 자유 게시글에 대한 로직을 처리하는 freeBoardService를 의존성 주입
      */
     private final FreeBoardService freeBoardService;
 
@@ -72,6 +75,40 @@ public class FreeBoardController {
         data.put("boardList", boardDtoList);
         data.put("totalBoardCount", totalBoardCount);
         data.put("categoryList", categoryList);
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 게시글 상세보기를 가져오는 메서드
+     *
+     * @param boardId              게시글 Id - 수정인 경우에 필수
+     * @return writeView 반환
+     */
+    @GetMapping("/boards/free/{boardId}")
+    public ResponseEntity<ApiResult> getFreeBoard(
+            @PathVariable("boardId") Integer boardId
+    ) {
+        // 게시글 정보를 조회
+        BoardDto boardDto =
+                freeBoardService.getFreeBoard(boardId);
+
+        List<FileDto> fileDtoList = fileService.getFileList(boardId);
+
+        List<CommentDto> commentList =
+                commentService.getCommentList(boardId);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("board", boardDto);
+        data.put("fileList", fileDtoList);
+        data.put("commentList", commentList);
 
         ApiResult apiResult = ApiResult.builder()
                 .status(ApiStatus.SUCCESS)

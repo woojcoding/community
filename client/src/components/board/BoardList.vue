@@ -25,7 +25,7 @@
         <td>{{ calculatedNumber(index) }}</td>
         <td v-if="type !== 'help'">{{ board.categoryName }}</td>
         <td>
-          <a>
+          <a @click="boardDetail(board.boardId)">
             {{ board.title }}
             <span v-if="type === 'help' && board.answer">(답변완료)</span>
             <span v-if="type === 'help' && !board.answer">(미답변)</span>
@@ -65,8 +65,8 @@ export default {
         endDate: '',
         category: '',
         keyword: '',
-        pageNum: 1, // Default pageNum
-        pageSize: 10, // Default pageSize
+        pageNum: 1,
+        pageSize: 10,
         sort: '',
         offSet: 0,
         boardType: ''
@@ -98,7 +98,18 @@ export default {
       return index => this.totalBoardCount - ((this.boardSearch.pageNum - 1) * this.boardSearch.pageSize) - index + 1;
     }
   },
-};
+  methods: {
+    boardDetail(boardId) {
+      this.$router.push({
+        path: `/boards/${this.type}/${boardId}`,
+        query: {
+          ...this.boardSearch,
+          boardId: boardId
+        }
+      });
+    }
+  }
+}
 </script>
 
 <style scoped>

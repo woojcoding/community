@@ -16,7 +16,7 @@ export default {
   name: "FreeBoardListView",
   components: {SearchForm, BoardList},
   props: {
-    type: String, // Declare the type prop here
+    type: String,
   },
   data() {
     return {
