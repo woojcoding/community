@@ -10,11 +10,14 @@ import com.portfolio.communityuser.services.CategoryService;
 import com.portfolio.communityuser.services.CommentService;
 import com.portfolio.communityuser.services.FileService;
 import com.portfolio.communityuser.services.FreeBoardService;
+import com.portfolio.communityuser.utils.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -89,7 +92,7 @@ public class FreeBoardController {
     /**
      * 게시글 상세보기를 가져오는 메서드
      *
-     * @param boardId              게시글 Id - 수정인 경우에 필수
+     * @param boardId 게시글 Id
      * @return writeView 반환
      */
     @GetMapping("/boards/free/{boardId}")
@@ -113,6 +116,34 @@ public class FreeBoardController {
         ApiResult apiResult = ApiResult.builder()
                 .status(ApiStatus.SUCCESS)
                 .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 댓글을 작성하는 메서드
+     *
+     * @param boardId 게시글 Id
+     * @param commentDto 댓글정보
+     * @return ResponseEntity<ApiResult>
+     */
+    @PostMapping("/boards/free/{boardId}/comment")
+    public ResponseEntity<ApiResult> postComment(
+            @PathVariable("boardId") int boardId,
+            @RequestBody CommentDto commentDto
+    ) {
+        String userId = AuthenticationUtil.getAccountId();
+
+        commentDto.setUserId(userId);
+        commentDto.setBoardId(boardId);
+
+        commentService.postComment(commentDto);
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
                 .build();
 
         return ResponseEntity

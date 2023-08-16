@@ -4,12 +4,14 @@ import com.portfolio.communityuser.security.custom.DelegatedAuthenticationEntryP
 import com.portfolio.communityuser.security.custom.UserAccessDeniedHandler;
 import com.portfolio.communityuser.security.custom.UserAuthenticationFailureHandler;
 import com.portfolio.communityuser.security.filters.JwtAuthenticationFilter;
+import com.portfolio.communityuser.security.filters.JwtVerificationFilter;
 import com.portfolio.communityuser.utils.ErrorResponder;
 import com.portfolio.communityuser.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,7 +32,7 @@ import java.util.Arrays;
  */
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class SecurityConfiguration {
     /**
      * 필터에서 사용하는 JwtUtil 의존성 주입
@@ -81,8 +83,9 @@ public class SecurityConfiguration {
                 .accessDeniedHandler(new UserAccessDeniedHandler(errorResponder))
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers("/**").permitAll()
-                        .antMatchers("/api/v1/**").permitAll());
+                        .antMatchers(HttpMethod.POST, "/api/v1/user").permitAll()
+                        .antMatchers(HttpMethod.GET, "/**").permitAll()
+                        .anyRequest().authenticated());
 
         return http.build();
     }
@@ -153,6 +156,10 @@ public class SecurityConfiguration {
                             authenticationManager, jwtUtil, messageSource
                     );
 
+            // JWT 검증 필터를 생성
+            JwtVerificationFilter jwtVerificationFilter =
+                    new JwtVerificationFilter(jwtUtil);
+
             // 로그인 URL을 설정
             jwtAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
 
@@ -162,7 +169,11 @@ public class SecurityConfiguration {
             );
 
             //인증 필터를 HttpSecurity 빌더에 추가
-            builder.addFilter(jwtAuthenticationFilter);
+            builder.addFilter(jwtAuthenticationFilter)
+                    .addFilterAfter(
+                            jwtVerificationFilter,
+                            JwtAuthenticationFilter.class
+                    );
         }
     }
 }

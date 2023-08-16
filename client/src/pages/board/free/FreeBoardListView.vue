@@ -29,6 +29,11 @@ export default {
     this.loadFreeBoardList();
   },
   methods: {
+    /**
+     * 자유게시글 목록 데이터들을 불러오는 메서드
+     *
+     * @returns {Promise<void>}
+     */
     async loadFreeBoardList() {
       try {
         const boardSearch = this.$route.query;

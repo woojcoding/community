@@ -10,7 +10,7 @@
       <router-link to="/boards/help"> 문의 게시판</router-link>
     </nav>
     <div v-if="isLoggedIn">
-      <div> {{accountId}} 님 환영합니다</div>
+      <div> {{name}} 님 환영합니다</div>
       <button @click="logout">Logout</button>
     </div>
     <div v-else>
@@ -24,7 +24,7 @@ export default {
   name: "TheNavigator",
   data() {
     return {
-      accountId: ""
+      name: ""
     }
   },
   computed: {
@@ -34,10 +34,13 @@ export default {
   },
   created() {
     if (this.isLoggedIn) {
-      this.accountId = this.$store.getters.accountId;
+      this.name = this.$store.getters.name;
     }
   },
   methods: {
+    /**
+     * 로그아웃 하는 메서드
+     */
     logout() {
       this.$store.dispatch('logout');
     }

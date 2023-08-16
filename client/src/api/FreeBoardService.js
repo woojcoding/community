@@ -1,9 +1,29 @@
 import axios from "axios";
-
+import store from "@/store";
 
 const instance = axios.create({
     baseURL: process.env.VUE_APP_API_URL,
 })
+
+/**
+ *  getMapping을 제외한 axios요청 헤더에 토큰 부여
+ */
+instance.interceptors.request.use(
+    (config) => {
+        if (config.method !== "get") {
+            const accessToken = store.state.auth.token;
+
+            if (accessToken) {
+                config.headers.Authorization = accessToken;
+            }
+        }
+
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
 /**
  * 자유 게시글 가져오기 위해 axios 요청
@@ -30,13 +50,18 @@ export function loadFreeBoardList(boardSearch) {
 export function loadFreeBoard(boardId) {
     return instance.get(`/api/v1/boards/free/${boardId}`)
         .then((response) => {
-            console.log(response)
             return response.data;
         }).catch((error) => {
             throw error.response.data.message
         });
 }
 
+/**
+ * 파일 다운로드를 axios 요청 한 후 링크를 생성하여 body에 붙여주는 메서드
+ *
+ * @param fileId
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
 export function downloadFile(fileId) {
     return instance.get(`/api/v1/files/${fileId}`, {
         responseType: 'blob'
@@ -69,5 +94,22 @@ export function downloadFile(fileId) {
         })
 }
 
-
-
+/**
+ * 댓글을 작성하기 위해 axios 요청
+ *
+ * @param boardId
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
+export function postComment(boardId, comment) {
+    return instance.post(`/api/v1/boards/free/${boardId}/comment`, comment, {
+        headers: {
+            "Content-Type": "application/json"
+        },
+    })
+        .then((response) => {
+            return response.data;
+        })
+        .catch((error) => {
+            throw error.response.data.message;
+        });
+}

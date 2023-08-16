@@ -30,4 +30,9 @@ public class LoginDto {
      * 로그인 후 반환되는 엑세스토큰
      */
     private String accessToken;
+
+    /**
+     * 로그인 후 반환되는 유저 이름
+     */
+    private String name;
 }

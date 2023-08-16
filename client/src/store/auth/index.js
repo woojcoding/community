@@ -7,13 +7,13 @@ const instance = axios.create({
 export default {
     state() {
         return {
-            accountId: null,
+            name: null,
             token: null
         };
     },
     getters: {
-        accountId(state) {
-            return state.accountId;
+        name(state) {
+            return state.name;
         },
         token(state) {
             return state.token;
@@ -25,7 +25,7 @@ export default {
     mutations: {
         setUser(state, payload) {
             state.token = payload.token;
-            state.accountId = payload.accountId;
+            state.name = payload.name;
         }
     },
     actions: {
@@ -34,11 +34,11 @@ export default {
                 const response = await instance.post("/api/v1/login", payload);
 
                 localStorage.setItem('token', response.data.data.accessToken);
-                localStorage.setItem('accountId', response.data.data.accountId);
+                localStorage.setItem('name', response.data.data.name);
 
                 context.commit('setUser', {
                     token: response.data.data.accessToken,
-                    accountId: response.data.data.accountId
+                    name: response.data.data.name
                 });
 
                 alert(response.data.message);

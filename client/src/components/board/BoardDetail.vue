@@ -56,6 +56,12 @@ export default {
     },
   },
     methods: {
+      /**
+       * 파일을 다운르도하는 메서드
+       *
+       * @param fileId
+       * @returns {Promise<void>}
+       */
       async downloadFile(fileId) {
         try {
           await downloadFile(fileId);

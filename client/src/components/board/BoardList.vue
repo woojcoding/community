@@ -94,11 +94,21 @@ export default {
     }
   },
   computed: {
+    /**
+     * 게시글의 번호를 계산
+     *
+     * @returns {function(*)}
+     */
     calculatedNumber() {
       return index => this.totalBoardCount - ((this.boardSearch.pageNum - 1) * this.boardSearch.pageSize) - index + 1;
     }
   },
   methods: {
+    /**
+     * 게시글 상세보기 페이질로 이동하는 메서드
+     *
+     * @param boardId
+     */
     boardDetail(boardId) {
       this.$router.push({
         path: `/boards/${this.type}/${boardId}`,

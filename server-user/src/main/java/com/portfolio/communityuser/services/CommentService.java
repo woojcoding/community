@@ -14,6 +14,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
 
+    /**
+     * commentRepository 의존성 주입
+     */
     private final CommentRepository commentRepository;
 
     /**

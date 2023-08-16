@@ -99,7 +99,7 @@ public class JwtAuthenticationFilter
                 );
 
         LoginDto loginResultDto = LoginDto.builder()
-                .accountId(userDto.getAccountId())
+                .name(userDto.getName())
                 .accessToken("Bearer " + accessToken)
                 .build();
 

@@ -27,7 +27,6 @@ public class CommentDto {
      */
     private String adminId;
 
-
     /**
      * 게시글 ID
      */

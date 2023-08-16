@@ -5,7 +5,8 @@
         :file-list="fileListData"
     ></board-detail>
     <comment-form
-        :comment-list="commentListData">
+        :comment-list="commentListData"
+        :board-id="boardData.boardId">
     </comment-form>
   </div>
 </template>
@@ -29,6 +30,11 @@ export default {
     this.loadBoardData();
   },
   methods: {
+    /**
+     * 자유 게시글의 상세 정보를 가져오는 메서드
+     *
+     * @returns {Promise<void>}
+     */
     async loadBoardData() {
       try {
         const boardId = this.$route.params.boardId;

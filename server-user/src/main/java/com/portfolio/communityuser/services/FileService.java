@@ -26,6 +26,9 @@ public class FileService {
     @Value("${file.dir}")
     private String fileDir;
 
+    /**
+     * fileRepository 의존성 주입
+     */
     private final FileRepository fileRepository;
 
     /**

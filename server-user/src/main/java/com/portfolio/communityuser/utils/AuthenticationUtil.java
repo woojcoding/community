@@ -1,6 +1,5 @@
 package com.portfolio.communityuser.utils;
 
-import com.portfolio.communityuser.dtos.UserDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -18,6 +17,6 @@ public class AuthenticationUtil {
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
 
-        return ((UserDto) authentication.getPrincipal()).getAccountId();
+        return (String) authentication.getPrincipal();
     }
 }
