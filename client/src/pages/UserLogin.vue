@@ -34,9 +34,12 @@ export default {
         password: this.password,
       };
 
-      await this.$store.dispatch('login', actionPayload);
-
-      this.$router.push('/home');
+      try {
+        await this.$store.dispatch('login', actionPayload);
+        this.$router.push('/home');
+      } catch (error) {
+        alert(error);
+      }
     }
   }
 }

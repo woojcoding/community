@@ -8,6 +8,14 @@ import FreeBoardDetail from "@/pages/board/free/FreeBoardDetail";
 import FreeBoardModifyView from "@/pages/board/free/FreeBoardModifyView";
 import FreeBoardPostView from "@/pages/board/free/FreeBoardPostView";
 
+const requireAuth = (to, from, next) => {
+    if (store.getters.isAuthenticated) {
+        next();
+    } else {
+        next('/login');
+    }
+};
+
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes: [
@@ -31,7 +39,8 @@ const router = createRouter({
             component: FreeBoardPostView,
             props: (route) => ({
                 query: route.query
-            })
+            }),
+            beforeEnter: requireAuth
         },
         {
             path: '/boards/free/modify/:boardId',
@@ -39,7 +48,8 @@ const router = createRouter({
             props: (route) => ({
                 boardId: route.params.boardId,
                 query: route.query
-            })
+            }),
+            beforeEnter: requireAuth
         },
         {path: '/boards/notice', component: FreeBoardListView},
         {path: '/boards/gallery', component: FreeBoardListView},

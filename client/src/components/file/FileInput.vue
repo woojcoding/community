@@ -1,33 +1,43 @@
 <template>
-    <table>
-      <tr>
-        <td>첨부</td>
-        <td>
-          <!--<input type="file" name="files" style="display: none;"> -->
-          <table id="fileInputTable">
-            <tbody>
-            <tr>
-              <td v-if="type === 'free'">jpg, gif, png, zip 파일만 파일사이즈 2MB까지 업로드 가능합니다.</td>
-              <td v-if="type === 'gallery'">jpg, gif, png 파일만 파일사이즈 2MB까지 업로드 가능합니다.</td>
-            </tr>
-            <tr v-for="file in fileListData" :key="file.fileId">
-              <td>
-                <img v-if="file.thumbnailName" :src="'/thumbnails/' + file.thumbnailName" alt="thumbnail">
-                <a :href="'/api/v1/files/' + file.fileId">{{ file.originalName }}</a>
-              </td>
-              <td>
-                <button type="button" @click="removeFile(file.fileId)">X</button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <button type="button" @click="addFileInput">추가</button>
-        </td>
-      </tr>
-    </table>
+  <table>
+    <tr>
+      <td>첨부</td>
+      <td>
+        <!--<input type="file" name="files" style="display: none;"> -->
+        <table id="fileInputTable">
+          <tbody>
+          <tr>
+            <td v-if="type === 'free'">jpg, gif, png, zip 파일만 파일사이즈 2MB까지 업로드
+              가능합니다.
+            </td>
+            <td v-if="type === 'gallery'">jpg, gif, png 파일만 파일사이즈 2MB까지 업로드
+              가능합니다.
+            </td>
+          </tr>
+          <tr v-for="file in fileListData" :key="file.fileId">
+            <td>
+              <img v-if="file.thumbnailName"
+                   :src="'/thumbnails/' + file.thumbnailName" alt="thumbnail">
+              <a :id="'downloadTag_' + file.fileId"
+                 @click="downloadFile(file.fileId)">
+                <span>{{ file.originalName }}</span>
+              </a>
+            </td>
+            <td>
+              <button type="button" @click="removeFile(file.fileId)">X</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <button type="button" @click="addFileInput">추가</button>
+      </td>
+    </tr>
+  </table>
 </template>
 
 <script>
+import {downloadFile} from "@/api/FreeBoardService";
+
 export default {
   name: "FileInput",
   props: {
@@ -44,10 +54,11 @@ export default {
       description: '파일 리스트'
     },
   },
-  emits: ['files-updated'],
+  emits: ['files-updated', 'files-deleted'],
   data() {
     return {
       files: [],
+      deleteFileIds: [],
       MAX_FILES: this.type === 'gallery' ? 20 : 5,
       fileCount: this.fileListData ? this.fileListData.length : 0
     };
@@ -63,7 +74,7 @@ export default {
         return;
       }
 
-      const fileIndex = this.fileCount;
+      const fileIndex = this.files.length;
 
       const fileInputTable = document.getElementById('fileInputTable');
 
@@ -73,8 +84,7 @@ export default {
 
       const inputField = document.createElement('input');
       inputField.setAttribute('type', 'file');
-      inputField.setAttribute('name', 'files');
-      inputField.setAttribute('id', 'fileInput_' + this.fileCount);
+      inputField.setAttribute('id', 'fileInput_' + fileIndex);
       inputField.addEventListener('change', (event) => this.handleFileChange(event, fileIndex));
 
       if (this.type === 'gallery') {
@@ -153,14 +163,9 @@ export default {
 
       this.fileCount--;
 
-      // 숨겨진 input 필드에 값을 추가하여 서버로 전달
-      const deleteFileIdInput = document.createElement('input');
+      this.deleteFileIds.push(fileId);
 
-      deleteFileIdInput.setAttribute('type', 'hidden');
-      deleteFileIdInput.setAttribute('name', 'deleteFileIdList');
-      deleteFileIdInput.setAttribute('value', fileId);
-
-      document.getElementById('fileInputTable').appendChild(deleteFileIdInput);
+      this.$emit('files-deleted', this.deleteFileIds);
     },
     /**
      * 썸네일을 보여주기 위한 메서드
@@ -186,7 +191,20 @@ export default {
 
         reader.readAsDataURL(file);
       }
-    }
+    },
+    /**
+     * 파일을 다운르도하는 메서드
+     *
+     * @param fileId
+     * @returns {Promise<void>}
+     */
+    async downloadFile(fileId) {
+      try {
+        await downloadFile(fileId);
+      } catch (error) {
+        alert(error);
+      }
+    },
   },
 };
 </script>

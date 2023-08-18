@@ -21,6 +21,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -202,6 +203,72 @@ public class FreeBoardController {
                 .status(ApiStatus.SUCCESS)
                 .message(message)
                 .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 자유 게시글을 update
+     *
+     * @param boardId              게시글 Id
+     * @param boardDto      게시글 정보 Dto
+     * @param bindingResult        검증오류 보관 객체
+     * @return 작성된 게시글 페이지로 redirect
+     * @throws IOException the io exception
+     */
+    @PatchMapping("/boards/free/{boardId}")
+    public ResponseEntity<ApiResult> updateFreeBoard(
+            @PathVariable("boardId") Integer boardId,
+            @Validated(Free.class) @ModelAttribute
+            BoardDto boardDto,
+            BindingResult bindingResult
+    ) throws IOException {
+        // 유효성 검증 실패 시
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMessageBuilder = new StringBuilder();
+
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                errorMessageBuilder.append(fieldError.getDefaultMessage());
+                errorMessageBuilder.append("\n");
+            }
+
+            String combinedErrorMessage = errorMessageBuilder.toString();
+
+            ApiResult apiResult = ApiResult.builder()
+                    .status(ApiStatus.FAIL)
+                    .message(combinedErrorMessage)
+                    .build();
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(apiResult);
+        }
+
+        boardDto.setBoardId(boardId);
+
+        // 게시글 업데이트
+        freeBoardService.updateFreeBoard(boardDto);
+
+        // 파일 삭제 적용
+        fileService.deleteFiles(boardDto.getDeleteFileIdList());
+
+        // 파일 업로드 적용
+        MultipartFile[] files = boardDto.getFiles();
+
+        List<FileDto> fileDtoList = fileService.saveFiles(files, boardId);
+
+        fileService.uploadFiles(fileDtoList);
+
+        String message =
+                messageSource.getMessage("patch.board.success",
+                        null, LocaleContextHolder.getLocale());
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
                 .build();
 
         return ResponseEntity

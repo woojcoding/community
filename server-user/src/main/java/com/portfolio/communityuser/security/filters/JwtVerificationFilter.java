@@ -37,7 +37,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      * @throws IOException
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
 
         if (!Objects.isNull(authorization)) {
@@ -63,7 +67,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      * @throws ServletException
      */
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request)
+            throws ServletException {
         String authorization = request.getHeader("Authorization");
 
         return authorization == null || !authorization.startsWith("Bearer");

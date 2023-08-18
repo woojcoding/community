@@ -27,6 +27,8 @@
                b.title,
                b.content,
                b.views,
+               b.user_id,
+               b.category_id,
                c.name AS categoryName,
                b.created_at,
                COALESCE(a.name, u.name) AS writer

@@ -22,9 +22,9 @@
       </div>
     </div>
     <div class="buttons">
-      <button @click="list">목록</button>
-      <button @click="moveToModifyForm">수정</button>
-      <button>삭제</button>
+      <button @click="moveToList">목록</button>
+      <button v-if="isAuthorized" @click="moveToModifyForm">수정</button>
+      <button v-if="isAuthorized">삭제</button>
     </div>
   </div>
 </template>
@@ -53,6 +53,13 @@ export default {
       description: '파일 리스트'
     },
   },
+  computed: {
+    isAuthorized() {
+      const accountId = this.$store.getters.accountId;
+      
+      return this.board.userId === accountId;
+    },
+  },
   methods: {
     /**
      * 파일을 다운르도하는 메서드
@@ -66,6 +73,15 @@ export default {
       } catch (error) {
         alert(error);
       }
+    },
+    /**
+     * 목록으로 이동하는 메서드
+     */
+    moveToList() {
+      this.$router.push({
+        path: `/boards/free/`,
+        query: this.$route.query
+      });
     },
     /**
      * 수정폼으로 이동하는 메서드

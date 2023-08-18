@@ -56,7 +56,8 @@
     <file-input
         :type=type
         :file-list-data="fileListData"
-        @files-updated="updateFiles"></file-input>
+        @files-updated="updateFiles"
+        @files-deleted="deleteFiles"></file-input>
     <button type="submit">등록</button>
     <button @click="cancel">취소</button>
   </form>
@@ -98,18 +99,15 @@ export default {
   data() {
     return {
       board: {
-        categoryId: 'all'
+        categoryId: 'all',
       },
-      fileList: {},
       files: [],
+      deleteFileIds: [],
     }
   },
   created() {
     if (this.boardData) {
-      this.board = { ...this.boardData };
-    }
-    if (this.fileListData) {
-      this.fileList = { ...this.fileListData };
+      this.board = {...this.boardData};
     }
   },
   methods: {
@@ -117,7 +115,7 @@ export default {
      * 폼 데이터를 부모 컴포넌트로 emit하는 메서드
      */
     submitForm() {
-      this.$emit('save', this.board, this.files);
+      this.$emit('save', this.board, this.files, this.deleteFileIds);
     },
     /**
      * 취소를 눌러 게시글 목록으로 가는 메서드
@@ -137,6 +135,14 @@ export default {
      */
     updateFiles(newFiles) {
       this.files = newFiles
+    },
+    /**
+     * 자식 컴포넌트로 부터 삭제할 fileId를 받아 데이터를 반영하는 메서드
+     *
+     * @param deleteFileIds
+     */
+    deleteFiles(deleteFileIds) {
+      this.deleteFileIds = deleteFileIds;
     }
   }
 }

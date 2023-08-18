@@ -129,13 +129,33 @@ export function postComment(boardId, comment) {
 }
 
 /**
- * 자우 게시글을 작성하기 위해 axios 요청
+ * 자유 게시글을 작성하기 위해 axios 요청
  *
  * @param formData
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
 export function postFreeBoard(formData) {
     return instance.post("/api/v1/board/free", formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then((response) => {
+        console.log(response.data)
+        return response.data;
+    }).catch((error) => {
+        throw error.response.data.message;
+    });
+}
+
+/**
+ * 자유 게시글을 수정하기 위해 axios 요청
+ *
+ * @param formData
+ * @param boardId
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
+export function patchFreeBoard(formData, boardId) {
+    return instance.patch(`/api/v1/boards/free/${boardId}`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }

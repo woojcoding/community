@@ -1,7 +1,7 @@
 <template>
   <h2>자유 게시판</h2>
   <search-form></search-form>
-  <button @click="moveToWriteForm">글등록</button>
+  <button v-if="isLoggedIn" @click="moveToWriteForm">글등록</button>
   <board-list :type="type"
               :board-list="boardList"
               :total-board-count="totalBoardCount"
@@ -18,6 +18,11 @@ export default {
   components: {SearchForm, BoardList},
   props: {
     type: String,
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
   },
   data() {
     return {

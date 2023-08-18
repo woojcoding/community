@@ -7,11 +7,15 @@ const instance = axios.create({
 export default {
     state() {
         return {
+            accountId: null,
             name: null,
             token: null
         };
     },
     getters: {
+        accountId(state) {
+            return state.accountId;
+        },
         name(state) {
             return state.name;
         },
@@ -24,6 +28,7 @@ export default {
     },
     mutations: {
         setUser(state, payload) {
+            state.accountId = payload.accountId;
             state.token = payload.token;
             state.name = payload.name;
         }
@@ -33,31 +38,21 @@ export default {
             try {
                 const response = await instance.post("/api/v1/login", payload);
 
-                localStorage.setItem('token', response.data.data.accessToken);
-                localStorage.setItem('name', response.data.data.name);
-
                 context.commit('setUser', {
-                    token: response.data.data.accessToken,
-                    name: response.data.data.name
+                    accountId: response.data.data.accountId,
+                    name: response.data.data.name,
+                    token: response.data.data.accessToken
                 });
-
                 alert(response.data.message);
             } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    alert(error.response.data.message);
-                } else {
-                    alert('잠시 후 다시 시도해주세요.');
-                }
+                throw error.response.data.message
             }
         },
         logout(context) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('userId');
-            localStorage.removeItem('tokenExpiration');
-
             context.commit('setUser', {
-                token: null,
-                userId: null
+                accountId: null,
+                name: null,
+                token: null
             });
         },
     }

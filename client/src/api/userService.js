@@ -42,4 +42,3 @@ export function signUpUser(userDto) {
             throw error.response.data.message
         });
 }
-
