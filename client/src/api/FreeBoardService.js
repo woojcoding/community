@@ -57,6 +57,20 @@ export function loadFreeBoard(boardId) {
 }
 
 /**
+ * 자유게시글의 카테고리를 조회하기 위해 axios 요청
+ *
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
+export function loadFreeBoardCategory() {
+    return instance.get(`/api/v1/boards/free/category`)
+        .then((response) => {
+            return response.data;
+        }).catch((error) => {
+            throw error.response.data.message
+        });
+}
+
+/**
  * 파일 다운로드를 axios 요청 한 후 링크를 생성하여 body에 붙여주는 메서드
  *
  * @param fileId
@@ -112,4 +126,23 @@ export function postComment(boardId, comment) {
         .catch((error) => {
             throw error.response.data.message;
         });
+}
+
+/**
+ * 자우 게시글을 작성하기 위해 axios 요청
+ *
+ * @param formData
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
+export function postFreeBoard(formData) {
+    return instance.post("/api/v1/board/free", formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then((response) => {
+        console.log(response.data)
+        return response.data;
+    }).catch((error) => {
+        throw error.response.data.message;
+    });
 }

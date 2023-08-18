@@ -5,6 +5,8 @@ import CommunityHome from "@/pages/CommunityHome";
 import store from "@/store/index"
 import FreeBoardListView from "@/pages/board/free/FreeBoardListView";
 import FreeBoardDetail from "@/pages/board/free/FreeBoardDetail";
+import FreeBoardModifyView from "@/pages/board/free/FreeBoardModifyView";
+import FreeBoardPostView from "@/pages/board/free/FreeBoardPostView";
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
@@ -19,6 +21,21 @@ const router = createRouter({
         {
             path: '/boards/free/:boardId',
             component: FreeBoardDetail,
+            props: (route) => ({
+                boardId: route.params.boardId,
+                query: route.query
+            })
+        },
+        {
+            path: '/boards/free/post',
+            component: FreeBoardPostView,
+            props: (route) => ({
+                query: route.query
+            })
+        },
+        {
+            path: '/boards/free/modify/:boardId',
+            component: FreeBoardModifyView,
             props: (route) => ({
                 boardId: route.params.boardId,
                 query: route.query

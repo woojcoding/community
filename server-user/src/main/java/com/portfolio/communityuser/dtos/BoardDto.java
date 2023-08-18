@@ -87,7 +87,7 @@ public class BoardDto {
     /**
      * 파일들
      */
-    private MultipartFile[] files;
+    private MultipartFile[] files = new MultipartFile[0];
 
     /**
      * 삭제할 파일 ID 목록

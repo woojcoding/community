@@ -23,9 +23,7 @@
     </div>
     <div class="buttons">
       <button @click="list">목록</button>
-      <router-link :to="{ path: '/board/free/modify', query: this.$route.query }">
-        <button>수정</button>
-      </router-link>
+      <button @click="moveToModifyForm">수정</button>
       <button>삭제</button>
     </div>
   </div>
@@ -55,22 +53,33 @@ export default {
       description: '파일 리스트'
     },
   },
-    methods: {
-      /**
-       * 파일을 다운르도하는 메서드
-       *
-       * @param fileId
-       * @returns {Promise<void>}
-       */
-      async downloadFile(fileId) {
-        try {
-          await downloadFile(fileId);
-        } catch (error) {
-          alert(error);
-        }
+  methods: {
+    /**
+     * 파일을 다운르도하는 메서드
+     *
+     * @param fileId
+     * @returns {Promise<void>}
+     */
+    async downloadFile(fileId) {
+      try {
+        await downloadFile(fileId);
+      } catch (error) {
+        alert(error);
       }
+    },
+    /**
+     * 수정폼으로 이동하는 메서드
+     */
+    moveToModifyForm() {
+      const boardId = this.board.boardId;
+
+      this.$router.push({
+        path: `/boards/free/modify/${boardId}`,
+        query: this.$route.query
+      });
     }
   }
+}
 </script>
 
 <style scoped>

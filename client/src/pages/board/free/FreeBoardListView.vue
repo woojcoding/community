@@ -1,6 +1,7 @@
 <template>
   <h2>자유 게시판</h2>
   <search-form></search-form>
+  <button @click="moveToWriteForm">글등록</button>
   <board-list :type="type"
               :board-list="boardList"
               :total-board-count="totalBoardCount"
@@ -47,8 +48,17 @@ export default {
         console.log(error);
         alert(error);
       }
+    },
+    /**
+     * 작성폼으로 이동하는 메서드
+     */
+    moveToWriteForm() {
+      this.$router.push({
+        path: "/boards/free/post",
+        query: this.$route.query
+      });
     }
-  }
+  },
 };
 </script>
 
