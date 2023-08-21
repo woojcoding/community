@@ -9,6 +9,10 @@ import FreeBoardModifyView from "@/pages/board/free/FreeBoardModifyView";
 import FreeBoardPostView from "@/pages/board/free/FreeBoardPostView";
 import NoticeBoardListView from "@/pages/board/notice/NoticeBoardListView";
 import NoticeBoardDetail from "@/pages/board/notice/NoticeBoardDetail";
+import HelpBoardListView from "@/pages/board/help/HelpBoardListView";
+import HelpBoardDetail from "@/pages/board/help/HelpBoardDetail";
+import HelpBoardPostView from "@/pages/board/help/HelpBoardPostView";
+import HelpBoardModifyView from "@/pages/board/help/HelpBoardModifyView";
 
 const requireAuth = (to, from, next) => {
     if (store.getters.isAuthenticated) {
@@ -67,7 +71,36 @@ const router = createRouter({
             })
         },
         {path: '/boards/gallery', component: FreeBoardListView},
-        {path: '/boards/help', component: FreeBoardListView},
+        {
+            path: '/boards/help',
+            component: HelpBoardListView,
+            props: {type: "help"}
+        },
+        {
+            path: '/boards/help/:boardId',
+            component: HelpBoardDetail,
+            props: (route) => ({
+                boardId: route.params.boardId,
+                query: route.query
+            })
+        },
+        {
+            path: '/boards/help/post',
+            component: HelpBoardPostView,
+            props: (route) => ({
+                query: route.query
+            }),
+            beforeEnter: requireAuth
+        },
+        {
+            path: '/boards/help/modify/:boardId',
+            component: HelpBoardModifyView,
+            props: (route) => ({
+                boardId: route.params.boardId,
+                query: route.query
+            }),
+            beforeEnter: requireAuth
+        },
         {path: '/home', component: CommunityHome},
     ]
 })
