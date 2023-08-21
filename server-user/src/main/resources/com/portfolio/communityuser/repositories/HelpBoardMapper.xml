@@ -10,6 +10,7 @@
                b.created_at,
                b.views,
                b.answer,
+               b.user_id,
                b.answered_at,
                b.secret_flag,
                u.name as writer,
