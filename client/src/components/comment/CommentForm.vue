@@ -18,7 +18,7 @@
 import {postComment} from "@/api/FreeBoardService";
 
 export default {
-  name: "commentForm",
+  name: "CommentForm",
   props: {
     commentList: {
       type: Array,

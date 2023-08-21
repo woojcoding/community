@@ -10,17 +10,20 @@
         <td>작성자</td>
       </tr>
       <!-- notice 인 경우에만 랜더링 -->
-      <tr v-if="type === 'notice' && notificationList">
-        <td></td>
-        <td>알림</td>
-        <td v-for="notification in notificationList"
-            :key="notification.boardId">
-          <a
-              :href="generateLink(notification)"
-              style="text-decoration:none;"
-          >{{ notification.title }}</a>
-        </td>
-      </tr>
+      <template v-if="type === 'notice' && notificationList">
+        <tr v-for="notification in notificationList" :key="notification.boardId">
+          <td></td>
+          <td>알림</td>
+          <td>
+            <a @click="boardDetail(notification.boardId)">
+              {{ notification.title }}
+            </a>
+          </td>
+          <td>{{ notification.views }}</td>
+          <td>{{ notification.createdAt }}</td>
+          <td>{{ notification.writer }}</td>
+        </tr>
+      </template>
       <tr v-for="(board, index) in boardList" :key="board.boardId">
         <td>{{ calculatedNumber(index) }}</td>
         <td v-if="type !== 'help'">{{ board.categoryName }}</td>
@@ -52,6 +55,12 @@
 export default {
   name: "BoardList",
   props: {
+    notificationList: {
+      type: Array,
+      default: undefined,
+      required: false,
+      description: '알림글 리스트'
+    },
     boardList: {
       type: Array,
       default: undefined,

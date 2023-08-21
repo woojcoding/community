@@ -7,6 +7,8 @@ import FreeBoardListView from "@/pages/board/free/FreeBoardListView";
 import FreeBoardDetail from "@/pages/board/free/FreeBoardDetail";
 import FreeBoardModifyView from "@/pages/board/free/FreeBoardModifyView";
 import FreeBoardPostView from "@/pages/board/free/FreeBoardPostView";
+import NoticeBoardListView from "@/pages/board/notice/NoticeBoardListView";
+import NoticeBoardDetail from "@/pages/board/notice/NoticeBoardDetail";
 
 const requireAuth = (to, from, next) => {
     if (store.getters.isAuthenticated) {
@@ -51,7 +53,19 @@ const router = createRouter({
             }),
             beforeEnter: requireAuth
         },
-        {path: '/boards/notice', component: FreeBoardListView},
+        {
+            path: '/boards/notice',
+            component: NoticeBoardListView,
+            props: {type: "notice"}
+        },
+        {
+            path: '/boards/notice/:boardId',
+            component: NoticeBoardDetail,
+            props: (route) => ({
+                boardId: route.params.boardId,
+                query: route.query
+            })
+        },
         {path: '/boards/gallery', component: FreeBoardListView},
         {path: '/boards/help', component: FreeBoardListView},
         {path: '/home', component: CommunityHome},

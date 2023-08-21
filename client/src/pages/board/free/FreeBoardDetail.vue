@@ -14,7 +14,7 @@
 <script>
 import BoardDetail from "@/components/board/BoardDetail";
 import {loadFreeBoard} from "@/api/FreeBoardService";
-import CommentForm from "@/components/comment/commentForm";
+import CommentForm from "@/components/comment/CommentForm";
 
 export default {
   name: "FreeBoardDetail",
