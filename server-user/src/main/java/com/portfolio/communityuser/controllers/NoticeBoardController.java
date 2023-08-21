@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
@@ -70,6 +71,39 @@ public class NoticeBoardController {
         data.put("notificationList", notificationDtoList);
         data.put("boardList", boardDtoList);
         data.put("totalBoardCount", totalBoardCount);
+        data.put("categoryList", categoryList);
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 게시글 상세보기를 가져오는 메서드
+     *
+     * @param boardId 게시글 Id
+     * @return writeView 반환
+     */
+    @GetMapping("/boards/notice/{boardId}")
+    public ResponseEntity<ApiResult> getNoticeBoard(
+            @PathVariable("boardId") Integer boardId
+    ) {
+        noticeBoardService.updateViews(boardId);
+
+        // 게시글 정보를 조회
+        BoardDto boardDto =
+                noticeBoardService.getNoticeBoard(boardId);
+
+        List<CategoryDto> categoryList =
+                categoryService.getCategoryList(BoardType.NOTICE);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("board", boardDto);
         data.put("categoryList", categoryList);
 
         ApiResult apiResult = ApiResult.builder()

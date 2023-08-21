@@ -24,5 +24,5 @@ public interface NoticeBoardMapper {
      * @param boardId 게시글 Id
      * @return boardDto 게시글 정보
      */
-    BoardDto getNoticeBoard(String boardId);
+    BoardDto getNoticeBoard(int boardId);
 }

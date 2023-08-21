@@ -69,7 +69,16 @@ public class NoticeBoardService {
      * @param boardId
      * @return boardDto 공지글 정보
      */
-    public BoardDto getNoticeBoard(String boardId) {
+    public BoardDto getNoticeBoard(int boardId) {
         return noticeBoardRepository.getNoticeBoard(boardId);
+    }
+
+    /**
+     * 게시글의 조회수를 1 증가시키는 메서드
+     *
+     * @param boardId 게시글 Id
+     */
+    public void updateViews(int boardId) {
+        noticeBoardRepository.updateViews(boardId);
     }
 }
