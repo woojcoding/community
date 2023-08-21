@@ -12,8 +12,8 @@
 <script>
 import BoardWriteForm from "@/components/board/BoardWriteForm";
 import {
-  loadFreeBoard,
   loadFreeBoardCategory,
+  loadFreeBoardForModify,
   patchFreeBoard
 } from "@/api/FreeBoardService";
 
@@ -41,7 +41,7 @@ export default {
       try {
         const boardId = this.$route.params.boardId;
 
-        const response = await loadFreeBoard(boardId);
+        const response = await loadFreeBoardForModify(boardId);
 
         this.boardData = response.data.board;
         this.fileListData = response.data.fileList;

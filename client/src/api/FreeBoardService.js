@@ -57,6 +57,24 @@ export function loadFreeBoard(boardId) {
 }
 
 /**
+ * 자유게시글 수정을 위한 데이터를 axios 요청
+ *
+ * @param boardId
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
+export function loadFreeBoardForModify(boardId) {
+    return instance.get(`/api/v1/boards/free/modify/${boardId}`, {
+        headers: {
+            Authorization: store.state.auth.token
+        }
+    }).then((response) => {
+        return response.data;
+    }).catch((error) => {
+        throw error.response.data.message
+    });
+}
+
+/**
  * 자유게시글의 카테고리를 조회하기 위해 axios 요청
  *
  * @returns {Promise<axios.AxiosResponse<any>>}

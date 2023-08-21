@@ -67,7 +67,7 @@ public class FreeBoardService {
     /**
      * 자유 게시글을 작성하는 메서드
      *
-     * @param boardDto
+     * @param boardDto 게시글 정보
      */
     public void postFreeBoard(BoardDto boardDto) {
         boardDto.setType(BoardType.FREE);
@@ -86,9 +86,18 @@ public class FreeBoardService {
     }
 
     /**
+     * 게시글의 조회수를 1 증가시키는 메서드
+     *
+     * @param boardId 게시글 Id
+     */
+    public void updateViews(int boardId) {
+        freeBoardRepository.updateViews(boardId);
+    }
+
+    /**
      * 게시글을 삭제하는 메서드
      *
-     * @param boardId
+     * @param boardId 게시글 Id
      */
     public void deleteFreeBoard(int boardId) {
         freeBoardRepository.deleteFreeBoard(boardId);

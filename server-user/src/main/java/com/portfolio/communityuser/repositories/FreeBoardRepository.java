@@ -83,4 +83,13 @@ public class FreeBoardRepository {
     public void deleteFreeBoard(int boardId) {
         boardMapper.deleteBoard(boardId);
     }
+
+    /**
+     * 게시글의 조회수를 1 증가시키는 메서드
+     *
+     * @param boardId 게시글 Id
+     */
+    public void updateViews(int boardId) {
+        boardMapper.updateViews(boardId);
+    }
 }

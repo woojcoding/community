@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -113,10 +114,11 @@ public class FreeBoardController {
     public ResponseEntity<ApiResult> getFreeBoard(
             @PathVariable("boardId") Integer boardId
     ) {
+        freeBoardService.updateViews(boardId);
+
         // 게시글 정보를 조회
         BoardDto boardDto =
                 freeBoardService.getFreeBoard(boardId);
-
         List<FileDto> fileDtoList = fileService.getFileList(boardId);
 
         List<CommentDto> commentList =
@@ -142,10 +144,54 @@ public class FreeBoardController {
     }
 
     /**
+     * 게시글을 수정하기 위해 정보를 가져오는 메서드
+     *
+     * @param boardId 게시글 Id
+     * @return writeView 반환
+     * @throws AccessDeniedException 다른 사용자의 수정페이지에 접근할 경우 던지는 예외
+     */
+    @GetMapping("/boards/free/modify/{boardId}")
+    public ResponseEntity<ApiResult> getFreeBoardForModify(
+            @PathVariable("boardId") Integer boardId
+    ) {
+        // 게시글 정보를 조회
+        BoardDto boardDto =
+                freeBoardService.getFreeBoard(boardId);
+
+        // 본인 글만 업데이트 페이지에 올 수 있도록 예외 처리
+        String boardUserId = boardDto.getUserId();
+
+        String userId = AuthenticationUtil.getAccountId();
+
+        if ((boardUserId == null || !boardUserId.equals(userId))) {
+            throw new AccessDeniedException("access.denied");
+        }
+
+        List<FileDto> fileDtoList = fileService.getFileList(boardId);
+
+        List<CategoryDto> categoryList =
+                categoryService.getCategoryList(BoardType.FREE);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("board", boardDto);
+        data.put("fileList", fileDtoList);
+        data.put("categoryList", categoryList);
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
      * 자유 게시글을 post
      *
      * @param boardDto      게시글 정보 Dto
-     * @param bindingResult        검증오류 보관 객체
+     * @param bindingResult 검증오류 보관 객체
      * @return 작성된 게시글 페이지로 redirect
      * @throws IOException the io exception
      */
@@ -213,9 +259,9 @@ public class FreeBoardController {
     /**
      * 자유 게시글을 update
      *
-     * @param boardId              게시글 Id
+     * @param boardId       게시글 Id
      * @param boardDto      게시글 정보 Dto
-     * @param bindingResult        검증오류 보관 객체
+     * @param bindingResult 검증오류 보관 객체
      * @return 작성된 게시글 페이지로 redirect
      * @throws IOException the io exception
      */
@@ -247,7 +293,14 @@ public class FreeBoardController {
                     .body(apiResult);
         }
 
-        boardDto.setBoardId(boardId);
+        // 본인 글만 업데이트 가능하도록 예외처리
+        String boardUserId = boardDto.getUserId();
+
+        String userId = AuthenticationUtil.getAccountId();
+
+        if ((boardUserId == null || !boardUserId.equals(userId))) {
+            throw new AccessDeniedException("access.denied");
+        }
 
         // 게시글 업데이트
         freeBoardService.updateFreeBoard(boardDto);
@@ -279,7 +332,7 @@ public class FreeBoardController {
     /**
      * 댓글을 작성하는 메서드
      *
-     * @param boardId 게시글 Id
+     * @param boardId    게시글 Id
      * @param commentDto 댓글정보
      * @return ResponseEntity<ApiResult>
      */

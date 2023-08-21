@@ -9,9 +9,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class AuthenticationUtil {
 
     /**
-     * SecurityContextHoler에서 현재 인증된 어드민의 id를 가져오는 메서드
+     * SecurityContextHoler에서 현재 인증된 유저의 id를 가져오는 메서드
      *
-     * @return the admin id
+     * @return the userId
      */
     public static String getAccountId() {
         Authentication authentication =

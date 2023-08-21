@@ -33,4 +33,11 @@ public interface BoardMapper {
      * @param boardId
      */
     void deleteBoard(int boardId);
+
+    /**
+     * 게시글의 조회수를 1 증가시키는 메서드
+     *
+     * @param boardId 게시글 Id
+     */
+    void updateViews(int boardId);
 }

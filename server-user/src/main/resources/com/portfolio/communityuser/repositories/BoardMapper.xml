@@ -130,4 +130,11 @@
         </if>
     </where>
     </sql>
+
+    <!-- 게시글의 조회수를 1 증가 -->
+    <update id="updateViews">
+        UPDATE board
+        SET views = views + 1
+        WHERE board_id = #{boardId}
+    </update>
 </mapper>
