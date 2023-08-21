@@ -96,8 +96,13 @@ public class FreeBoardController {
         data.put("totalBoardCount", totalBoardCount);
         data.put("categoryList", categoryList);
 
+        String message =
+                messageSource.getMessage("get.boardList.success",
+                        null, LocaleContextHolder.getLocale());
+
         ApiResult apiResult = ApiResult.builder()
                 .status(ApiStatus.SUCCESS)
+                .message(message)
                 .data(data)
                 .build();
 
@@ -135,8 +140,13 @@ public class FreeBoardController {
         data.put("commentList", commentList);
         data.put("categoryList", categoryList);
 
+        String message =
+                messageSource.getMessage("get.board.success",
+                        null, LocaleContextHolder.getLocale());
+
         ApiResult apiResult = ApiResult.builder()
                 .status(ApiStatus.SUCCESS)
+                .message(message)
                 .data(data)
                 .build();
 
@@ -179,8 +189,13 @@ public class FreeBoardController {
         data.put("fileList", fileDtoList);
         data.put("categoryList", categoryList);
 
+        String message =
+                messageSource.getMessage("get.board.success",
+                        null, LocaleContextHolder.getLocale());
+
         ApiResult apiResult = ApiResult.builder()
                 .status(ApiStatus.SUCCESS)
+                .message(message)
                 .data(data)
                 .build();
 
@@ -411,8 +426,13 @@ public class FreeBoardController {
         Map<String, Object> data = new HashMap<>();
         data.put("categoryList", categoryList);
 
+        String message =
+                messageSource.getMessage("get.category.success",
+                        null, LocaleContextHolder.getLocale());
+
         ApiResult apiResult = ApiResult.builder()
                 .status(ApiStatus.SUCCESS)
+                .message(message)
                 .data(data)
                 .build();
 

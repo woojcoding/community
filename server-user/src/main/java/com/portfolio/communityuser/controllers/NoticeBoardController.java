@@ -8,6 +8,7 @@ import com.portfolio.communityuser.services.CategoryService;
 import com.portfolio.communityuser.services.NoticeBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -73,8 +74,13 @@ public class NoticeBoardController {
         data.put("totalBoardCount", totalBoardCount);
         data.put("categoryList", categoryList);
 
+        String message =
+                messageSource.getMessage("get.boardList.success",
+                        null, LocaleContextHolder.getLocale());
+
         ApiResult apiResult = ApiResult.builder()
                 .status(ApiStatus.SUCCESS)
+                .message(message)
                 .data(data)
                 .build();
 
@@ -106,8 +112,13 @@ public class NoticeBoardController {
         data.put("board", boardDto);
         data.put("categoryList", categoryList);
 
+        String message =
+                messageSource.getMessage("get.board.success",
+                        null, LocaleContextHolder.getLocale());
+
         ApiResult apiResult = ApiResult.builder()
                 .status(ApiStatus.SUCCESS)
+                .message(message)
                 .data(data)
                 .build();
 
