@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -379,7 +380,7 @@ public class FreeBoardController {
     @PostMapping("/boards/free/{boardId}/comment")
     public ResponseEntity<ApiResult> postComment(
             @PathVariable("boardId") int boardId,
-            @RequestBody CommentDto commentDto
+            @Valid @RequestBody CommentDto commentDto
     ) {
         String userId = AuthenticationUtil.getAccountId();
 

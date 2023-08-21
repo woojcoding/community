@@ -43,30 +43,33 @@ public class BoardDto {
      * 카테고리 ID는 "all"을 제외한 다른 값을 가져야 합니다.
      */
     @Pattern(regexp = "^(?!all$).*$",
-            groups = {Free.class, Notice.class, Gallery.class})
+            groups = {Free.class, Notice.class, Gallery.class},
+            message = "{pattern.boardDto.categoryId}")
     private String categoryId;
 
     /**
      * 제목
      */
-    @NotBlank(groups = {Free.class, Notice.class, Gallery.class, Help.class})
+    @NotBlank(groups = {Free.class, Notice.class, Gallery.class, Help.class},
+            message = "{notBlank.boardDto.title}")
     @Size(max = 100,
-            groups = {Free.class, Notice.class, Gallery.class, Help.class})
+            groups = {Free.class, Notice.class, Gallery.class, Help.class},
+            message = "{size.boardDto.title}")
     private String title;
 
     /**
      * 내용
      */
-    @NotBlank(groups = {Free.class, Notice.class, Gallery.class, Help.class})
+    @NotBlank(groups = {Free.class, Notice.class, Gallery.class, Help.class},
+            message = "{notBlank.boardDto.content}")
     @Size(max = 4000,
-            groups = {Free.class, Notice.class, Gallery.class, Help.class})
+            groups = {Free.class, Notice.class, Gallery.class, Help.class},
+            message = "{size.boardDto.content}")
     private String content;
 
     /**
      * 답변
      */
-    @NotBlank(groups = Help.class)
-    @Size(max = 4000, groups = Help.class)
     private String answer;
 
     /**

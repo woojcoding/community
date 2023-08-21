@@ -20,25 +20,25 @@ public class UserDto implements UserDetails {
     /**
      * 계정 Id
      */
-    @NotBlank(message = "{NotBlank.userDto.accountId}")
-    @Size(min = 4, max = 11, message = "{Size.userDto.accountId}")
-    @Pattern(regexp = "^[a-zA-Z0-9-_]+$", message = "{Pattern.userDto.accountId}")
+    @NotBlank(message = "{notBlank.userDto.accountId}")
+    @Size(min = 4, max = 11, message = "{size.userDto.accountId}")
+    @Pattern(regexp = "^[a-zA-Z0-9-_]+$", message = "{pattern.userDto.accountId}")
     private String accountId;
 
     /**
      * 패스워드
      */
-    @NotBlank(message = "{NotBlank.userDto.password}")
-    @Size(min = 4, max = 11, message = "{Size.userDto.password}")
+    @NotBlank(message = "{notBlank.userDto.password}")
+    @Size(min = 4, max = 11, message = "{size.userDto.password}")
     @Pattern(regexp = "^(?!.*(.)\\1\\1)[a-zA-Z0-9!@#$%^&*()-_+=]{4,11}$",
-            message = "{Pattern.userDto.password}")
+            message = "{pattern.userDto.password}")
     private String password;
 
     /**
      * 이름
      */
-    @NotBlank(message = "{NotBlank.userDto.name}")
-    @Size(min = 2, max = 4, message = "{Size.userDto.name}")
+    @NotBlank(message = "{notBlank.userDto.name}")
+    @Size(min = 2, max = 4, message = "{size.userDto.name}")
     private String name;
 
     @Override

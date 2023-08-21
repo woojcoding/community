@@ -35,7 +35,7 @@ public class CommentDto {
     /**
      * 본문 내용
      */
-    @NotBlank
+    @NotBlank(message = "{notBlank.commentDto.content}")
     private String content;
 
     /**

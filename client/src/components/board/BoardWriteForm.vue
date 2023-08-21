@@ -100,6 +100,8 @@ export default {
     return {
       board: {
         categoryId: 'all',
+        title: '',
+        content: ''
       },
       files: [],
       deleteFileIds: [],
@@ -112,9 +114,42 @@ export default {
   },
   methods: {
     /**
+     * 유효성 검증을 하는 메서드
+     *
+     * @returns {boolean}
+     */
+    validateForm() {
+      const errorMessages = [];
+
+      if (this.board.categoryId === 'all') {
+        errorMessages.push('카테고리를 선택해주세요.');
+      }
+      if (!this.board.title) {
+        errorMessages.push('제목은 필수 입력 사항입니다.');
+      } else if (this.board.title.length > 100) {
+        errorMessages.push('제목은 100자를 초과할 수 없습니다.');
+      }
+      if (!this.board.content) {
+        errorMessages.push('내용은 필수 입력 사항입니다.');
+      } else if (this.board.content.length > 4000) {
+        errorMessages.push('내용은 4000자를 초과할 수 없습니다.');
+      }
+
+      if (errorMessages.length > 0) {
+        alert(errorMessages.join('\n'));
+        return false;
+      }
+
+      return true;
+    },
+    /**
      * 폼 데이터를 부모 컴포넌트로 emit하는 메서드
      */
     submitForm() {
+      // 클라이언트 측 유효성 검증
+      if (!this.validateForm()) {
+        return; // 유효성 검증 실패 시 전송하지 않음
+      }
       this.$emit('save', this.board, this.files, this.deleteFileIds);
     },
     /**
