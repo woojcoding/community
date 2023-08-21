@@ -20,6 +20,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -195,7 +196,7 @@ public class FreeBoardController {
      * @return 작성된 게시글 페이지로 redirect
      * @throws IOException the io exception
      */
-    @PostMapping("/board/free")
+    @PostMapping("/boards/free")
     public ResponseEntity<ApiResult> postFreeBoard(
             @Validated(Free.class) @ModelAttribute
             BoardDto boardDto,
@@ -317,6 +318,45 @@ public class FreeBoardController {
 
         String message =
                 messageSource.getMessage("patch.board.success",
+                        null, LocaleContextHolder.getLocale());
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 자유 게시글을 삭제하는 메서드
+     *
+     * @param boardId              게시글 Id
+
+     * @return 삭제 후 게시글 목록으로 이동
+     */
+    @DeleteMapping("/boards/free/{boardId}")
+    public ResponseEntity<ApiResult> deleteFreeBoard(
+            @PathVariable("boardId") int boardId
+    ) {
+        // 본인 글만 삭제 가능하도록 예외처리
+        BoardDto boardDto = freeBoardService.getFreeBoard(boardId);
+
+        String boardUserId = boardDto.getUserId();
+
+        String userId = AuthenticationUtil.getAccountId();
+
+        if ((boardUserId == null || !boardUserId.equals(userId))) {
+            throw new AccessDeniedException("access.denied");
+        }
+
+        // 게시글을 삭제
+        freeBoardService.deleteFreeBoard(boardId);
+
+        String message =
+                messageSource.getMessage("delete.board.success",
                         null, LocaleContextHolder.getLocale());
 
         ApiResult apiResult = ApiResult.builder()

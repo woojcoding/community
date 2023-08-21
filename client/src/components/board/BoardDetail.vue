@@ -24,13 +24,13 @@
     <div class="buttons">
       <button @click="moveToList">목록</button>
       <button v-if="isAuthorized" @click="moveToModifyForm">수정</button>
-      <button v-if="isAuthorized">삭제</button>
+      <button v-if="isAuthorized" @click="confirmDelete">삭제</button>
     </div>
   </div>
 </template>
 
 <script>
-import {downloadFile} from "@/api/FreeBoardService";
+import {deleteFreeBoard, downloadFile} from "@/api/FreeBoardService";
 
 export default {
   name: "BoardDetail",
@@ -56,7 +56,7 @@ export default {
   computed: {
     isAuthorized() {
       const accountId = this.$store.getters.accountId;
-      
+
       return this.board.userId === accountId;
     },
   },
@@ -93,6 +93,32 @@ export default {
         path: `/boards/free/modify/${boardId}`,
         query: this.$route.query
       });
+    },
+    /**
+     * 삭제 여부를 물어보는 메서드
+     */
+    confirmDelete() {
+      if (confirm("정말로 삭제하시겠습니까?")) {
+        this.deleteBoard();
+      }
+    },
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @returns {Promise<void>}
+     */
+    async deleteBoard() {
+      const boardId = this.board.boardId;
+
+      try {
+        const response = await deleteFreeBoard(boardId)
+
+        alert(response.message);
+
+        this.moveToList();
+      } catch (error) {
+        alert(error);
+      }
     }
   }
 }
