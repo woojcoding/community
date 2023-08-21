@@ -13,7 +13,7 @@
 
 <script>
 import BoardDetail from "@/components/board/BoardDetail";
-import {loadFreeBoard} from "@/api/FreeBoardService";
+import {loadFreeBoard} from "@/api/freeBoardService";
 import CommentForm from "@/components/comment/CommentForm";
 
 export default {

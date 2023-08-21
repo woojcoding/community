@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import {deleteFreeBoard, downloadFile} from "@/api/FreeBoardService";
+import {deleteFreeBoard, downloadFile} from "@/api/freeBoardService";
 
 export default {
   name: "BoardDetail",

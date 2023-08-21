@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import {downloadFile} from "@/api/FreeBoardService";
+import {downloadFile} from "@/api/freeBoardService";
 
 export default {
   name: "FileInput",

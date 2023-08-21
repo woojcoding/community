@@ -8,7 +8,7 @@
 
 <script>
 import BoardWriteForm from "@/components/board/BoardWriteForm";
-import {loadFreeBoardCategory, postFreeBoard} from "@/api/FreeBoardService";
+import {loadFreeBoardCategory, postFreeBoard} from "@/api/freeBoardService";
 
 export default {
   name: "FreeBoardModifyView",

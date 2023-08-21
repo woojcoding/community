@@ -15,7 +15,7 @@ import {
   loadFreeBoardCategory,
   loadFreeBoardForModify,
   patchFreeBoard
-} from "@/api/FreeBoardService";
+} from "@/api/freeBoardService";
 
 export default {
   name: "FreeBoardModifyView",

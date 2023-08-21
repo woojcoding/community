@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {postComment} from "@/api/FreeBoardService";
+import {postComment} from "@/api/freeBoardService";
 
 export default {
   name: "CommentForm",

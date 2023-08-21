@@ -10,7 +10,7 @@
 
 <script>
 import BoardList from "@/components/board/BoardList";
-import {loadFreeBoardList} from "@/api/FreeBoardService";
+import {loadFreeBoardList} from "@/api/freeBoardService";
 import SearchForm from "@/components/board/SearchForm";
 
 export default {
