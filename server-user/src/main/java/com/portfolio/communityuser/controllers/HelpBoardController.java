@@ -9,6 +9,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +40,7 @@ public class HelpBoardController {
      * 문의 게시글 목록을 조회하는데 사용되는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @return boardList 페이지 반환
+     * @return ResponseEntity<ApiResult>
      */
     @GetMapping("/boards/help")
     public ResponseEntity<ApiResult> getHelpBoardList(
@@ -58,6 +59,40 @@ public class HelpBoardController {
 
         String message =
                 messageSource.getMessage("get.boardList.success",
+                        null, LocaleContextHolder.getLocale());
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
+                .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 게시글 상세보기를 가져오는 메서드
+     *
+     * @param boardId 게시글 Id
+     * @return ResponseEntity<ApiResult>
+     */
+    @GetMapping("/boards/help/{boardId}")
+    public ResponseEntity<ApiResult> getHelpBoard(
+            @PathVariable("boardId") Integer boardId
+    ) {
+        helpBoardService.updateViews(boardId);
+
+        // 게시글 정보를 조회
+        BoardDto boardDto =
+                helpBoardService.getHelpBoard(boardId);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("board", boardDto);
+
+        String message =
+                messageSource.getMessage("get.board.success",
                         null, LocaleContextHolder.getLocale());
 
         ApiResult apiResult = ApiResult.builder()

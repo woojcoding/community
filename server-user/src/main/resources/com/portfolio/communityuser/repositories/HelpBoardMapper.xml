@@ -3,13 +3,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.portfolio.communityuser.repositories.HelpBoardMapper">
 
-    <!-- 게시글 수정에 필요한 정보들을 조회 -->
+    <!-- 게시글에 필요한 정보들을 조회 -->
     <select id="getHelpBoard" resultType="BoardDto">
-        SELECT title,
-               content,
-               answer,
-               secret_flag
-        FROM board
+        SELECT b.title,
+               b.content,
+               b.created_at,
+               b.views,
+               b.answer,
+               b.answered_at,
+               b.secret_flag,
+               u.name as writer,
+               a.name as answerer
+        FROM board b
+            LEFT JOIN user u
+                ON u.account_id = b.user_id
+            LEFT JOIN admin a
+                ON a.account_id = b.admin_id
         WHERE board_id = #{boardId}
     </select>
 

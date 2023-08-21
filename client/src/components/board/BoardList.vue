@@ -86,7 +86,7 @@ export default {
     categoryList: {
       type: Object,
       default: undefined,
-      required: true,
+      required: false,
       description: '카테고리 리스트'
     },
     totalBoardCount: {
@@ -109,7 +109,7 @@ export default {
      * @returns {function(*)}
      */
     calculatedNumber() {
-      return index => this.totalBoardCount - ((this.boardSearch.pageNum - 1) * this.boardSearch.pageSize) - index + 1;
+      return index => this.totalBoardCount - ((this.boardSearch.pageNum - 1) * this.boardSearch.pageSize) - index;
     }
   },
   methods: {

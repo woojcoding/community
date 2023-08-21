@@ -19,6 +19,7 @@
         SET title = #{title},
             content = #{content},
             answer = #{answer},
+            answered_at = NOW(),
             admin_id = #{adminId}
         WHERE board_id = #{boardId}
     </update>

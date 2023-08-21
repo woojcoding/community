@@ -3,6 +3,7 @@ package com.portfolio.communityuser.services;
 import com.portfolio.communityuser.dtos.BoardDto;
 import com.portfolio.communityuser.enums.BoardType;
 import com.portfolio.communityuser.repositories.BoardSearchCondition;
+import com.portfolio.communityuser.repositories.HelpBoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -69,7 +70,7 @@ public class HelpBoardService {
      * @param boardId
      * @return boardDto 게시글 정보
      */
-    public BoardDto getHelpBoard(String boardId) {
+    public BoardDto getHelpBoard(int boardId) {
         return helpBoardRepository.getHelpBoard(boardId);
     }
 
@@ -80,5 +81,14 @@ public class HelpBoardService {
      */
     public void deleteHelpBoard(int boardId) {
         helpBoardRepository.deleteHelpBoard(boardId);
+    }
+
+    /**
+     * 게시글의 조회수를 1 증가시키는 메서드
+     *
+     * @param boardId 게시글 Id
+     */
+    public void updateViews(int boardId) {
+        helpBoardRepository.updateViews(boardId);
     }
 }

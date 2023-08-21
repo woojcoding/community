@@ -108,6 +108,11 @@ public class BoardDto {
     private String writer;
 
     /**
+     * 답변자
+     */
+    private String answerer;
+
+    /**
      * 조회수
      */
     private String views;
@@ -116,6 +121,11 @@ public class BoardDto {
      * 작성일
      */
     private String createdAt;
+
+    /**
+     * 답변일
+     */
+    private String answeredAt;
 
     /**
      * 썸네일 이름

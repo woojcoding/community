@@ -1,4 +1,4 @@
-package com.portfolio.communityuser.services;
+package com.portfolio.communityuser.repositories;
 
 import com.portfolio.communityuser.dtos.BoardDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -22,5 +22,5 @@ public interface HelpBoardMapper {
      * @param boardId 게시글 Id
      * @return boardDto 게시글 정보
      */
-    BoardDto getHelpBoard(String boardId);
+    BoardDto getHelpBoard(int boardId);
 }

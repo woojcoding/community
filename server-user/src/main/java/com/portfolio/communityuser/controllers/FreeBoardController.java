@@ -75,7 +75,7 @@ public class FreeBoardController {
      * 자유 게시글 목록을 조회하는데 사용되는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @return boardList 페이지 반환
+     * @return ResponseEntity<ApiResult>
      */
     @GetMapping("/boards/free")
     public ResponseEntity<ApiResult> getFreeBoardList(
@@ -115,7 +115,7 @@ public class FreeBoardController {
      * 게시글 상세보기를 가져오는 메서드
      *
      * @param boardId 게시글 Id
-     * @return writeView 반환
+     * @return ResponseEntity<ApiResult>
      */
     @GetMapping("/boards/free/{boardId}")
     public ResponseEntity<ApiResult> getFreeBoard(
@@ -159,7 +159,7 @@ public class FreeBoardController {
      * 게시글을 수정하기 위해 정보를 가져오는 메서드
      *
      * @param boardId 게시글 Id
-     * @return writeView 반환
+     * @return ResponseEntity<ApiResult>
      * @throws AccessDeniedException 다른 사용자의 수정페이지에 접근할 경우 던지는 예외
      */
     @GetMapping("/boards/free/modify/{boardId}")
@@ -209,7 +209,7 @@ public class FreeBoardController {
      *
      * @param boardDto      게시글 정보 Dto
      * @param bindingResult 검증오류 보관 객체
-     * @return 작성된 게시글 페이지로 redirect
+     * @return ResponseEntity<ApiResult>
      * @throws IOException the io exception
      */
     @PostMapping("/boards/free")
@@ -279,7 +279,7 @@ public class FreeBoardController {
      * @param boardId       게시글 Id
      * @param boardDto      게시글 정보 Dto
      * @param bindingResult 검증오류 보관 객체
-     * @return 작성된 게시글 페이지로 redirect
+     * @return ResponseEntity<ApiResult>
      * @throws IOException the io exception
      */
     @PatchMapping("/boards/free/{boardId}")
@@ -350,8 +350,7 @@ public class FreeBoardController {
      * 자유 게시글을 삭제하는 메서드
      *
      * @param boardId              게시글 Id
-
-     * @return 삭제 후 게시글 목록으로 이동
+     * @return ResponseEntity<ApiResult>
      */
     @DeleteMapping("/boards/free/{boardId}")
     public ResponseEntity<ApiResult> deleteFreeBoard(

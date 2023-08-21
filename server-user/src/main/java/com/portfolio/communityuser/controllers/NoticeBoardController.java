@@ -48,7 +48,7 @@ public class NoticeBoardController {
      * 공지글 목록을 조회하는데 사용되는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @return boardList 페이지 반환
+     * @return ResponseEntity<ApiResult>
      */
     @GetMapping("/boards/notice")
     public ResponseEntity<ApiResult> getNoticeBoardList(
@@ -93,7 +93,7 @@ public class NoticeBoardController {
      * 게시글 상세보기를 가져오는 메서드
      *
      * @param boardId 게시글 Id
-     * @return writeView 반환
+     * @return ResponseEntity<ApiResult>
      */
     @GetMapping("/boards/notice/{boardId}")
     public ResponseEntity<ApiResult> getNoticeBoard(

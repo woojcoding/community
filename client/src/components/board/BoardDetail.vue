@@ -5,6 +5,8 @@
       <div class="board-header">
         <span class="category">{{ board.categoryName }}</span>
         <span class="title">{{ board.title }}</span>
+        <span v-if="type === 'help' && board.answer">(답변완료)</span>
+        <span v-if="type === 'help' && !board.answer">(미답변)</span>
         <span class="info">{{ board.createdAt }} {{ board.writer }}</span>
       </div>
       <div class="views">
@@ -20,11 +22,26 @@
           </a>
         </div>
       </div>
-    </div>
-    <div class="buttons">
-      <button @click="moveToList">목록</button>
-      <button v-if="isAuthorized" @click="moveToModifyForm">수정</button>
-      <button v-if="isAuthorized" @click="confirmDelete">삭제</button>
+      <div class="answer" v-if="type === 'help'">
+        <template v-if="board.answer">
+          <div class="info">
+            {{ board.answerer }} {{ board.answeredAt }}
+          </div>
+          <div>
+            <span class="answer">{{ board.answer }}</span>
+          </div>
+        </template>
+        <template v-else>
+          <div class="no-answer">
+            아직 등록된 답변이 없습니다.
+          </div>
+        </template>
+      </div>
+      <div class="buttons">
+        <button @click="moveToList">목록</button>
+        <button v-if="isAuthorized" @click="moveToModifyForm">수정</button>
+        <button v-if="isAuthorized" @click="confirmDelete">삭제</button>
+      </div>
     </div>
   </div>
 </template>
@@ -52,6 +69,12 @@ export default {
       required: false,
       description: '파일 리스트'
     },
+    type: {
+      type: String,
+      default: undefined,
+      required: false,
+      description: '게시글 타입'
+    }
   },
   computed: {
     isAuthorized() {
