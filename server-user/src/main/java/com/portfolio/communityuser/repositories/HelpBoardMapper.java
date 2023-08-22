@@ -23,4 +23,11 @@ public interface HelpBoardMapper {
      * @return boardDto 게시글 정보
      */
     BoardDto getHelpBoard(int boardId);
+
+    /**
+     * 게시글을 저장하는 메서드
+     *
+     * @param boardDto 게시글 정보
+     */
+    void postHelpBoard(BoardDto boardDto);
 }

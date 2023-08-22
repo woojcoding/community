@@ -91,4 +91,15 @@ public class HelpBoardService {
     public void updateViews(int boardId) {
         helpBoardRepository.updateViews(boardId);
     }
+
+    /**
+     * 게시글을 저장하는 메서드
+     *
+     * @param boardDto 게시글 정보
+     */
+    public void postHelpBoard(BoardDto boardDto) {
+        boardDto.setType(BoardType.HELP);
+
+        helpBoardRepository.postBoard(boardDto);
+    }
 }

@@ -16,19 +16,33 @@
                u.name as writer,
                a.name as answerer
         FROM board b
-            LEFT JOIN user u
-                ON u.account_id = b.user_id
-            LEFT JOIN admin a
-                ON a.account_id = b.admin_id
+                 LEFT JOIN user u
+                           ON u.account_id = b.user_id
+                 LEFT JOIN admin a
+                           ON a.account_id = b.admin_id
         WHERE board_id = #{boardId}
     </select>
+
+    <!-- 게시글을 저장-->
+    <insert id="postHelpBoard" useGeneratedKeys="true" keyProperty="boardId">
+        INSERT INTO board(title,
+                          content,
+                          type,
+                          user_id,
+                          secret_flag)
+        VALUES (#{title},
+                #{content},
+                #{type},
+                #{userId},
+                #{secretFlag})
+    </insert>
 
     <!-- 게시글Id에 해당하는 게시글 수정 -->
     <update id="updateHelpBoard">
         UPDATE board
-        SET title = #{title},
-            content = #{content},
-            answer = #{answer},
+        SET title    = #{title},
+            content  = #{content},
+            answer   = #{answer},
             admin_id = #{adminId}
         WHERE board_id = #{boardId}
     </update>

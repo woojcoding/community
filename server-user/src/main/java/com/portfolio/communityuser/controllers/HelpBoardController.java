@@ -1,15 +1,20 @@
 package com.portfolio.communityuser.controllers;
 
 import com.portfolio.communityuser.dtos.BoardDto;
+import com.portfolio.communityuser.dtos.Help;
 import com.portfolio.communityuser.repositories.BoardSearchCondition;
 import com.portfolio.communityuser.services.HelpBoardService;
+import com.portfolio.communityuser.utils.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -94,6 +99,44 @@ public class HelpBoardController {
         String message =
                 messageSource.getMessage("get.board.success",
                         null, LocaleContextHolder.getLocale());
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
+                .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 문의 게시글을 post
+     *
+     * @param boardDto      게시글 정보 Dto
+     * @return ResponseEntity<ApiResult>
+     */
+    @PostMapping("/boards/help")
+    public ResponseEntity<ApiResult> postFreeBoard(
+            @Validated(Help.class) @RequestBody
+            BoardDto boardDto
+    ) {
+        String userId = AuthenticationUtil.getAccountId();
+
+        boardDto.setUserId(userId);
+
+        // 게시글 저장
+        helpBoardService.postHelpBoard(boardDto);
+
+        int savedBoardId = boardDto.getBoardId();
+
+        String message =
+                messageSource.getMessage("post.board.success",
+                        null, LocaleContextHolder.getLocale());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("boardId", savedBoardId);
 
         ApiResult apiResult = ApiResult.builder()
                 .status(ApiStatus.SUCCESS)

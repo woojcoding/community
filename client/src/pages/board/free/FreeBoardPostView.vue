@@ -11,7 +11,7 @@ import BoardWriteForm from "@/components/board/BoardWriteForm";
 import {loadFreeBoardCategory, postFreeBoard} from "@/api/freeBoardService";
 
 export default {
-  name: "FreeBoardModifyView",
+  name: "FreeBoardPostView",
   components: {BoardWriteForm},
   data() {
     return {

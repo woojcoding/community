@@ -83,4 +83,13 @@ public class HelpBoardRepository {
     public void updateViews(int boardId) {
         boardMapper.updateViews(boardId);
     }
+
+    /**
+     * 게시글을 저장하는 메서드
+     *
+     * @param boardDto 게시글 정보
+     */
+    public void postBoard(BoardDto boardDto) {
+        helpBoardMapper.postHelpBoard(boardDto);
+    }
 }

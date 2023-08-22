@@ -77,11 +77,11 @@ export function loadHelpBoardForModify(boardId) {
 /**
  * 문의 게시글을 작성하기 위해 axios 요청
  *
- * @param formData
+ * @param board
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export function postHelpBoard(formData) {
-    return instance.post("/api/v1/boards/help", formData
+export function postHelpBoard(board) {
+    return instance.post("/api/v1/boards/help", board
     ).then((response) => {
         return response.data;
     }).catch((error) => {

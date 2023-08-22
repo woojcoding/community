@@ -21,8 +21,6 @@
           <textarea rows="1" cols="100" name="title" id="title"
                     style="resize: none; overflow: hidden"
                     v-model="board.title"></textarea>
-          <span v-if="type === 'help' && board.answer !== null">(답변완료)</span>
-          <span v-if="type === 'help' && board.answer === null">(미답변)</span>
         </td>
       </tr>
       <!-- 내용 (문의 게시판의 경우 질문) -->
@@ -34,14 +32,10 @@
                     v-model="board.content"></textarea>
         </td>
       </tr>
-      <!-- 문의게시판에서만 사용되는 답변 -->
+      <!-- 문의글에서만 사용되는 비밀글 체크 -->
       <tr v-if="type === 'help'">
-        <td>답변</td>
-        <td>
-          <textarea rows="20" cols="100" name="answer" id="answer"
-                    style="resize: none"
-                    v-model="board.answer"></textarea>
-        </td>
+        <td>비밀글</td>
+        <td><input type="checkbox" v-model="board.secretFlag"></td>
       </tr>
       <!-- 공지글에서만 사용되는 알림글 체크 -->
       <tr v-if="type === 'notice'">
@@ -54,6 +48,7 @@
     </table>
     <!-- 갤러리와 자유게시판에서 사용되는 파일 -->
     <file-input
+        v-if="type === 'gallery' || type === 'free'"
         :type=type
         :file-list-data="fileListData"
         @files-updated="updateFiles"
@@ -91,7 +86,7 @@ export default {
     type: {
       type: String,
       default: undefined,
-      required: false,
+      required: true,
       description: '게시글 타입'
     },
   },
@@ -121,7 +116,7 @@ export default {
     validateForm() {
       const errorMessages = [];
 
-      if (this.board.categoryId === 'all') {
+      if (this.board.categoryId === 'all' && this.type !== 'help') {
         errorMessages.push('카테고리를 선택해주세요.');
       }
       if (!this.board.title) {
@@ -153,11 +148,19 @@ export default {
       this.$emit('save', this.board, this.files, this.deleteFileIds);
     },
     /**
-     * 취소를 눌러 게시글 목록으로 가는 메서드
+     * 취소를 눌러 이전 페이지로 가는 메서드
      */
     cancel() {
+      const boardId = this.$route.params.boardId;
+
+      let path = `/boards/${this.type}`;
+
+      if (boardId) {
+        path += `/${boardId}`;
+      }
+
       this.$router.push({
-        path: `/boards/free/`,
+        path: path,
         query: {
           ...this.$route.query
         }

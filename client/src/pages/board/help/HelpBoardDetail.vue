@@ -12,7 +12,7 @@ import BoardDetail from "@/components/board/BoardDetail";
 import {loadHelpBoard} from "@/api/helpBoardService";
 
 export default {
-  name: "FreeBoardDetail",
+  name: "HelpBoardDetail",
   components: {BoardDetail},
   data() {
     return {
