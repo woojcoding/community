@@ -48,12 +48,15 @@ export function loadHelpBoardList(boardSearch) {
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
 export function loadHelpBoard(boardId) {
-    return instance.get(`/api/v1/boards/help/${boardId}`)
-        .then((response) => {
-            return response.data;
-        }).catch((error) => {
-            throw error.response.data.message
-        });
+    return instance.get(`/api/v1/boards/help/${boardId}`, {
+        headers: {
+            Authorization: store.state.auth.token
+        }
+    }).then((response) => {
+        return response.data;
+    }).catch((error) => {
+        throw error.response.data.message
+    });
 }
 
 /**

@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     /**
-     * 자유 게시글의 상세 정보를 가져오는 메서드
+     * 문의 게시글의 상세 정보를 가져오는 메서드
      *
      * @returns {Promise<void>}
      */
@@ -37,7 +37,8 @@ export default {
 
         this.boardData = response.data.board;
       } catch (error) {
-        console.log(error);
+        this.$router.go(-1);
+        
         alert(error);
       }
     },

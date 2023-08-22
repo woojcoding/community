@@ -90,11 +90,24 @@ public class HelpBoardController {
     public ResponseEntity<ApiResult> getHelpBoard(
             @PathVariable("boardId") int boardId
     ) {
-        helpBoardService.updateViews(boardId);
-
         // 게시글 정보를 조회
         BoardDto boardDto =
                 helpBoardService.getHelpBoard(boardId);
+
+        // 비밀글의 경우 본인 글만 볼 수 있도록 예외 처리
+        if (boardDto.isSecretFlag()) {
+            String boardUserId = boardDto.getUserId();
+
+            String userId = AuthenticationUtil.getAccountId();
+
+            if ((boardUserId == null || !boardUserId.equals(userId))) {
+                throw new AccessDeniedException("access.denied");
+            }
+        }
+
+        helpBoardService.updateViews(boardId);
+
+        boardDto = helpBoardService.getHelpBoard(boardId);
 
         Map<String, Object> data = new HashMap<>();
         data.put("board", boardDto);
