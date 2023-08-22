@@ -3,6 +3,7 @@
     <board-detail
         :board="boardData"
         :file-list="fileListData"
+        :type="'free'"
     ></board-detail>
     <comment-form
         :comment-list="commentListData"

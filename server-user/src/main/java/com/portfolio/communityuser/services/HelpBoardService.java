@@ -54,13 +54,11 @@ public class HelpBoardService {
     }
 
     /**
-     * 문의 게시글을 수정한느 메서드
+     * 문의 게시글을 수정하는 메서드
      *
      * @param boardDto 게시글 정보
      */
     public void updateHelpBoard(BoardDto boardDto) {
-        boardDto.setType(BoardType.HELP);
-
         helpBoardRepository.updateHelpBoard(boardDto);
     }
 

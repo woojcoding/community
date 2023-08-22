@@ -113,7 +113,7 @@ export default {
       const boardId = this.board.boardId;
 
       this.$router.push({
-        path: `/boards/free/modify/${boardId}`,
+        path: `/boards/${this.type}/modify/${boardId}`,
         query: this.$route.query
       });
     },

@@ -6,6 +6,7 @@
     <!-- 게시글에 필요한 정보들을 조회 -->
     <select id="getHelpBoard" resultType="BoardDto">
         SELECT b.title,
+               b.board_id,
                b.content,
                b.created_at,
                b.views,
@@ -40,10 +41,9 @@
     <!-- 게시글Id에 해당하는 게시글 수정 -->
     <update id="updateHelpBoard">
         UPDATE board
-        SET title    = #{title},
-            content  = #{content},
-            answer   = #{answer},
-            admin_id = #{adminId}
+        SET title   = #{title},
+            content = #{content},
+            secret_flag = #{secretFlag}
         WHERE board_id = #{boardId}
     </update>
 </mapper>

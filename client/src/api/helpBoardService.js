@@ -92,12 +92,12 @@ export function postHelpBoard(board) {
 /**
  * 문의 게시글을 수정하기 위해 axios 요청
  *
- * @param formData
+ * @param board
  * @param boardId
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export function patchHelpBoard(formData, boardId) {
-    return instance.patch(`/api/v1/boards/help/${boardId}`, formData
+export function patchHelpBoard(board, boardId) {
+    return instance.patch(`/api/v1/boards/help/${boardId}`, board
     ).then((response) => {
         return response.data;
     }).catch((error) => {

@@ -59,8 +59,6 @@ public class FreeBoardService {
      * @param boardDto 게시글 정보
      */
     public void updateFreeBoard(BoardDto boardDto) {
-        boardDto.setType(BoardType.FREE);
-
         freeBoardRepository.updateFreeBoard(boardDto);
     }
 

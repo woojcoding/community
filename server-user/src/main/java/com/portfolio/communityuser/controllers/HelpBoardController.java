@@ -9,9 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -112,6 +114,48 @@ public class HelpBoardController {
     }
 
     /**
+     * 게시글을 수정하기 위해 정보를 가져오는 메서드
+     *
+     * @param boardId 게시글 Id
+     * @return ResponseEntity<ApiResult>
+     * @throws AccessDeniedException 다른 사용자의 수정페이지에 접근할 경우 던지는 예외
+     */
+    @GetMapping("/boards/help/modify/{boardId}")
+    public ResponseEntity<ApiResult> getHelpBoardForModify(
+            @PathVariable("boardId") Integer boardId
+    ) {
+        // 게시글 정보를 조회
+        BoardDto boardDto =
+                helpBoardService.getHelpBoard(boardId);
+
+        // 본인 글만 업데이트 페이지에 올 수 있도록 예외 처리
+        String boardUserId = boardDto.getUserId();
+
+        String userId = AuthenticationUtil.getAccountId();
+
+        if ((boardUserId == null || !boardUserId.equals(userId))) {
+            throw new AccessDeniedException("access.denied");
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("board", boardDto);
+
+        String message =
+                messageSource.getMessage("get.board.success",
+                        null, LocaleContextHolder.getLocale());
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
+                .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
      * 문의 게시글을 post
      *
      * @param boardDto      게시글 정보 Dto
@@ -142,6 +186,44 @@ public class HelpBoardController {
                 .status(ApiStatus.SUCCESS)
                 .message(message)
                 .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 문의 게시글을 patch
+     *
+     * @param boardDto      게시글 정보 Dto
+     * @return ResponseEntity<ApiResult>
+     */
+    @PatchMapping("/boards/help/{boardId}")
+    public ResponseEntity<ApiResult> patchFreeBoard(
+            @PathVariable("boardId") Integer boarId,
+            @Validated(Help.class) @RequestBody
+            BoardDto boardDto
+    ) {
+        // 본인 글만 업데이트 가능하도록 예외처리
+        String boardUserId = boardDto.getUserId();
+
+        String userId = AuthenticationUtil.getAccountId();
+
+        if ((boardUserId == null || !boardUserId.equals(userId))) {
+            throw new AccessDeniedException("access.denied");
+        }
+
+        // 게시글 업데이트
+        helpBoardService.updateHelpBoard(boardDto);
+
+        String message =
+                messageSource.getMessage("patch.board.success",
+                        null, LocaleContextHolder.getLocale());
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
                 .build();
 
         return ResponseEntity
