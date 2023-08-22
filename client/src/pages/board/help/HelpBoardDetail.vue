@@ -3,13 +3,14 @@
     <board-detail
         :board="boardData"
         :type="'help'"
+        @delete-board="deleteBoard"
     ></board-detail>
   </div>
 </template>
 
 <script>
 import BoardDetail from "@/components/board/BoardDetail";
-import {loadHelpBoard} from "@/api/helpBoardService";
+import {deleteHelpBoard, loadHelpBoard} from "@/api/helpBoardService";
 
 export default {
   name: "HelpBoardDetail",
@@ -40,6 +41,27 @@ export default {
         alert(error);
       }
     },
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @returns {Promise<void>}
+     */
+    async deleteBoard() {
+      const boardId = this.$route.params.boardId
+
+      try {
+        const response = await deleteHelpBoard(boardId)
+
+        alert(response.message);
+
+        this.$router.push({
+          path: `/boards/help/`,
+          query: this.$route.query
+        });
+      } catch (error) {
+        alert(error);
+      }
+    }
   },
 };
 </script>

@@ -119,7 +119,7 @@ public class FreeBoardController {
      */
     @GetMapping("/boards/free/{boardId}")
     public ResponseEntity<ApiResult> getFreeBoard(
-            @PathVariable("boardId") Integer boardId
+            @PathVariable("boardId") int boardId
     ) {
         freeBoardService.updateViews(boardId);
 
@@ -164,7 +164,7 @@ public class FreeBoardController {
      */
     @GetMapping("/boards/free/modify/{boardId}")
     public ResponseEntity<ApiResult> getFreeBoardForModify(
-            @PathVariable("boardId") Integer boardId
+            @PathVariable("boardId") int boardId
     ) {
         // 게시글 정보를 조회
         BoardDto boardDto =
@@ -284,7 +284,7 @@ public class FreeBoardController {
      */
     @PatchMapping("/boards/free/{boardId}")
     public ResponseEntity<ApiResult> updateFreeBoard(
-            @PathVariable("boardId") Integer boardId,
+            @PathVariable("boardId") int boardId,
             @Validated(Free.class) @ModelAttribute
             BoardDto boardDto,
             BindingResult bindingResult

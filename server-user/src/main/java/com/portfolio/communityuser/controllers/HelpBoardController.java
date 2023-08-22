@@ -11,6 +11,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -87,7 +88,7 @@ public class HelpBoardController {
      */
     @GetMapping("/boards/help/{boardId}")
     public ResponseEntity<ApiResult> getHelpBoard(
-            @PathVariable("boardId") Integer boardId
+            @PathVariable("boardId") int boardId
     ) {
         helpBoardService.updateViews(boardId);
 
@@ -122,7 +123,7 @@ public class HelpBoardController {
      */
     @GetMapping("/boards/help/modify/{boardId}")
     public ResponseEntity<ApiResult> getHelpBoardForModify(
-            @PathVariable("boardId") Integer boardId
+            @PathVariable("boardId") int boardId
     ) {
         // 게시글 정보를 조회
         BoardDto boardDto =
@@ -201,7 +202,7 @@ public class HelpBoardController {
      */
     @PatchMapping("/boards/help/{boardId}")
     public ResponseEntity<ApiResult> patchFreeBoard(
-            @PathVariable("boardId") Integer boarId,
+            @PathVariable("boardId") int boarId,
             @Validated(Help.class) @RequestBody
             BoardDto boardDto
     ) {
@@ -219,6 +220,44 @@ public class HelpBoardController {
 
         String message =
                 messageSource.getMessage("patch.board.success",
+                        null, LocaleContextHolder.getLocale());
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 문의 게시글을 삭제하는 메서드
+     *
+     * @param boardId              게시글 Id
+     * @return ResponseEntity<ApiResult>
+     */
+    @DeleteMapping("/boards/help/{boardId}")
+    public ResponseEntity<ApiResult> deleteFreeBoard(
+            @PathVariable("boardId") int boardId
+    ) {
+        // 본인 글만 삭제 가능하도록 예외처리
+        BoardDto boardDto = helpBoardService.getHelpBoard(boardId);
+
+        String boardUserId = boardDto.getUserId();
+
+        String userId = AuthenticationUtil.getAccountId();
+
+        if ((boardUserId == null || !boardUserId.equals(userId))) {
+            throw new AccessDeniedException("access.denied");
+        }
+
+        // 게시글을 삭제
+        helpBoardService.deleteHelpBoard(boardId);
+
+        String message =
+                messageSource.getMessage("delete.board.success",
                         null, LocaleContextHolder.getLocale());
 
         ApiResult apiResult = ApiResult.builder()

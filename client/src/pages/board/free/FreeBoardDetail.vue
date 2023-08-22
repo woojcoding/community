@@ -4,6 +4,7 @@
         :board="boardData"
         :file-list="fileListData"
         :type="'free'"
+        @delete-board="deleteBoard"
     ></board-detail>
     <comment-form
         :comment-list="commentListData"
@@ -14,7 +15,7 @@
 
 <script>
 import BoardDetail from "@/components/board/BoardDetail";
-import {loadFreeBoard} from "@/api/freeBoardService";
+import {deleteFreeBoard, loadFreeBoard} from "@/api/freeBoardService";
 import CommentForm from "@/components/comment/CommentForm";
 
 export default {
@@ -50,6 +51,27 @@ export default {
         alert(error);
       }
     },
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @returns {Promise<void>}
+     */
+    async deleteBoard() {
+      const boardId = this.$route.params.boardId
+
+      try {
+        const response = await deleteFreeBoard(boardId)
+
+        alert(response.message);
+
+        this.$router.push({
+          path: `/boards/free/`,
+          query: this.$route.query
+        });
+      } catch (error) {
+        alert(error);
+      }
+    }
   },
 };
 </script>

@@ -97,7 +97,7 @@ public class NoticeBoardController {
      */
     @GetMapping("/boards/notice/{boardId}")
     public ResponseEntity<ApiResult> getNoticeBoard(
-            @PathVariable("boardId") Integer boardId
+            @PathVariable("boardId") int boardId
     ) {
         noticeBoardService.updateViews(boardId);
 

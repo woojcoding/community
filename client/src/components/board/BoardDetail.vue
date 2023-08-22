@@ -47,10 +47,11 @@
 </template>
 
 <script>
-import {deleteFreeBoard, downloadFile} from "@/api/freeBoardService";
+import {downloadFile} from "@/api/freeBoardService";
 
 export default {
   name: "BoardDetail",
+  emits: ['deleteBoard'],
   data() {
     return {
       modalOpen: false,
@@ -122,27 +123,9 @@ export default {
      */
     confirmDelete() {
       if (confirm("정말로 삭제하시겠습니까?")) {
-        this.deleteBoard();
+        this.$emit("deleteBoard");
       }
     },
-    /**
-     * 게시글을 삭제하는 메서드
-     *
-     * @returns {Promise<void>}
-     */
-    async deleteBoard() {
-      const boardId = this.board.boardId;
-
-      try {
-        const response = await deleteFreeBoard(boardId)
-
-        alert(response.message);
-
-        this.moveToList();
-      } catch (error) {
-        alert(error);
-      }
-    }
   }
 }
 </script>
