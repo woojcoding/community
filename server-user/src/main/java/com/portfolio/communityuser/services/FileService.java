@@ -211,6 +211,16 @@ public class FileService {
     }
 
     /**
+     * 게시글 Id로 썸네일을 조회하는 메서드
+     *
+     * @param boardId 파일 Id
+     * @return the file
+     */
+    public FileDto getThumbnail(int boardId) {
+        return fileRepository.getThumbnail(boardId);
+    }
+
+    /**
      * file들을 삭제하는 메서드
      * @param deleteFileIdList 지울 FileId List
      */

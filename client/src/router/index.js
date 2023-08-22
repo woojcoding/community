@@ -13,6 +13,11 @@ import HelpBoardListView from "@/pages/board/help/HelpBoardListView";
 import HelpBoardDetail from "@/pages/board/help/HelpBoardDetail";
 import HelpBoardPostView from "@/pages/board/help/HelpBoardPostView";
 import HelpBoardModifyView from "@/pages/board/help/HelpBoardModifyView";
+import GalleryBoardDetail from "@/pages/board/gallery/GalleryBoardDetail";
+import GalleryBoardListView from "@/pages/board/gallery/GalleryBoardListView";
+import GalleryBoardPostView from "@/pages/board/gallery/GalleryBoardPostView";
+import GalleryBoardModifyView
+    from "@/pages/board/gallery/GalleryBoardModifyView";
 
 const requireAuth = (to, from, next) => {
     if (store.getters.isAuthenticated) {
@@ -70,7 +75,36 @@ const router = createRouter({
                 query: route.query
             })
         },
-        {path: '/boards/gallery', component: FreeBoardListView},
+        {
+            path: '/boards/gallery',
+            component: GalleryBoardListView,
+            props: {type: "gallery"}
+        },
+        {
+            path: '/boards/gallery/:boardId',
+            component: GalleryBoardDetail,
+            props: (route) => ({
+                boardId: route.params.boardId,
+                query: route.query
+            })
+        },
+        {
+            path: '/boards/gallery/post',
+            component: GalleryBoardPostView,
+            props: (route) => ({
+                query: route.query
+            }),
+            beforeEnter: requireAuth
+        },
+        {
+            path: '/boards/gallery/modify/:boardId',
+            component: GalleryBoardModifyView,
+            props: (route) => ({
+                boardId: route.params.boardId,
+                query: route.query
+            }),
+            beforeEnter: requireAuth
+        },
         {
             path: '/boards/help',
             component: HelpBoardListView,
