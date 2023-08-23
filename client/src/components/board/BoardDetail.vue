@@ -12,10 +12,12 @@
       <div class="views">
         조회수: {{ board.views }}
       </div>
+      <image-container v-if="type === 'gallery'"
+                       :file-list="fileList"></image-container>
       <div class="content">
         {{ board.content }}
       </div>
-      <div class="files">
+      <div class="files" v-if="type === 'free'">
         <div v-for="file in fileList" :key="file.fileId">
           <a @click="downloadFile(file.fileId)">
             <span>{{ file.originalName }}</span>
@@ -48,9 +50,11 @@
 
 <script>
 import {downloadFile} from "@/api/freeBoardService";
+import ImageContainer from "@/components/board/ImageContainer";
 
 export default {
   name: "BoardDetail",
+  components: {ImageContainer},
   emits: ['deleteBoard'],
   data() {
     return {

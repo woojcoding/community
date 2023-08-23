@@ -93,4 +93,13 @@ public class GalleryBoardService {
     public void deleteGalleryBoard(int boardId) {
         galleryBoardRepository.deleteGalleryBoard(boardId);
     }
+
+    /**
+     * 게시글의 조회수를 1 증가시키는 메서드
+     *
+     * @param boardId 게시글 Id
+     */
+    public void updateViews(int boardId) {
+        galleryBoardRepository.updateViews(boardId);
+    }
 }

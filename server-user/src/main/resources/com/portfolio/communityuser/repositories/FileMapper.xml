@@ -6,6 +6,7 @@
     <select id="getFileList" resultType="FileDto">
         SELECT file_id,
                original_name,
+               saved_name,
                thumbnail_name
         FROM file
         WHERE board_id = #{boardId}

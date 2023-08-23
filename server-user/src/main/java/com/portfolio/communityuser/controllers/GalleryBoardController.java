@@ -125,4 +125,59 @@ public class GalleryBoardController {
 
         return ResponseEntity.ok().body(apiResult);
     }
+
+    /**
+     * 게시글 상세보기를 가져오는 메서드
+     *
+     * @param boardId 게시글 Id
+     * @return ResponseEntity<ApiResult>
+     */
+    @GetMapping("/boards/gallery/{boardId}")
+    public ResponseEntity<ApiResult> getGalleryBoard(
+            @PathVariable("boardId") int boardId
+    ) throws IOException {
+        galleryBoardService.updateViews(boardId);
+
+        // 게시글 정보를 조회
+        BoardDto boardDto =
+                galleryBoardService.getGalleryBoard(boardId);
+
+        List<FileDto> fileDtoList = fileService.getFileList(boardId);
+
+        // 이미지 파일을 읽어서 Base64 인코딩
+        for (FileDto fileDto : fileDtoList) {
+            Path imagePath = Paths.get(
+                    fileService.getFullPath(fileDto.getSavedName())
+            );
+
+            byte[] imageBytes = Files.readAllBytes(imagePath);
+
+            String imageUrl = "data:image/jpeg;base64," +
+                    Base64.getEncoder().encodeToString(imageBytes);
+
+            fileDto.setImageUrl(imageUrl);
+        }
+
+        List<CategoryDto> categoryList =
+                categoryService.getCategoryList(BoardType.GALLERY);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("board", boardDto);
+        data.put("fileList", fileDtoList);
+        data.put("categoryList", categoryList);
+
+        String message =
+                messageSource.getMessage("get.board.success",
+                        null, LocaleContextHolder.getLocale());
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
+                .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
 }

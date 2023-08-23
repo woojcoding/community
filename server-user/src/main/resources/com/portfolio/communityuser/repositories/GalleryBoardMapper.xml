@@ -25,7 +25,8 @@
     <select id="getGalleryBoard" resultType="BoardDto">
         SELECT title,
                content,
-               category_id
+               category_id,
+               views
         FROM board
         WHERE board_id = #{boardId}
     </select>
