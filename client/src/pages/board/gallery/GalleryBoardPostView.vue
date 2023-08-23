@@ -8,10 +8,8 @@
 
 <script>
 import BoardWriteForm from "@/components/board/BoardWriteForm";
-import {
-  loadGalleryBoardCategory,
-  postGalleryBoard
-} from "@/api/galleryBoardService";
+import {postGalleryBoard} from "@/api/galleryBoardService";
+import {loadCategoryList} from "@/api/categoryService";
 
 export default {
   name: "GalleryBoardPostView",
@@ -22,21 +20,20 @@ export default {
     };
   },
   created() {
-    this.loadCategoryData();
+    this.loadCategoryListData();
   },
   methods: {
     /**
-     * 카테고리 정보를 axios 요청으로 가져오는 메서드
+     * 카테고리 리스트를 불러오는 메서드
      *
      * @returns {Promise<void>}
      */
-    async loadCategoryData() {
+    async loadCategoryListData() {
       try {
-        const response = await loadGalleryBoardCategory();
+        const response = await loadCategoryList('gallery')
 
         this.categoryListData = response.data.categoryList;
       } catch (error) {
-        console.log(error);
         alert(error);
       }
     },

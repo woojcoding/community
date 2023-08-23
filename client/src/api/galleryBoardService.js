@@ -131,20 +131,6 @@ export function deleteGalleryBoard(boardId) {
  *
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
-export function loadGalleryBoardCategory() {
-    return instance.get(`/api/v1/boards/gallery/category`)
-        .then((response) => {
-            return response.data;
-        }).catch((error) => {
-            throw error.response.data.message
-        });
-}
-
-/**
- * 갤러리 게시글의 카테고리를 조회하기 위해 axios 요청
- *
- * @returns {Promise<axios.AxiosResponse<any>>}
- */
 export function loadThumbnail(boardId) {
     return instance.get(`/api/v1/boards/gallery/${boardId}/thumbnail`)
         .then((response) => {

@@ -12,6 +12,7 @@
 import BoardList from "@/components/board/BoardList";
 import SearchForm from "@/components/board/SearchForm";
 import {loadNoticeBoardList} from "@/api/noticeBoardService";
+import {loadCategoryList} from "@/api/categoryService";
 
 export default {
   name: "NoticeBoardListView",
@@ -29,6 +30,7 @@ export default {
   },
   created() {
     this.loadNoticeBoardList();
+    this.loadCategoryList();
   },
   methods: {
     /**
@@ -44,10 +46,23 @@ export default {
         this.totalBoardCount = response.data.totalBoardCount
         this.boardList = response.data.boardList;
         this.notificationList = response.data.notificationList;
-        this.categoryList = response.data.categoryList;
 
       } catch (error) {
         console.log(error);
+        alert(error);
+      }
+    },
+    /**
+     * 카테고리 리스트를 불러오는 메서드
+     *
+     * @returns {Promise<void>}
+     */
+    async loadCategoryList() {
+      try {
+        const response = await loadCategoryList('notice')
+
+        this.categoryList = response.data.categoryList;
+      } catch (error) {
         alert(error);
       }
     },

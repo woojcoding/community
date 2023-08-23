@@ -88,13 +88,9 @@ public class FreeBoardController {
         int totalBoardCount =
                 freeBoardService.getTotalBoardCount(boardSearchCondition);
 
-        List<CategoryDto> categoryList =
-                categoryService.getCategoryList(BoardType.FREE);
-
         Map<String, Object> data = new HashMap<>();
         data.put("boardList", boardDtoList);
         data.put("totalBoardCount", totalBoardCount);
-        data.put("categoryList", categoryList);
 
         String message =
                 messageSource.getMessage("get.boardList.success",
@@ -131,14 +127,10 @@ public class FreeBoardController {
         List<CommentDto> commentList =
                 commentService.getCommentList(boardId);
 
-        List<CategoryDto> categoryList =
-                categoryService.getCategoryList(BoardType.FREE);
-
         Map<String, Object> data = new HashMap<>();
         data.put("board", boardDto);
         data.put("fileList", fileDtoList);
         data.put("commentList", commentList);
-        data.put("categoryList", categoryList);
 
         String message =
                 messageSource.getMessage("get.board.success",
@@ -181,13 +173,9 @@ public class FreeBoardController {
 
         List<FileDto> fileDtoList = fileService.getFileList(boardId);
 
-        List<CategoryDto> categoryList =
-                categoryService.getCategoryList(BoardType.FREE);
-
         Map<String, Object> data = new HashMap<>();
         data.put("board", boardDto);
         data.put("fileList", fileDtoList);
-        data.put("categoryList", categoryList);
 
         String message =
                 messageSource.getMessage("get.board.success",

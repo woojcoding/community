@@ -1,8 +1,6 @@
 package com.portfolio.communityuser.controllers;
 
 import com.portfolio.communityuser.dtos.BoardDto;
-import com.portfolio.communityuser.dtos.CategoryDto;
-import com.portfolio.communityuser.enums.BoardType;
 import com.portfolio.communityuser.repositories.BoardSearchCondition;
 import com.portfolio.communityuser.services.CategoryService;
 import com.portfolio.communityuser.services.NoticeBoardService;
@@ -65,14 +63,10 @@ public class NoticeBoardController {
         List<BoardDto> notificationDtoList =
                 noticeBoardService.getNotificationList();
 
-        List<CategoryDto> categoryList =
-                categoryService.getCategoryList(BoardType.NOTICE);
-
         Map<String, Object> data = new HashMap<>();
         data.put("notificationList", notificationDtoList);
         data.put("boardList", boardDtoList);
         data.put("totalBoardCount", totalBoardCount);
-        data.put("categoryList", categoryList);
 
         String message =
                 messageSource.getMessage("get.boardList.success",
@@ -105,12 +99,8 @@ public class NoticeBoardController {
         BoardDto boardDto =
                 noticeBoardService.getNoticeBoard(boardId);
 
-        List<CategoryDto> categoryList =
-                categoryService.getCategoryList(BoardType.NOTICE);
-
         Map<String, Object> data = new HashMap<>();
         data.put("board", boardDto);
-        data.put("categoryList", categoryList);
 
         String message =
                 messageSource.getMessage("get.board.success",

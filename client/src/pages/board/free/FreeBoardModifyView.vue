@@ -11,11 +11,8 @@
 
 <script>
 import BoardWriteForm from "@/components/board/BoardWriteForm";
-import {
-  loadFreeBoardCategory,
-  loadFreeBoardForModify,
-  patchFreeBoard
-} from "@/api/freeBoardService";
+import {loadFreeBoardForModify, patchFreeBoard} from "@/api/freeBoardService";
+import {loadCategoryList} from "@/api/categoryService";
 
 export default {
   name: "FreeBoardModifyView",
@@ -29,7 +26,7 @@ export default {
   },
  created() {
     this.loadBoardData();
-    this.loadCategoryData();
+    this.loadCategoryListData();
   },
   methods: {
     /**
@@ -50,13 +47,17 @@ export default {
         alert(error);
       }
     },
-    async loadCategoryData() {
+    /**
+     * 카테고리 리스트를 불러오는 메서드
+     *
+     * @returns {Promise<void>}
+     */
+    async loadCategoryListData() {
       try {
-        const response = await loadFreeBoardCategory();
+        const response = await loadCategoryList('free')
 
         this.categoryListData = response.data.categoryList;
       } catch (error) {
-        console.log(error);
         alert(error);
       }
     },

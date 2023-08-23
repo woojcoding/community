@@ -127,20 +127,6 @@ export function deleteFreeBoard(boardId) {
 }
 
 /**
- * 자유게시글의 카테고리를 조회하기 위해 axios 요청
- *
- * @returns {Promise<axios.AxiosResponse<any>>}
- */
-export function loadFreeBoardCategory() {
-    return instance.get(`/api/v1/boards/free/category`)
-        .then((response) => {
-            return response.data;
-        }).catch((error) => {
-            throw error.response.data.message
-        });
-}
-
-/**
  * 파일 다운로드를 axios 요청 한 후 링크를 생성하여 body에 붙여주는 메서드
  *
  * @param fileId

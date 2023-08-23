@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -189,6 +190,51 @@ public class GalleryBoardController {
     }
 
     /**
+     * 게시글을 수정하기 위해 정보를 가져오는 메서드
+     *
+     * @param boardId 게시글 Id
+     * @return ResponseEntity<ApiResult>
+     * @throws AccessDeniedException 다른 사용자의 수정페이지에 접근할 경우 던지는 예외
+     */
+    @GetMapping("/boards/gallery/modify/{boardId}")
+    public ResponseEntity<ApiResult> getGalleryBoardForModify(
+            @PathVariable("boardId") int boardId
+    ) {
+        // 게시글 정보를 조회
+        BoardDto boardDto =
+                galleryBoardService.getGalleryBoard(boardId);
+
+        // 본인 글만 업데이트 페이지에 올 수 있도록 예외 처리
+        String boardUserId = boardDto.getUserId();
+
+        String userId = AuthenticationUtil.getAccountId();
+
+        if ((boardUserId == null || !boardUserId.equals(userId))) {
+            throw new AccessDeniedException("access.denied");
+        }
+
+        List<FileDto> fileDtoList = fileService.getFileList(boardId);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("board", boardDto);
+        data.put("fileList", fileDtoList);
+
+        String message =
+                messageSource.getMessage("get.board.success",
+                        null, LocaleContextHolder.getLocale());
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
+                .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
      * 갤러리 게시글을 post
      *
      * @param boardDto      게시글 정보 Dto
@@ -246,34 +292,6 @@ public class GalleryBoardController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("boardId", savedBoardId);
-
-        ApiResult apiResult = ApiResult.builder()
-                .status(ApiStatus.SUCCESS)
-                .message(message)
-                .data(data)
-                .build();
-
-        return ResponseEntity
-                .ok()
-                .body(apiResult);
-    }
-
-    /**
-     * 갤러리 게시글에 해당하는 카테고리를 반환해주는 메서드
-     *
-     * @return ResponseEntity<ApiResult> 반환
-     */
-    @GetMapping("/boards/gallery/category")
-    public ResponseEntity<ApiResult> getFreeBoardCategory() {
-        List<CategoryDto> categoryList =
-                categoryService.getCategoryList(BoardType.GALLERY);
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("categoryList", categoryList);
-
-        String message =
-                messageSource.getMessage("get.category.success",
-                        null, LocaleContextHolder.getLocale());
 
         ApiResult apiResult = ApiResult.builder()
                 .status(ApiStatus.SUCCESS)

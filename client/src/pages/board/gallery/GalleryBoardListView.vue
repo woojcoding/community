@@ -11,6 +11,7 @@
 import {loadGalleryBoardList, loadThumbnail} from "@/api/galleryBoardService";
 import SearchForm from "@/components/board/SearchForm";
 import GalleryBoardList from "@/components/board/GalleryBoardList";
+import {loadCategoryList} from "@/api/categoryService";
 
 export default {
   name: "GalleryBoardListView",
@@ -31,6 +32,7 @@ export default {
   },
   created() {
     this.loadGalleryBoardList();
+    this.loadCategoryListData();
   },
   methods: {
     /**
@@ -44,13 +46,26 @@ export default {
         const response = await loadGalleryBoardList(boardSearch);
 
         this.boardList = response.data.boardList;
-        this.categoryList = response.data.categoryList;
 
         for (const board of this.boardList) {
           this.loadThumbnailUrl(board);
         }
       } catch (error) {
         console.log(error);
+        alert(error);
+      }
+    },
+    /**
+     * 카테고리 리스트를 불러오는 메서드
+     *
+     * @returns {Promise<void>}
+     */
+    async loadCategoryListData() {
+      try {
+        const response = await loadCategoryList('gallery')
+
+        this.categoryList = response.data.categoryList;
+      } catch (error) {
         alert(error);
       }
     },
