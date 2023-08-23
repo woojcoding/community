@@ -1,5 +1,5 @@
 <template>
-  <h2>공지사항</h2>
+  <h3>공지 사항</h3>
   <search-form></search-form>
   <board-list :type="type"
               :notification-list="notificationList"

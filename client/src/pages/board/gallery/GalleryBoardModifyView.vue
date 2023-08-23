@@ -1,4 +1,5 @@
 <template>
+  <h3>갤러리</h3>
   <board-write-form
       :board-data="boardData"
       :file-list-data="fileListData"

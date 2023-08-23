@@ -1,5 +1,5 @@
 <template>
-  <h2>문의 게시판</h2>
+  <h3>문의 게시판</h3>
   <search-form></search-form>
   <button v-if="isLoggedIn" @click="moveToWriteForm">글등록</button>
   <board-list :type="type"

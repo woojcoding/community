@@ -1,4 +1,5 @@
 <template>
+  <h3>자유 게시판</h3>
   <board-write-form
       :category-list-data="categoryListData"
       :type="'free'"

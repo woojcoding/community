@@ -1,25 +1,32 @@
 <template>
+  <h3>자유 게시판</h3>
   <div>
     <board-detail
         :board="boardData"
         :file-list="fileListData"
-        :type="'gallery'"
+        :type="'free'"
         @delete-board="deleteBoard"
     ></board-detail>
+    <comment-form
+        :comment-list="commentListData"
+        :board-id="boardData.boardId">
+    </comment-form>
   </div>
 </template>
 
 <script>
 import BoardDetail from "@/components/board/BoardDetail";
-import {deleteGalleryBoard, loadGalleryBoard} from "@/api/galleryBoardService";
+import {deleteFreeBoard, loadFreeBoard} from "@/api/freeBoardService";
+import CommentForm from "@/components/comment/CommentForm";
 
 export default {
-  name: "GalleryBoardDetail",
-  components: {BoardDetail},
+  name: "FreeBoardDetail",
+  components: {CommentForm, BoardDetail},
   data() {
     return {
       boardData: {},
-      fileListData: []
+      fileListData: [],
+      commentListData: [],
     };
   },
   created() {
@@ -27,7 +34,7 @@ export default {
   },
   methods: {
     /**
-     * 갤러리 게시글의 상세 정보를 가져오는 메서드
+     * 자유 게시글의 상세 정보를 가져오는 메서드
      *
      * @returns {Promise<void>}
      */
@@ -35,7 +42,7 @@ export default {
       try {
         const boardId = this.$route.params.boardId;
 
-        const response = await loadGalleryBoard(boardId);
+        const response = await loadFreeBoard(boardId);
 
         this.boardData = response.data.board;
         this.fileListData = response.data.fileList;
@@ -54,12 +61,12 @@ export default {
       const boardId = this.$route.params.boardId
 
       try {
-        const response = await deleteGalleryBoard(boardId);
+        const response = await deleteFreeBoard(boardId)
 
         alert(response.message);
 
         this.$router.push({
-          path: `/boards/gallery/`,
+          path: `/boards/free/`,
           query: this.$route.query
         });
       } catch (error) {

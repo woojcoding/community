@@ -1,4 +1,5 @@
 <template>
+  <h3>자유 게시판</h3>
   <board-write-form
       :board-data="boardData"
       :file-list-data="fileListData"

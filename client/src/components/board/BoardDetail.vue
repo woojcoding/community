@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>게시판 - 보기</h2>
     <div class="board-details">
       <div class="board-header">
         <span class="category">{{ board.categoryName }}</span>

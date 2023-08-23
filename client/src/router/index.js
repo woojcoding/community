@@ -4,16 +4,16 @@ import UserSignUp from "@/pages/UserSignUp";
 import CommunityHome from "@/pages/CommunityHome";
 import store from "@/store/index"
 import FreeBoardListView from "@/pages/board/free/FreeBoardListView";
-import FreeBoardDetail from "@/pages/board/free/FreeBoardDetail";
+import FreeBoardDetail from "@/pages/board/free/FreeBoardDetailView";
 import FreeBoardModifyView from "@/pages/board/free/FreeBoardModifyView";
 import FreeBoardPostView from "@/pages/board/free/FreeBoardPostView";
 import NoticeBoardListView from "@/pages/board/notice/NoticeBoardListView";
-import NoticeBoardDetail from "@/pages/board/notice/NoticeBoardDetail";
+import NoticeBoardDetail from "@/pages/board/notice/NoticeBoardDetailView";
 import HelpBoardListView from "@/pages/board/help/HelpBoardListView";
-import HelpBoardDetail from "@/pages/board/help/HelpBoardDetail";
+import HelpBoardDetail from "@/pages/board/help/HelpBoardDetailView";
 import HelpBoardPostView from "@/pages/board/help/HelpBoardPostView";
 import HelpBoardModifyView from "@/pages/board/help/HelpBoardModifyView";
-import GalleryBoardDetail from "@/pages/board/gallery/GalleryBoardDetail";
+import GalleryBoardDetail from "@/pages/board/gallery/GalleryBoardDetailView";
 import GalleryBoardListView from "@/pages/board/gallery/GalleryBoardListView";
 import GalleryBoardPostView from "@/pages/board/gallery/GalleryBoardPostView";
 import GalleryBoardModifyView

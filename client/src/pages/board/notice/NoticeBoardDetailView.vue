@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>공지사항</h2>
+    <h3>공지 사항</h3>
     <board-detail
         :board="boardData"
     ></board-detail>
@@ -12,7 +12,7 @@ import BoardDetail from "@/components/board/BoardDetail";
 import {loadNoticeBoard} from "@/api/noticeBoardService";
 
 export default {
-  name: "NoticeBoardDetail",
+  name: "NoticeBoardDetailView",
   components: {BoardDetail},
   data() {
     return {
