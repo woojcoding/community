@@ -3,20 +3,27 @@ package com.portfolio.communityuser.controllers;
 import com.portfolio.communityuser.dtos.BoardDto;
 import com.portfolio.communityuser.dtos.CategoryDto;
 import com.portfolio.communityuser.dtos.FileDto;
+import com.portfolio.communityuser.dtos.Free;
 import com.portfolio.communityuser.enums.BoardType;
 import com.portfolio.communityuser.repositories.BoardSearchCondition;
 import com.portfolio.communityuser.services.CategoryService;
 import com.portfolio.communityuser.services.FileService;
 import com.portfolio.communityuser.services.GalleryBoardService;
+import com.portfolio.communityuser.utils.AuthenticationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -168,6 +175,104 @@ public class GalleryBoardController {
 
         String message =
                 messageSource.getMessage("get.board.success",
+                        null, LocaleContextHolder.getLocale());
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
+                .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 갤러리 게시글을 post
+     *
+     * @param boardDto      게시글 정보 Dto
+     * @param bindingResult 검증오류 보관 객체
+     * @return ResponseEntity<ApiResult>
+     * @throws IOException the io exception
+     */
+    @PostMapping("/boards/gallery")
+    public ResponseEntity<ApiResult> postFreeBoard(
+            @Validated(Free.class) @ModelAttribute
+            BoardDto boardDto,
+            BindingResult bindingResult
+    ) throws IOException {
+        // 유효성 검증 실패 시
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMessageBuilder = new StringBuilder();
+
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                errorMessageBuilder.append(fieldError.getDefaultMessage());
+                errorMessageBuilder.append("\n");
+            }
+
+            String combinedErrorMessage = errorMessageBuilder.toString();
+
+            ApiResult apiResult = ApiResult.builder()
+                    .status(ApiStatus.FAIL)
+                    .message(combinedErrorMessage)
+                    .build();
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(apiResult);
+        }
+
+        String userId = AuthenticationUtil.getAccountId();
+
+        boardDto.setUserId(userId);
+
+        // 게시글 저장
+        galleryBoardService.postGalleryBoard(boardDto);
+
+        int savedBoardId = boardDto.getBoardId();
+
+        // 게시글에 첨부된 파일 업로드
+        MultipartFile[] files = boardDto.getFiles();
+
+        List<FileDto> fileDtoList =
+                fileService.saveFilesWithThumbnail(files, savedBoardId);
+
+        fileService.uploadFiles(fileDtoList);
+
+        String message =
+                messageSource.getMessage("post.board.success",
+                        null, LocaleContextHolder.getLocale());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("boardId", savedBoardId);
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
+                .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 갤러리 게시글에 해당하는 카테고리를 반환해주는 메서드
+     *
+     * @return ResponseEntity<ApiResult> 반환
+     */
+    @GetMapping("/boards/gallery/category")
+    public ResponseEntity<ApiResult> getFreeBoardCategory() {
+        List<CategoryDto> categoryList =
+                categoryService.getCategoryList(BoardType.GALLERY);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("categoryList", categoryList);
+
+        String message =
+                messageSource.getMessage("get.category.success",
                         null, LocaleContextHolder.getLocale());
 
         ApiResult apiResult = ApiResult.builder()

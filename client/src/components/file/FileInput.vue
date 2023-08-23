@@ -89,12 +89,12 @@ export default {
 
       if (this.type === 'gallery') {
         inputField.setAttribute('accept', '.jpg, .jpeg, .gif, .png');
-        inputField.setAttribute('onchange', this.showThumbnail(this.fileCount));
-
+        inputField.addEventListener('change', () => this.showThumbnail(fileIndex));
+        
         const thumbnailImg = document.createElement('img');
         thumbnailImg.setAttribute('id', 'thumbnailImg_' + this.fileCount);
-        thumbnailImg.style.width = '30px';
-        thumbnailImg.style.height = '30px';
+        thumbnailImg.style.width = '50px';
+        thumbnailImg.style.height = '50px';
 
         inputCell.appendChild(thumbnailImg);
       } else {
