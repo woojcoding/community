@@ -127,7 +127,7 @@ export function deleteGalleryBoard(boardId) {
 }
 
 /**
- * 갤러리 게시글의 카테고리를 조회하기 위해 axios 요청
+ * 갤러리 게시글의 썸네일을 조회하기 위해 axios 요청
  *
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
