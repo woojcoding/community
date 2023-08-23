@@ -81,7 +81,7 @@ export default {
 
         board.thumbnailUrl = response.data.url;
       } catch (error) {
-        alert(error);
+        console.log(error);
       }
     },
     /**

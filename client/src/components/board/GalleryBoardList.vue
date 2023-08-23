@@ -1,6 +1,6 @@
 <template>
   <div v-for="board in boardList" :key="board.boardId">
-    <img :src="board.thumbnailUrl" alt="Image">
+    <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl" alt="Image">
     <a @click="boardDetail(board.boardId)">
       {{ board.title }}
     </a>

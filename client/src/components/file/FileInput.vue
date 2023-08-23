@@ -16,8 +16,8 @@
           </tr>
           <tr v-for="file in fileListData" :key="file.fileId">
             <td>
-              <img v-if="file.thumbnailName"
-                   :src="'/thumbnails/' + file.thumbnailName" alt="thumbnail">
+              <img v-if="file.imageUrl"
+                   :src="file.imageUrl" alt="thumbnail">
               <a :id="'downloadTag_' + file.fileId"
                  @click="downloadFile(file.fileId)">
                 <span>{{ file.originalName }}</span>
@@ -90,11 +90,11 @@ export default {
       if (this.type === 'gallery') {
         inputField.setAttribute('accept', '.jpg, .jpeg, .gif, .png');
         inputField.addEventListener('change', () => this.showThumbnail(fileIndex));
-        
+
         const thumbnailImg = document.createElement('img');
-        thumbnailImg.setAttribute('id', 'thumbnailImg_' + this.fileCount);
-        thumbnailImg.style.width = '50px';
-        thumbnailImg.style.height = '50px';
+        thumbnailImg.setAttribute('id', 'thumbnailImg_' + fileIndex);
+        thumbnailImg.style.width = '20px';
+        thumbnailImg.style.height = '20px';
 
         inputCell.appendChild(thumbnailImg);
       } else {
@@ -176,7 +176,8 @@ export default {
       const fileInput = document.getElementById('fileInput_' + fileIndex);
 
       const thumbnailImg = document.getElementById('thumbnailImg_' + fileIndex);
-      thumbnailImg.innerHTML = '';
+
+      thumbnailImg.src= '';
 
       const file = fileInput.files[0];
 

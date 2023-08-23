@@ -3,7 +3,7 @@
       :board-data="boardData"
       :file-list-data="fileListData"
       :category-list-data="categoryListData"
-      :type="'free'"
+      :type="'gallery'"
       v-if="boardData.boardId"
       @save="handleSave"
   ></board-write-form>
@@ -11,11 +11,14 @@
 
 <script>
 import BoardWriteForm from "@/components/board/BoardWriteForm";
-import {loadFreeBoardForModify, patchFreeBoard} from "@/api/freeBoardService";
+import {
+  loadGalleryBoardForModify,
+  patchGalleryBoard
+} from "@/api/galleryBoardService";
 import {loadCategoryList} from "@/api/categoryService";
 
 export default {
-  name: "FreeBoardModifyView",
+  name: "GalleryBoardModifyView",
   components: {BoardWriteForm},
   data() {
     return {
@@ -30,7 +33,7 @@ export default {
   },
   methods: {
     /**
-     * 자유 게시글의 상세 정보를 가져오는 메서드
+     * 갤러리 게시글의 상세 정보를 가져오는 메서드
      *
      * @returns {Promise<void>}
      */
@@ -38,7 +41,7 @@ export default {
       try {
         const boardId = this.$route.params.boardId;
 
-        const response = await loadFreeBoardForModify(boardId);
+        const response = await loadGalleryBoardForModify(boardId);
 
         this.boardData = response.data.board;
         this.fileListData = response.data.fileList;
@@ -54,7 +57,7 @@ export default {
      */
     async loadCategoryListData() {
       try {
-        const response = await loadCategoryList('free')
+        const response = await loadCategoryList('gallery')
 
         this.categoryListData = response.data.categoryList;
       } catch (error) {
@@ -89,9 +92,9 @@ export default {
       try {
         const boardId = this.$route.params.boardId;
 
-        await patchFreeBoard(formData, boardId);
+        await patchGalleryBoard(formData, boardId);
 
-        this.$router.push(`/boards/free/${boardId}`);
+        this.$router.push(`/boards/gallery/${boardId}`);
       } catch (error) {
         alert(error);
       }

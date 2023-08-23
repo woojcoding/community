@@ -301,6 +301,7 @@ public class FreeBoardController {
         // 본인 글만 업데이트 가능하도록 예외처리
         String boardUserId = boardDto.getUserId();
 
+        System.out.println(boardUserId);
         String userId = AuthenticationUtil.getAccountId();
 
         if ((boardUserId == null || !boardUserId.equals(userId))) {

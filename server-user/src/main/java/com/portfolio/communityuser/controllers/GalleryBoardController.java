@@ -3,7 +3,7 @@ package com.portfolio.communityuser.controllers;
 import com.portfolio.communityuser.dtos.BoardDto;
 import com.portfolio.communityuser.dtos.CategoryDto;
 import com.portfolio.communityuser.dtos.FileDto;
-import com.portfolio.communityuser.dtos.Free;
+import com.portfolio.communityuser.dtos.Gallery;
 import com.portfolio.communityuser.enums.BoardType;
 import com.portfolio.communityuser.repositories.BoardSearchCondition;
 import com.portfolio.communityuser.services.CategoryService;
@@ -20,6 +20,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -199,7 +200,7 @@ public class GalleryBoardController {
     @GetMapping("/boards/gallery/modify/{boardId}")
     public ResponseEntity<ApiResult> getGalleryBoardForModify(
             @PathVariable("boardId") int boardId
-    ) {
+    ) throws IOException {
         // 게시글 정보를 조회
         BoardDto boardDto =
                 galleryBoardService.getGalleryBoard(boardId);
@@ -214,6 +215,20 @@ public class GalleryBoardController {
         }
 
         List<FileDto> fileDtoList = fileService.getFileList(boardId);
+
+        // 이미지 파일을 읽어서 Base64 인코딩
+        for (FileDto fileDto : fileDtoList) {
+            Path imagePath = Paths.get(
+                    fileService.getFullPath(fileDto.getThumbnailName())
+            );
+
+            byte[] imageBytes = Files.readAllBytes(imagePath);
+
+            String imageUrl = "data:image/jpeg;base64," +
+                    Base64.getEncoder().encodeToString(imageBytes);
+
+            fileDto.setImageUrl(imageUrl);
+        }
 
         Map<String, Object> data = new HashMap<>();
         data.put("board", boardDto);
@@ -244,7 +259,7 @@ public class GalleryBoardController {
      */
     @PostMapping("/boards/gallery")
     public ResponseEntity<ApiResult> postFreeBoard(
-            @Validated(Free.class) @ModelAttribute
+            @Validated(Gallery.class) @ModelAttribute
             BoardDto boardDto,
             BindingResult bindingResult
     ) throws IOException {
@@ -297,6 +312,80 @@ public class GalleryBoardController {
                 .status(ApiStatus.SUCCESS)
                 .message(message)
                 .data(data)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 갤러리 게시글을 update
+     *
+     * @param boardId       게시글 Id
+     * @param boardDto      게시글 정보 Dto
+     * @param bindingResult 검증오류 보관 객체
+     * @return ResponseEntity<ApiResult>
+     * @throws IOException the io exception
+     */
+    @PatchMapping("/boards/gallery/{boardId}")
+    public ResponseEntity<ApiResult> updateGalleryBoard(
+            @PathVariable("boardId") int boardId,
+            @Validated(Gallery.class) @ModelAttribute
+            BoardDto boardDto,
+            BindingResult bindingResult
+    ) throws IOException {
+        // 유효성 검증 실패 시
+        if (bindingResult.hasErrors()) {
+            StringBuilder errorMessageBuilder = new StringBuilder();
+
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                errorMessageBuilder.append(fieldError.getDefaultMessage());
+                errorMessageBuilder.append("\n");
+            }
+
+            String combinedErrorMessage = errorMessageBuilder.toString();
+
+            ApiResult apiResult = ApiResult.builder()
+                    .status(ApiStatus.FAIL)
+                    .message(combinedErrorMessage)
+                    .build();
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(apiResult);
+        }
+
+        // 본인 글만 업데이트 가능하도록 예외처리
+        String boardUserId = boardDto.getUserId();
+
+        String userId = AuthenticationUtil.getAccountId();
+
+        if ((boardUserId == null || !boardUserId.equals(userId))) {
+            throw new AccessDeniedException("access.denied");
+        }
+
+        // 게시글 업데이트
+        galleryBoardService.updateGalleryBoard(boardDto);
+
+        // 파일 삭제 적용
+        fileService.deleteFiles(boardDto.getDeleteFileIdList());
+
+        // 파일 업로드 적용
+        MultipartFile[] files = boardDto.getFiles();
+
+        List<FileDto> fileDtoList =
+                fileService.saveFilesWithThumbnail(files, boardId);
+
+        fileService.uploadFiles(fileDtoList);
+
+        String message =
+                messageSource.getMessage("patch.board.success",
+                        null, LocaleContextHolder.getLocale());
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.SUCCESS)
+                .message(message)
                 .build();
 
         return ResponseEntity

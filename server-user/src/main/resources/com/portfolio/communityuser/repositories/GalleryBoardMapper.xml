@@ -10,24 +10,35 @@
                           content,
                           category_id,
                           type,
-                          admin_id
+                          user_id
                           )
         VALUES (
                 #{title},
                 #{content},
                 #{categoryId},
                 #{type},
-                #{adminId}
+                #{userId}
                 )
     </insert>
 
     <!-- 갤러리 게시글 조회 -->
     <select id="getGalleryBoard" resultType="BoardDto">
-        SELECT title,
-               content,
-               category_id,
-               views
-        FROM board
+        SELECT b.board_id,
+               b.title,
+               b.content,
+               b.views,
+               b.user_id,
+               b.category_id,
+               c.name AS categoryName,
+               b.created_at,
+               COALESCE(a.name, u.name) AS writer
+        FROM board b
+                 LEFT JOIN category c
+                           ON c.category_id = b.category_id
+                 LEFT JOIN admin a
+                           ON b.admin_id = a.account_id
+                 LEFT JOIN user u
+                           ON b.user_id = u.account_id
         WHERE board_id = #{boardId}
     </select>
 

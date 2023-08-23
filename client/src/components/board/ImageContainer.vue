@@ -2,7 +2,7 @@
   <div>
       <div class="carousel-inner">
         <div v-for="file in fileList" :key="file.fileId">
-          <img :src="file.imageUrl" alt="image">
+          <img :src="file.imageUrl" alt="이미지 없음">
         </div>
       </div>
   </div>
