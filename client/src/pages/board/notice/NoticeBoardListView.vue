@@ -37,8 +37,8 @@ export default {
         keyword: '',
         pageNum: 1,
         pageSize: 10,
-        sort: '',
-        offSet: 0,
+        sortBy: 'createdAt',
+        sort: 'desc',
       },
     }
   },
@@ -58,8 +58,7 @@ export default {
      */
     async loadNoticeBoardList() {
       try {
-        const boardSearch = this.$route.query;
-        const response = await loadNoticeBoardList(boardSearch);
+        const response = await loadNoticeBoardList(this.boardSearch);
 
         this.totalBoardCount = response.data.totalBoardCount
         this.boardList = response.data.boardList;
@@ -92,13 +91,15 @@ export default {
      */
     async searchBoard(boardSearch) {
       try {
-        this.boardSearch = {...boardSearch};
+        this.boardSearch = { ...boardSearch };
 
-        const response = await loadNoticeBoardList(boardSearch);
+        const response = await loadNoticeBoardList(this.boardSearch);
 
         this.totalBoardCount = response.data.totalBoardCount
 
         this.boardList = response.data.boardList;
+
+        this.notificationList = response.data.notificationList;
 
         this.$router.replace({
           query: this.boardSearch

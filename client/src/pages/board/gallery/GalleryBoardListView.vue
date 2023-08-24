@@ -39,8 +39,8 @@ export default {
         keyword: '',
         pageNum: 1,
         pageSize: 10,
-        sort: '',
-        offSet: 0,
+        sortBy: 'createdAt',
+        sort: 'desc',
       },
     }
   },
@@ -60,13 +60,12 @@ export default {
      */
     async loadGalleryBoardList() {
       try {
-        const boardSearch = this.$route.query;
-        const response = await loadGalleryBoardList(boardSearch);
+        const response = await loadGalleryBoardList(this.boardSearch);
 
         this.boardList = response.data.boardList;
 
         for (const board of this.boardList) {
-          this.loadThumbnailUrl(board);
+          await this.loadThumbnailUrl(board);
         }
       } catch (error) {
         console.log(error);
@@ -126,6 +125,10 @@ export default {
         this.totalBoardCount = response.data.totalBoardCount
 
         this.boardList = response.data.boardList;
+
+        for (const board of this.boardList) {
+          await this.loadThumbnailUrl(board);
+        }
 
         this.$router.replace({
           query: this.boardSearch

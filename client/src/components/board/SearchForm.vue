@@ -6,7 +6,8 @@
       <input type="date" v-model="boardSearch.endDate">
       <select v-if="type !== 'help'" v-model="boardSearch.category">
         <option value="all">전체 카테고리</option>
-        <option v-for="category in categoryList" :key="category.categoryId" :value="category.categoryId">
+        <option v-for="category in categoryList" :key="category.categoryId"
+                :value="category.categoryId">
           {{ category.name }}
         </option>
       </select>
@@ -15,6 +16,28 @@
        (type === 'help' ? '제목 or 내용 or 등록자' : '제목 or 내용 or 작성자')">
       <button type="submit">검색</button>
     </form>
+  </div>
+  <div>
+    <select v-model="boardSearch.pageSize" @change="search">
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="30">30</option>
+      <option value="40">40</option>
+      <option value="50">50</option>
+    </select>
+    <p>개씩 보기</p>
+
+    <p>정렬</p>
+    <select v-model="boardSearch.sortBy" @change="search">
+      <option value="createdAt">등록일시</option>
+      <option v-if="type !== 'help'" value="category">분류</option>
+      <option value="title">제목</option>
+      <option value="views">조회수</option>
+    </select>
+    <select v-model="boardSearch.sort" @change="search">
+      <option value="desc">내림차순</option>
+      <option value="asc">오름차순</option>
+    </select>
   </div>
 </template>
 
@@ -45,7 +68,7 @@ export default {
   ,
   created() {
     if (this.boardSearchCondition) {
-      this.boardSearch = { ...this.boardSearchCondition };
+      this.boardSearch = {...this.boardSearchCondition};
     }
   },
   data() {
@@ -54,9 +77,12 @@ export default {
     };
   },
   methods: {
+    /**
+     * 검색을 하기 위해 검색조건을 emit
+     */
     search() {
       this.$emit('searchBoard', this.boardSearch);
-    }
+    },
   }
 }
 </script>

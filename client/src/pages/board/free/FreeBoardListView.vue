@@ -41,8 +41,8 @@ export default {
         keyword: '',
         pageNum: 1,
         pageSize: 10,
-        sort: '',
-        offSet: 0,
+        sortBy: 'createdAt',
+        sort: 'desc',
       },
     }
   },
@@ -62,8 +62,7 @@ export default {
      */
     async loadFreeBoardList() {
       try {
-        const boardSearch = this.$route.query;
-        const response = await loadFreeBoardList(boardSearch);
+        const response = await loadFreeBoardList(this.boardSearch);
 
         this.totalBoardCount = response.data.totalBoardCount
         this.boardList = response.data.boardList;
