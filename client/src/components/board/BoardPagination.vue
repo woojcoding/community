@@ -31,10 +31,13 @@ export default {
     },
   },
   emits: ['search'],
-  created() {
-    if (this.boardSearchCondition) {
-      this.boardSearch = {...this.boardSearchCondition};
-      this.currentPage = this.boardSearch.pageNum;
+  watch: {
+    /**
+     * 페이지 번호가 변경되면 currentPage 업데이트
+     * @param newPageNum
+     */
+    '$route.query.pageNum'(newPageNum) {
+      this.currentPage = parseInt(newPageNum);
     }
   },
   computed: {
@@ -71,11 +74,24 @@ export default {
       }
       return pages;
     },
+    /**
+     * 양방향 바인딩
+     * 자식 컴포넌트 내에서 부모로부터 받은 검색 조건을 관리하며,
+     * 값을 변경할 때는 부모 컴포넌트로 이벤트를 발생시켜 업데이트
+     * @type {Object}
+     */
+    boardSearch: {
+      get() {
+        return this.boardSearchCondition;
+      },
+      set(value) {
+        this.$emit('search', value);
+      },
+    },
   },
   data() {
     return {
       currentPage: 1,
-      boardSearch: {},
       pageLimit: 10,
     };
   },

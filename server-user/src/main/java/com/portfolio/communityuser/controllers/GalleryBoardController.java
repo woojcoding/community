@@ -83,9 +83,13 @@ public class GalleryBoardController {
         List<CategoryDto> categoryList =
                 categoryService.getCategoryList(BoardType.GALLERY);
 
+        int totalBoardCount =
+                galleryBoardService.getTotalBoardCount(boardSearchCondition);
+
         Map<String, Object> data = new HashMap<>();
         data.put("boardList", boardDtoList);
         data.put("categoryList", categoryList);
+        data.put("totalBoardCount", totalBoardCount);
 
         String message =
                 messageSource.getMessage("get.boardList.success",
