@@ -18,27 +18,11 @@ export default {
       required: true,
       description: '게시글 리스트'
     },
-    boardSearch: {
-      type: Object,
-      default: () => ({
-        startDate: '',
-        endDate: '',
-        category: '',
-        keyword: '',
-        pageNum: 1,
-        pageSize: 10,
-        sort: '',
-        offSet: 0,
-        boardType: ''
-      }),
-      required: false,
-      description: '검색 조건'
-    },
-    categoryList: {
+    boardSearchCondition: {
       type: Object,
       default: undefined,
-      required: false,
-      description: '카테고리 리스트'
+      required: true,
+      description: '검색 조건'
     },
     type: {
       type: String,

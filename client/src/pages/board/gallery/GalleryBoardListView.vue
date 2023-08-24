@@ -1,10 +1,13 @@
 <template>
   <h3>갤러리</h3>
-  <search-form></search-form>
+  <search-form :category-list="categoryList"
+               :board-search-condition="boardSearch"
+               :type="type"
+               @search-board="searchBoard"></search-form>
   <button v-if="isLoggedIn" @click="moveToWriteForm">글등록</button>
   <gallery-board-list :type="type"
                       :board-list="boardList"
-                      :category-list="categoryList"></gallery-board-list>
+                      :board-search-condition="boardSearch"></gallery-board-list>
 </template>
 
 <script>
@@ -12,6 +15,7 @@ import {loadGalleryBoardList, loadThumbnail} from "@/api/galleryBoardService";
 import SearchForm from "@/components/board/SearchForm";
 import GalleryBoardList from "@/components/board/GalleryBoardList";
 import {loadCategoryList} from "@/api/categoryService";
+import dayjs from "dayjs";
 
 export default {
   name: "GalleryBoardListView",
@@ -28,11 +32,25 @@ export default {
     return {
       boardList: [],
       categoryList: [],
+      boardSearch: {
+        startDate: dayjs().subtract(15, 'day').format('YYYY-MM-DD'),
+        endDate: dayjs().add(15, 'day').format('YYYY-MM-DD'),
+        category: 'all',
+        keyword: '',
+        pageNum: 1,
+        pageSize: 10,
+        sort: '',
+        offSet: 0,
+      },
     }
   },
   created() {
     this.loadGalleryBoardList();
     this.loadCategoryListData();
+
+    if (Object.keys(this.$route.query).length > 0) {
+      this.boardSearch = this.$route.query;
+    }
   },
   methods: {
     /**
@@ -92,6 +110,29 @@ export default {
         path: "/boards/gallery/post",
         query: this.$route.query
       });
+    },
+    /**
+     * 검색 조건에 따라 검색을 하는 메서드
+     *
+     * @param boardSearch
+     * @returns {Promise<void>}
+     */
+    async searchBoard(boardSearch) {
+      try {
+        this.boardSearch = {...boardSearch};
+
+        const response = await loadGalleryBoardList(boardSearch);
+
+        this.totalBoardCount = response.data.totalBoardCount
+
+        this.boardList = response.data.boardList;
+
+        this.$router.replace({
+          query: this.boardSearch
+        });
+      } catch (error) {
+        alert(error);
+      }
     }
   },
 };

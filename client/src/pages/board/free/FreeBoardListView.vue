@@ -1,11 +1,14 @@
 <template>
   <h3>자유 게시판</h3>
-  <search-form></search-form>
+  <search-form :category-list="categoryList"
+               :type="type"
+               :board-search-condition="boardSearch"
+               @search-board="searchBoard"></search-form>
   <button v-if="isLoggedIn" @click="moveToWriteForm">글등록</button>
   <board-list :type="type"
               :board-list="boardList"
               :total-board-count="totalBoardCount"
-              :category-list="categoryList"></board-list>
+              :board-search-condition="boardSearch"></board-list>
 </template>
 
 <script>
@@ -13,6 +16,7 @@ import BoardList from "@/components/board/BoardList";
 import {loadFreeBoardList} from "@/api/freeBoardService";
 import SearchForm from "@/components/board/SearchForm";
 import {loadCategoryList} from "@/api/categoryService";
+import dayjs from "dayjs";
 
 export default {
   name: "FreeBoardListView",
@@ -30,11 +34,25 @@ export default {
       totalBoardCount: 0,
       boardList: [],
       categoryList: [],
+      boardSearch: {
+        startDate: dayjs().subtract(15, 'day').format('YYYY-MM-DD'),
+        endDate: dayjs().add(15, 'day').format('YYYY-MM-DD'),
+        category: 'all',
+        keyword: '',
+        pageNum: 1,
+        pageSize: 10,
+        sort: '',
+        offSet: 0,
+      },
     }
   },
   created() {
     this.loadFreeBoardList();
     this.loadCategoryList();
+
+    if (Object.keys(this.$route.query).length > 0) {
+      this.boardSearch = this.$route.query;
+    }
   },
   methods: {
     /**
@@ -76,6 +94,29 @@ export default {
         path: "/boards/free/post",
         query: this.$route.query
       });
+    },
+    /**
+     * 검색 조건에 따라 검색을 하는 메서드
+     *
+     * @param boardSearch
+     * @returns {Promise<void>}
+     */
+    async searchBoard(boardSearch) {
+      try {
+        this.boardSearch = {...boardSearch};
+
+        const response = await loadFreeBoardList(boardSearch);
+
+        this.totalBoardCount = response.data.totalBoardCount
+
+        this.boardList = response.data.boardList;
+
+        this.$router.replace({
+          query: this.boardSearch
+        });
+      } catch (error) {
+        alert(error);
+      }
     }
   },
 };

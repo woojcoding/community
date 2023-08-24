@@ -67,27 +67,11 @@ export default {
       required: true,
       description: '게시글 리스트'
     },
-    boardSearch: {
-      type: Object,
-      default: () => ({
-        startDate: '',
-        endDate: '',
-        category: '',
-        keyword: '',
-        pageNum: 1,
-        pageSize: 10,
-        sort: '',
-        offSet: 0,
-        boardType: ''
-      }),
-      required: false,
-      description: '검색 조건'
-    },
-    categoryList: {
+    boardSearchCondition: {
       type: Object,
       default: undefined,
-      required: false,
-      description: '카테고리 리스트'
+      required: true,
+      description: '검색 조건'
     },
     totalBoardCount: {
       type: Number,
@@ -109,22 +93,19 @@ export default {
      * @returns {function(*)}
      */
     calculatedNumber() {
-      return index => this.totalBoardCount - ((this.boardSearch.pageNum - 1) * this.boardSearch.pageSize) - index;
+      return index => this.totalBoardCount - ((this.boardSearchCondition.pageNum - 1) * this.boardSearchCondition.pageSize) - index;
     }
   },
   methods: {
     /**
-     * 게시글 상세보기 페이질로 이동하는 메서드
+     * 게시글 상세보기 페이지로 이동하는 메서드
      *
      * @param boardId
      */
     boardDetail(boardId) {
       this.$router.push({
         path: `/boards/${this.type}/${boardId}`,
-        query: {
-          ...this.boardSearch,
-          boardId: boardId
-        }
+        query: this.$route.query
       });
     }
   }

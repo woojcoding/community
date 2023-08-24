@@ -121,7 +121,7 @@
         </if>
         <if test="keyword != null and keyword != ''">
             AND (
-            <if test='type != "NOTICE"'>
+            <if test='type.toString != "NOTICE"'>
                 u.name LIKE CONCAT('%', #{keyword}, '%') OR
                 a.name LIKE CONCAT('%', #{keyword}, '%') OR
             </if>
