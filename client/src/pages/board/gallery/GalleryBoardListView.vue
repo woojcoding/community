@@ -8,6 +8,9 @@
   <gallery-board-list :type="type"
                       :board-list="boardList"
                       :board-search-condition="boardSearch"></gallery-board-list>
+  <board-pagination :board-search-condition="boardSearch"
+                    :total-board-count="totalBoardCount"
+                    @search="searchBoard"></board-pagination>
 </template>
 
 <script>
@@ -16,10 +19,11 @@ import SearchForm from "@/components/board/SearchForm";
 import GalleryBoardList from "@/components/board/GalleryBoardList";
 import {loadCategoryList} from "@/api/categoryService";
 import dayjs from "dayjs";
+import BoardPagination from "@/components/board/BoardPagination";
 
 export default {
   name: "GalleryBoardListView",
-  components: {GalleryBoardList, SearchForm},
+  components: {BoardPagination, GalleryBoardList, SearchForm},
   props: {
     type: String,
   },
@@ -42,15 +46,16 @@ export default {
         sortBy: 'createdAt',
         sort: 'desc',
       },
+      totalBoardCount: 0,
     }
   },
   created() {
-    this.loadGalleryBoardList();
-    this.loadCategoryListData();
-
     if (Object.keys(this.$route.query).length > 0) {
       this.boardSearch = this.$route.query;
     }
+
+    this.loadGalleryBoardList();
+    this.loadCategoryListData();
   },
   methods: {
     /**
@@ -63,6 +68,7 @@ export default {
         const response = await loadGalleryBoardList(this.boardSearch);
 
         this.boardList = response.data.boardList;
+        this.totalBoardCount = response.data.totalBoardCount;
 
         for (const board of this.boardList) {
           await this.loadThumbnailUrl(board);
@@ -131,7 +137,7 @@ export default {
         }
 
         this.$router.replace({
-          query: this.boardSearch
+          query: boardSearch
         });
       } catch (error) {
         alert(error);

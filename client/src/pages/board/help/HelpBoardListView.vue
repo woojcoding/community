@@ -9,6 +9,9 @@
               :board-list="boardList"
               :board-search-condition="boardSearch"
               :total-board-count="totalBoardCount"></board-list>
+  <board-pagination :board-search-condition="boardSearch"
+                    :total-board-count="totalBoardCount"
+                    @search="searchBoard"></board-pagination>
 </template>
 
 <script>
@@ -16,10 +19,11 @@ import BoardList from "@/components/board/BoardList";
 import {loadHelpBoardList} from "@/api/helpBoardService";
 import SearchForm from "@/components/board/SearchForm";
 import dayjs from "dayjs";
+import BoardPagination from "@/components/board/BoardPagination";
 
 export default {
   name: "HelpBoardListView",
-  components: {SearchForm, BoardList},
+  components: {BoardPagination, SearchForm, BoardList},
   props: {
     type: String,
   },
@@ -45,11 +49,11 @@ export default {
     }
   },
   created() {
-    this.loadHelpBoardList();
-
     if (Object.keys(this.$route.query).length > 0) {
       this.boardSearch = this.$route.query;
     }
+
+    this.loadHelpBoardList();
   },
   methods: {
     /**
@@ -96,7 +100,7 @@ export default {
         this.boardList = response.data.boardList;
 
         this.$router.replace({
-          query: this.boardSearch
+          query: boardSearch
         });
       } catch (error) {
         alert(error);

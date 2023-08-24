@@ -9,6 +9,9 @@
               :board-list="boardList"
               :total-board-count="totalBoardCount"
               :board-search-condition="boardSearch"></board-list>
+  <board-pagination :board-search-condition="boardSearch"
+                    :total-board-count="totalBoardCount"
+                    @search="searchBoard"></board-pagination>
 </template>
 
 <script>
@@ -17,10 +20,11 @@ import SearchForm from "@/components/board/SearchForm";
 import {loadNoticeBoardList} from "@/api/noticeBoardService";
 import {loadCategoryList} from "@/api/categoryService";
 import dayjs from "dayjs";
+import BoardPagination from "@/components/board/BoardPagination";
 
 export default {
   name: "NoticeBoardListView",
-  components: {SearchForm, BoardList},
+  components: {BoardPagination, SearchForm, BoardList},
   props: {
     type: String,
   },
@@ -43,12 +47,12 @@ export default {
     }
   },
   created() {
-    this.loadNoticeBoardList();
-    this.loadCategoryList();
-
     if (Object.keys(this.$route.query).length > 0) {
       this.boardSearch = this.$route.query;
     }
+
+    this.loadNoticeBoardList();
+    this.loadCategoryList();
   },
   methods: {
     /**
@@ -102,7 +106,7 @@ export default {
         this.notificationList = response.data.notificationList;
 
         this.$router.replace({
-          query: this.boardSearch
+          query: boardSearch
         });
       } catch (error) {
         alert(error);
