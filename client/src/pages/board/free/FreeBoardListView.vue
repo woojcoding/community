@@ -51,7 +51,6 @@ export default {
   },
   watch: {
     $route(to, from) {
-      console.log(to,from)
       if (to.query !== from.query) {
         console.log(to.query)
         this.boardSearch = {
@@ -77,6 +76,10 @@ export default {
     }
   },
   created() {
+    if (this.$route.query && Object.keys(this.$route.query).length > 0) {
+      this.boardSearch = {...this.$route.query};
+    }
+
     this.loadFreeBoardList();
     this.loadCategoryList();
   },

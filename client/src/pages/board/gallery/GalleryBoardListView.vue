@@ -49,6 +49,10 @@ export default {
     }
   },
   created() {
+    if (this.$route.query && Object.keys(this.$route.query).length > 0) {
+      this.boardSearch = {...this.$route.query};
+    }
+
     this.loadGalleryBoardList();
     this.loadCategoryListData();
   },
@@ -59,7 +63,6 @@ export default {
      * @param from
      */
     $route(to, from) {
-      console.log(to,from)
       if (to.query !== from.query) {
         this.boardSearch = {
           ...this.boardSearch,

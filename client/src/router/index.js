@@ -40,26 +40,15 @@ const router = createRouter({
         {
             path: '/boards/free/:boardId',
             component: FreeBoardDetail,
-            props: (route) => ({
-                boardId: route.params.boardId,
-                query: route.query
-            })
         },
         {
             path: '/boards/free/post',
             component: FreeBoardPostView,
-            props: (route) => ({
-                query: route.query
-            }),
             beforeEnter: requireAuth
         },
         {
             path: '/boards/free/modify/:boardId',
             component: FreeBoardModifyView,
-            props: (route) => ({
-                boardId: route.params.boardId,
-                query: route.query
-            }),
             beforeEnter: requireAuth
         },
         {
@@ -70,10 +59,6 @@ const router = createRouter({
         {
             path: '/boards/notice/:boardId',
             component: NoticeBoardDetail,
-            props: (route) => ({
-                boardId: route.params.boardId,
-                query: route.query
-            })
         },
         {
             path: '/boards/gallery',
@@ -83,26 +68,15 @@ const router = createRouter({
         {
             path: '/boards/gallery/:boardId',
             component: GalleryBoardDetail,
-            props: (route) => ({
-                boardId: route.params.boardId,
-                query: route.query
-            })
         },
         {
             path: '/boards/gallery/post',
             component: GalleryBoardPostView,
-            props: (route) => ({
-                query: route.query
-            }),
             beforeEnter: requireAuth
         },
         {
             path: '/boards/gallery/modify/:boardId',
             component: GalleryBoardModifyView,
-            props: (route) => ({
-                boardId: route.params.boardId,
-                query: route.query
-            }),
             beforeEnter: requireAuth
         },
         {
@@ -113,26 +87,15 @@ const router = createRouter({
         {
             path: '/boards/help/:boardId',
             component: HelpBoardDetail,
-            props: (route) => ({
-                boardId: route.params.boardId,
-                query: route.query
-            })
         },
         {
             path: '/boards/help/post',
             component: HelpBoardPostView,
-            props: (route) => ({
-                query: route.query
-            }),
             beforeEnter: requireAuth
         },
         {
             path: '/boards/help/modify/:boardId',
             component: HelpBoardModifyView,
-            props: (route) => ({
-                boardId: route.params.boardId,
-                query: route.query
-            }),
             beforeEnter: requireAuth
         },
         {path: '/home', component: CommunityHome},
