@@ -55,6 +55,13 @@ public class HelpBoardController {
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition
     ) {
+        // 나의 문의 게시글만 보기를 선택한 경우
+        if (boardSearchCondition.isDisplayMyPostsOnly()) {
+            String userId = AuthenticationUtil.getAccountId();
+
+            boardSearchCondition.setUserId(userId);
+        }
+
         List<BoardDto> boardDtoList =
                 helpBoardService.getHelpBoardList(boardSearchCondition);
 

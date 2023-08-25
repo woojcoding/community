@@ -60,4 +60,14 @@ public class BoardSearchCondition {
      * 게시글 타입
      */
     private BoardType type;
+
+    /**
+     * 나의 게시글만 보기의 여부
+     */
+    private boolean displayMyPostsOnly;
+
+    /**
+     * 나의 게시글만 볼 경우 유저의 Id
+     */
+    private String userId;
 }

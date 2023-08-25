@@ -107,7 +107,7 @@ export default {
      */
     moveToList() {
       this.$router.push({
-        path: `/boards/free/`,
+        path: `/boards/${this.type}/`,
         query: this.$route.query
       });
     },

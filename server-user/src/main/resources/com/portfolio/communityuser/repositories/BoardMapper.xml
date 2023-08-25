@@ -129,6 +129,9 @@
             b.content LIKE CONCAT('%', #{keyword}, '%')
             )
         </if>
+        <if test="displayMyPostsOnly">
+            AND b.user_id = #{userId}
+        </if>
     </where>
     </sql>
 

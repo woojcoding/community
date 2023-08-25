@@ -73,6 +73,7 @@ export default {
             pageSize: 10,
             sortBy: 'createdAt',
             sort: 'desc',
+            displayMyPostsOnly: false,
           };
         }
 

@@ -10,14 +10,12 @@ const instance = axios.create({
  */
 instance.interceptors.request.use(
     (config) => {
-        if (config.method !== "get") {
-            const accessToken = store.state.auth.token;
+        const accessToken = store.state.auth.token;
 
-            if (accessToken) {
-                config.headers.Authorization = accessToken;
-            }
+        if (accessToken) {
+            config.headers.Authorization = accessToken;
         }
-
+        
         return config;
     },
     (error) => {
@@ -48,11 +46,8 @@ export function loadHelpBoardList(boardSearch) {
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
 export function loadHelpBoard(boardId) {
-    return instance.get(`/api/v1/boards/help/${boardId}`, {
-        headers: {
-            Authorization: store.state.auth.token
-        }
-    }).then((response) => {
+    return instance.get(`/api/v1/boards/help/${boardId}`
+    ).then((response) => {
         return response.data;
     }).catch((error) => {
         throw error.response.data.message
@@ -66,11 +61,8 @@ export function loadHelpBoard(boardId) {
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
 export function loadHelpBoardForModify(boardId) {
-    return instance.get(`/api/v1/boards/help/modify/${boardId}`, {
-        headers: {
-            Authorization: store.state.auth.token
-        }
-    }).then((response) => {
+    return instance.get(`/api/v1/boards/help/modify/${boardId}`
+    ).then((response) => {
         return response.data;
     }).catch((error) => {
         throw error.response.data.message

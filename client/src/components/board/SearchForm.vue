@@ -14,6 +14,10 @@
       <input type="text" v-model="boardSearch.keyword"
              :placeholder="type === 'notice' ? '제목 or 내용' :
        (type === 'help' ? '제목 or 내용 or 등록자' : '제목 or 내용 or 작성자')">
+      <div v-if="type === 'help'">
+        <span>나의 문의내역만 보기</span>
+        <input type="checkbox" v-model="boardSearch.displayMyPostsOnly">
+      </div>
       <button type="submit">검색</button>
     </form>
   </div>
