@@ -2,7 +2,6 @@
   <h3>자유 게시판</h3>
   <search-form :category-list="categoryList"
                :type="type"
-               :board-search-condition="boardSearch"
                @search-board="searchBoard"></search-form>
   <button v-if="isLoggedIn" @click="moveToWriteForm">글등록</button>
   <board-list :type="type"
@@ -39,8 +38,8 @@ export default {
       boardList: [],
       categoryList: [],
       boardSearch: {
-        startDate: dayjs().subtract(15, 'day').format('YYYY-MM-DD'),
-        endDate: dayjs().add(15, 'day').format('YYYY-MM-DD'),
+        startDate: dayjs().subtract(30, 'day').format('YYYY-MM-DD'),
+        endDate: dayjs().format('YYYY-MM-DD'),
         category: 'all',
         keyword: '',
         pageNum: 1,
@@ -50,11 +49,34 @@ export default {
       },
     }
   },
-  created() {
-    if (Object.keys(this.$route.query).length > 0) {
-      this.boardSearch = this.$route.query;
-    }
+  watch: {
+    $route(to, from) {
+      console.log(to,from)
+      if (to.query !== from.query) {
+        console.log(to.query)
+        this.boardSearch = {
+          ...this.boardSearch,
+          ...to.query
+        };
 
+        if (Object.keys(to.query).length === 0) {
+          this.boardSearch = {
+            startDate: dayjs().subtract(30, 'day').format('YYYY-MM-DD'),
+            endDate: dayjs().format('YYYY-MM-DD'),
+            category: 'all',
+            keyword: '',
+            pageNum: 1,
+            pageSize: 10,
+            sortBy: 'createdAt',
+            sort: 'desc',
+          };
+        }
+
+        this.loadFreeBoardList();
+      }
+    }
+  },
+  created() {
     this.loadFreeBoardList();
     this.loadCategoryList();
   },
@@ -104,17 +126,10 @@ export default {
      * @param boardSearch
      * @returns {Promise<void>}
      */
-    async searchBoard(boardSearch) {
+    searchBoard(boardSearch) {
       try {
-        this.boardSearch = {...boardSearch};
-
-        const response = await loadFreeBoardList(boardSearch);
-
-        this.totalBoardCount = response.data.totalBoardCount
-
-        this.boardList = response.data.boardList;
-
-        this.$router.replace({
+        this.$router.push({
+          path: `/boards/free/`,
           query: boardSearch
         });
       } catch (error) {

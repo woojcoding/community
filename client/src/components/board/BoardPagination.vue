@@ -31,15 +31,6 @@ export default {
     },
   },
   emits: ['search'],
-  watch: {
-    /**
-     * 페이지 번호가 변경되면 currentPage 업데이트
-     * @param newPageNum
-     */
-    '$route.query.pageNum'(newPageNum) {
-      this.currentPage = parseInt(newPageNum);
-    }
-  },
   computed: {
     /**
      * 페이지의 수를 계산
@@ -47,6 +38,9 @@ export default {
      */
     pageCount() {
       return Math.ceil(this.totalBoardCount / this.boardSearch.pageSize);
+    },
+    currentPage() {
+      return this.boardSearch.pageNum;
     },
     /**
      * 시작 페이지를 계산
@@ -91,7 +85,6 @@ export default {
   },
   data() {
     return {
-      currentPage: 1,
       pageLimit: 10,
     };
   },

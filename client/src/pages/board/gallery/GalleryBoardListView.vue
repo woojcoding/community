@@ -1,7 +1,6 @@
 <template>
   <h3>갤러리</h3>
   <search-form :category-list="categoryList"
-               :board-search-condition="boardSearch"
                :type="type"
                @search-board="searchBoard"></search-form>
   <button v-if="isLoggedIn" @click="moveToWriteForm">글등록</button>
@@ -37,8 +36,8 @@ export default {
       boardList: [],
       categoryList: [],
       boardSearch: {
-        startDate: dayjs().subtract(15, 'day').format('YYYY-MM-DD'),
-        endDate: dayjs().add(15, 'day').format('YYYY-MM-DD'),
+        startDate: dayjs().subtract(30, 'day').format('YYYY-MM-DD'),
+        endDate: dayjs().format('YYYY-MM-DD'),
         category: 'all',
         keyword: '',
         pageNum: 1,
@@ -50,12 +49,39 @@ export default {
     }
   },
   created() {
-    if (Object.keys(this.$route.query).length > 0) {
-      this.boardSearch = this.$route.query;
-    }
-
     this.loadGalleryBoardList();
     this.loadCategoryListData();
+  },
+  watch: {
+    /**
+     * 라우트의 쿼리 변경을 감지하여 boardSearch의 데이터를 변경 후 BoardList의 데이터를 다시 가져오는 메서드
+     * @param to
+     * @param from
+     */
+    $route(to, from) {
+      console.log(to,from)
+      if (to.query !== from.query) {
+        this.boardSearch = {
+          ...this.boardSearch,
+          ...to.query
+        };
+
+        if (Object.keys(to.query).length === 0) {
+          this.boardSearch = {
+            startDate: dayjs().subtract(30, 'day').format('YYYY-MM-DD'),
+            endDate: dayjs().format('YYYY-MM-DD'),
+            category: 'all',
+            keyword: '',
+            pageNum: 1,
+            pageSize: 10,
+            sortBy: 'createdAt',
+            sort: 'desc',
+          };
+        }
+
+        this.loadGalleryBoardList();
+      }
+    }
   },
   methods: {
     /**
@@ -124,19 +150,8 @@ export default {
      */
     async searchBoard(boardSearch) {
       try {
-        this.boardSearch = {...boardSearch};
-
-        const response = await loadGalleryBoardList(boardSearch);
-
-        this.totalBoardCount = response.data.totalBoardCount
-
-        this.boardList = response.data.boardList;
-
-        for (const board of this.boardList) {
-          await this.loadThumbnailUrl(board);
-        }
-
-        this.$router.replace({
+        this.$router.push({
+          path: `/boards/gallery/`,
           query: boardSearch
         });
       } catch (error) {

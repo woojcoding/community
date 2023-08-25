@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import dayjs from "dayjs";
+
 export default {
   name: "SearchForm",
   props: {
@@ -57,23 +59,21 @@ export default {
       required: true,
       description: '게시글 타입'
     },
-    boardSearchCondition: {
-      type: Object,
-      default: undefined,
-      required: false,
-      description: '검색 조건'
-    }
   },
   emits: ['searchBoard']
   ,
-  created() {
-    if (this.boardSearchCondition) {
-      this.boardSearch = {...this.boardSearchCondition};
-    }
-  },
   data() {
     return {
-      boardSearch: {},
+      boardSearch: {
+        startDate: dayjs().subtract(30, 'day').format('YYYY-MM-DD'),
+        endDate: dayjs().format('YYYY-MM-DD'),
+        category: 'all',
+        keyword: '',
+        pageNum: 1,
+        pageSize: 10,
+        sortBy: 'createdAt',
+        sort: 'desc',
+      },
     };
   },
   methods: {
