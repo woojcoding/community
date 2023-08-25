@@ -6,7 +6,7 @@
         <span class="title">{{ board.title }}</span>
         <span v-if="type === 'help' && board.answer">(답변완료)</span>
         <span v-if="type === 'help' && !board.answer">(미답변)</span>
-        <span class="info">{{ board.createdAt }} {{ board.writer }}</span>
+        <span class="info">{{ formatDate(board.createdAt) }} {{ board.writer }}</span>
       </div>
       <div class="views">
         조회수: {{ board.views }}
@@ -26,7 +26,7 @@
       <div class="answer" v-if="type === 'help'">
         <template v-if="board.answer">
           <div class="info">
-            {{ board.answerer }} {{ board.answeredAt }}
+            {{ board.answerer }} {{ formatDate(board.answeredAt) }}
           </div>
           <div>
             <span class="answer">{{ board.answer }}</span>
@@ -50,6 +50,7 @@
 <script>
 import {downloadFile} from "@/api/freeBoardService";
 import ImageContainer from "@/components/board/ImageContainer";
+import {formatDate} from "@/utils/dateUtil";
 
 export default {
   name: "BoardDetail",
@@ -129,6 +130,14 @@ export default {
         this.$emit("deleteBoard");
       }
     },
+    /**
+     * 날짜를 포맷에 맞게 수정하는 메서드
+     * @param date
+     * @returns {string}
+     */
+    formatDate(date) {
+      return formatDate(date);
+    }
   }
 }
 </script>

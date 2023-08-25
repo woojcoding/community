@@ -3,12 +3,16 @@
     <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl" alt="Image">
     <a @click="boardDetail(board.boardId)">
       {{ board.title }}
+      +{{ board.imageCount }}
     </a>
+    <span v-if="isNew(board.createdAt)" class="new-label">new</span>
     <div class="content">{{ board.content }}</div>
   </div>
 </template>
 
 <script>
+import {isNew} from "@/utils/dateUtil";
+
 export default {
   name: "GalleryBoardList",
   props: {
@@ -33,7 +37,7 @@ export default {
   },
   methods: {
     /**
-     * 게시글 상세보기 페이질로 이동하는 메서드
+     * 게시글 상세보기 페이지로 이동하는 메서드
      *
      * @param boardId
      */
@@ -45,11 +49,23 @@ export default {
           boardId: boardId
         }
       });
-    }
+    },
+    /**
+     * New 표시 여부를 결정해주는 메서드
+     * @param createdAt
+     * @returns {boolean}
+     */
+    isNew(createdAt) {
+      return isNew(createdAt);
+    },
   }
 };
 </script>
 
 <style scoped>
-
+.new-label {
+  font-weight: bold;
+  color: red;
+  margin-left: 5px;
+}
 </style>

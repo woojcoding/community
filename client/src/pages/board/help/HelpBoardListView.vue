@@ -93,8 +93,6 @@ export default {
 
         this.totalBoardCount = response.data.totalBoardCount
         this.boardList = response.data.boardList;
-        this.categoryList = response.data.categoryList;
-
       } catch (error) {
         console.log(error);
         alert(error);

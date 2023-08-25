@@ -11,7 +11,8 @@
       </tr>
       <!-- notice 인 경우에만 랜더링 -->
       <template v-if="type === 'notice' && notificationList">
-        <tr v-for="notification in notificationList" :key="notification.boardId">
+        <tr v-for="notification in notificationList"
+            :key="notification.boardId">
           <td></td>
           <td>알림</td>
           <td>
@@ -41,10 +42,11 @@
                 <i class="fas fa-paperclip"></i>
               </span>
             </span>
+            <span v-if="isNew(board.createdAt)" class="new-label">new</span>
           </a>
         </td>
         <td>{{ board.views }}</td>
-        <td>{{ board.createdAt }}</td>
+        <td>{{ formatDate(board.createdAt) }}</td>
         <td>{{ board.writer }}</td>
       </tr>
     </table>
@@ -52,6 +54,9 @@
 </template>
 
 <script>
+import {formatDate, isNew} from "@/utils/dateUtil";
+
+
 export default {
   name: "BoardList",
   props: {
@@ -107,11 +112,31 @@ export default {
         path: `/boards/${this.type}/${boardId}`,
         query: this.$route.query
       });
-    }
+    },
+    /**
+     * 날짜를 포맷에 맞게 수정하는 메서드
+     * @param date
+     * @returns {string}
+     */
+    formatDate(date) {
+      return formatDate(date);
+    },
+    /**
+     * New 표시 여부를 결정해주는 메서드
+     * @param createdAt
+     * @returns {boolean}
+     */
+    isNew(createdAt) {
+      return isNew(createdAt);
+    },
   }
 }
 </script>
 
 <style scoped>
-
+.new-label {
+  font-weight: bold;
+  color: red;
+  margin-left: 5px;
+}
 </style>
