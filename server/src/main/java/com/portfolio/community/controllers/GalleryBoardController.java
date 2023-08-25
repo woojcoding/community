@@ -42,7 +42,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-public class this.pageLimitontroller {
+public class GalleryBoardController {
 
     /**
      *  갤러리 게시글에 대한 로직을 처리하는 galleryBoardService를 의존성 주입
