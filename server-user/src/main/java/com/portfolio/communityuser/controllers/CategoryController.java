@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Gallery controller
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")

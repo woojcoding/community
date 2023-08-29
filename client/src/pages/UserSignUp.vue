@@ -1,24 +1,49 @@
 <template>
-  <h3>회원가입</h3>
-  <form @submit.prevent="signUp">
-    <div>
-      <input type="text" v-model="userDto.accountId" placeholder="아이디">
-      <button type="button" @click="idDuplicationCheck">중복확인</button>
+  <div class="signup-container">
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">회원가입</h3>
+              <form @submit.prevent="signUp">
+                <div class="mb-3">
+                  <div class="input-group">
+                    <input type="text" class="form-control"
+                           v-model="userDto.accountId" id="accountId"
+                           placeholder="아이디">
+                    <button type="button" class="btn btn-secondary"
+                            @click="idDuplicationCheck">중복확인
+                    </button>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <input type="password" class="form-control"
+                         v-model="userDto.password" id="password"
+                         placeholder="비밀번호">
+                </div>
+                <div class="mb-3">
+                  <input type="password" class="form-control"
+                         v-model="userDto.passwordConfirm" id="passwordConfirm"
+                         placeholder="비밀번호 확인">
+                </div>
+                <div class="mb-3">
+                  <input type="text" class="form-control" v-model="userDto.name"
+                         id="name" placeholder="이름">
+                </div>
+                <div class="mb-3">
+                  <button type="submit" class="btn btn-primary">회원 가입 하기
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <input type="password" v-model="userDto.password" placeholder="비밀번호">
-    </div>
-    <div>
-      <input type="password" v-model="userDto.passwordConfirm" placeholder="비밀번호 확인">
-    </div>
-    <div>
-      <input type="text" v-model="userDto.name" placeholder="이름">
-    </div>
-    <div>
-      <button>회원 가입 하기</button>
-    </div>
-  </form>
+  </div>
 </template>
+
 
 <script>
 import {confirmIdDuplication, signUpUser} from "@/api/userService";
@@ -41,7 +66,7 @@ export default {
     };
   },
   watch: {
-    'userDto.accountId': function(newValue, oldValue) {
+    'userDto.accountId': function (newValue, oldValue) {
       if (newValue !== oldValue) {
         this.isAccountIdDuplicated = true;
       }
@@ -149,7 +174,9 @@ export default {
 }
 </script>
 <style scoped>
-div {
-  margin: 0.5rem 0;
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

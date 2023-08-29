@@ -11,8 +11,8 @@ import javax.validation.constraints.Size;
 @Setter
 public class IdCheckDto {
 
-    @NotBlank(message = "{NotBlank.userDto.accountId}")
-    @Size(min = 4, max = 11, message = "{Size.userDto.accountId}")
-    @Pattern(regexp = "^[a-zA-Z0-9-_]+$", message = "{Pattern.userDto.accountId}")
+    @NotBlank(message = "{notBlank.userDto.accountId}")
+    @Size(min = 4, max = 11, message = "{size.userDto.accountId}")
+    @Pattern(regexp = "^[a-zA-Z0-9-_]+$", message = "{pattern.userDto.accountId}")
     private String accountId;
 }

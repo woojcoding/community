@@ -3,7 +3,9 @@
   <search-form :category-list="categoryList"
                :type="type"
                @search-board="searchBoard"></search-form>
-  <button v-if="isLoggedIn" @click="moveToWriteForm">글등록</button>
+  <div class="d-flex justify-content-end mb-4">
+    <button v-if="isLoggedIn" class="btn btn-primary" @click="moveToWriteForm">글등록</button>
+  </div>
   <board-list :type="type"
               :board-list="boardList"
               :board-search-condition="boardSearch"

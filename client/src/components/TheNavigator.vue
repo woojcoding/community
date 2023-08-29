@@ -1,21 +1,34 @@
 <template>
   <div>
-    <nav>
-      <router-link to="/boards/notice"> 공지사항</router-link>
-      |
-      <router-link to="/boards/free"> 자유 게시판</router-link>
-      |
-      <router-link to="/boards/gallery"> 갤러리</router-link>
-      |
-      <router-link to="/boards/help"> 문의 게시판</router-link>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul id="nav1" class="nav justify-content-start bg-light">
+            <li class="nav-item">
+              <router-link class="nav-link" to="/boards/notice">공지사항</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/boards/free">자유 게시판</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/boards/gallery">갤러리</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/boards/help">문의 게시판</router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="navbar-right">
+        <div v-if="isLoggedIn" >
+          {{ name }} 님 환영합니다
+          <button @click="logout" class="btn btn-danger">Logout</button>
+        </div>
+        <div v-else>
+          <router-link class="btn btn-primary" to="/login">로그인 / 회원가입</router-link>
+        </div>
+      </div>
     </nav>
-    <div v-if="isLoggedIn">
-      <div> {{name}} 님 환영합니다</div>
-      <button @click="logout">Logout</button>
-    </div>
-    <div v-else>
-      <router-link to="/login"> 로그인 / 회원가입</router-link>
-    </div>
   </div>
 </template>
 

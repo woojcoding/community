@@ -1,17 +1,26 @@
 <template>
-  <table>
-    <textarea rows="2" cols="250" placeholder="댓글을 입력해 주세요."
-              v-model="comment.content"></textarea>
-    <button @click="postComment">등록</button>
-    <tr v-for="(comment, index) in commentList" :key="index">
-      <td colspan="4">
-        <span>{{ comment.writer }}</span>
-        <span>{{ comment.createdAt }}</span>
-        <br>
-        <span>{{ comment.content }}</span>
-      </td>
-    </tr>
-  </table>
+  <div class="comment-section">
+    <table class="table">
+      <tr>
+        <td colspan="4">
+          <textarea rows="2" class="form-control" placeholder="댓글을 입력해 주세요."
+                    v-model="comment.content"></textarea>
+          <button @click="postComment" class="btn btn-primary mt-2">등록</button>
+        </td>
+      </tr>
+      <tr v-for="(comment, index) in commentList" :key="index">
+        <td colspan="4">
+          <div class="d-flex justify-content-between align-items-center font-weight-bold">
+            <span class="comment-writer">{{ comment.writer }}</span>
+            <span class="text-muted">{{ comment.createdAt }}</span>
+          </div>
+          <div class="comment-content mt-2">
+            {{ comment.content }}
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
 </template>
 
 <script>

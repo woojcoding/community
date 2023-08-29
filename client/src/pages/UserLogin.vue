@@ -1,17 +1,32 @@
 <template>
-  <h3>로그인</h3>
-  <form @submit.prevent="login">
-    <div>
-      <input type="text" v-model="accountId" placeholder="아이디">
+  <div class="login-container">
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">로그인</h3>
+              <form @submit.prevent="login">
+                <div class="mb-3">
+                  <input type="text" class="form-control" v-model="accountId"
+                         id="accountId" placeholder="아이디">
+                </div>
+                <div class="mb-3">
+                  <input type="password" class="form-control" v-model="password"
+                         id="password" placeholder="비밀번호">
+                </div>
+                <div class="mb-3">
+                  <button type="submit" class="btn btn-primary">로그인</button>
+                </div>
+              </form>
+              <button @click="moveToSignUpPage" class="btn btn-primary">회원가입
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <input type="password" v-model="password" placeholder="비밀번호">
-    </div>
-    <div>
-      <button> 로그인</button>
-    </div>
-  </form>
-  <button @click="moveToSignUpPage"> 회원가입</button>
+  </div>
 </template>
 
 <script>
@@ -46,7 +61,9 @@ export default {
 </script>
 
 <style scoped>
-div {
-  margin: 0.5rem 0;
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

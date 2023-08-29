@@ -1,116 +1,171 @@
 <template>
-  <h2>홈화면</h2>
-  <article>
-    <h3> 공지사항 </h3>
-    <a @click="goToBoardList('notice')">
-      더보기+
-    </a>
-    <table>
-      <tr>
-        <td>번호</td>
-        <td>분류</td>
-        <td>제목</td>
-      </tr>
-      <tr v-if="notificationList.length > 0">
-        <td>{{ notificationList[0].boardId }}</td>
-        <td>알림</td>
-        <td>
-          <a @click="boardDetail(notificationList[0].boardId, 'notice')">
-            {{ notificationList[0].title }}
-          </a>
-        </td>
-      </tr>
-      <tr v-for="board in noticeBoardList" :key="board.boardId">
-        <td>{{ board.boardId }}</td>
-        <td>{{ board.categoryName }}</td>
-        <td>
-          <a @click="boardDetail(board.boardId, 'notice')">
-            {{ board.title }}
-            <span v-if="isNew(board.createdAt)" class="new-label">new</span>
-          </a>
-        </td>
-      </tr>
-    </table>
-  </article>
-  <article>
-    <h3> 자유게시판 </h3>
-    <a @click="goToBoardList('free')">
-      더보기+
-    </a>
-    <table>
-      <tr>
-        <td>번호</td>
-        <td>분류</td>
-        <td>제목</td>
-      </tr>
-      <tr v-for="board in freeBoardList" :key="board.boardId">
-        <td>{{ board.boardId }}</td>
-        <td>{{ board.categoryName }}</td>
-        <td>
-          <a @click="boardDetail(board.boardId, 'free')">
-            {{ board.title }}
-            <span>
-              ({{ board.commentCount }})
-              <span v-if="board.isAttached">
-                <i class="fas fa-paperclip"></i>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-6">
+        <!-- 공지사항 -->
+        <article class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="m-0 text-center flex-grow-1">공지사항</h3>
+            <div class="text-right">
+              <a @click="goToBoardList('notice')" class="text-decoration-none">
+                <span class="mr-2">더보기</span>
+                <i class="fas fa-plus"></i>
+              </a>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th scope="col">번호</th>
+                <th scope="col">분류</th>
+                <th scope="col">제목</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-if="notificationList.length > 0">
+                <td>{{ notificationList[0].boardId }}</td>
+                <td>알림</td>
+                <td>
+                  <a @click="boardDetail(notificationList[0].boardId, 'notice')">
+                    {{ notificationList[0].title }}
+                  </a>
+                </td>
+              </tr>
+              <tr v-for="board in noticeBoardList" :key="board.boardId">
+                <td>{{ board.boardId }}</td>
+                <td>{{ board.categoryName }}</td>
+                <td>
+                  <a @click="boardDetail(board.boardId, 'notice')">
+                    {{ board.title }}
+                    <span v-if="isNew(board.createdAt)"
+                          class="new-label">new</span>
+                  </a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+        <!-- 갤러리 -->
+        <article class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="m-0 text-center flex-grow-1">갤러리</h3>
+            <div class="text-right">
+              <a @click="goToBoardList('gallery')" class="text-decoration-none">
+                <span class="mr-2">더보기</span>
+                <i class="fas fa-plus"></i>
+              </a>
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col">번호</th>
+              <th scope="col">분류</th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="board in galleryBoardList" :key="board.boardId"
+                class="double-height">
+              <td>{{ board.boardId }}</td>
+              <td>{{ board.categoryName }}</td>
+              <td>
+                <a @click="boardDetail(board.boardId, 'gallery')">
+                  <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl"
+                       alt="Image">
+                  +{{ board.imageCount }}
+                  <span v-if="isNew(board.createdAt)"
+                        class="new-label">new</span>
+                </a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </article>
+      </div>
+      <div class="col-md-6">
+        <!-- 자유 게시판 -->
+        <article class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="m-0 text-center flex-grow-1">자유 게시판</h3>
+            <div class="text-right">
+              <a @click="goToBoardList('free')" class="text-decoration-none">
+                <span class="mr-2">더보기</span>
+                <i class="fas fa-plus"></i>
+              </a>
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col">번호</th>
+              <th scope="col">분류</th>
+              <th scope="col">제목</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="board in freeBoardList" :key="board.boardId">
+              <td>{{ board.boardId }}</td>
+              <td>{{ board.categoryName }}</td>
+              <td>
+                <a @click="boardDetail(board.boardId, 'free')">
+                  {{ board.title }}
+                  <span>
+                ({{ board.commentCount }})
+                <span v-if="board.isAttached">
+                  <i class="fas fa-paperclip"></i>
+                </span>
               </span>
-            </span>
-            <span v-if="isNew(board.createdAt)" class="new-label">new</span>
-          </a>
-        </td>
-      </tr>
-    </table>
-  </article>
-  <article>
-    <h3> 갤러리 </h3>
-    <a @click="goToBoardList('gallery')">
-      더보기+
-    </a>
-    <table>
-      <tr>
-        <td>번호</td>
-        <td>분류</td>
-        <td></td>
-      </tr>
-      <tr v-for="board in galleryBoardList" :key="board.boardId">
-        <td>{{ board.boardId }}</td>
-        <td>{{ board.categoryName }}</td>
-        <td>
-          <a @click="boardDetail(board.boardId,'gallery')">
-            <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl" alt="Image">
-             +{{ board.imageCount }}
-            <span v-if="isNew(board.createdAt)" class="new-label">new</span>
-          </a>
-        </td>
-      </tr>
-    </table>
-  </article>
-  <article>
-    <h3> 문의 게시판 </h3>
-    <a @click="goToBoardList('help')">
-      더보기+
-    </a>
-    <table>
-      <tr>
-        <td>번호</td>
-        <td>제목</td>
-      </tr>
-      <tr v-for="board in helpBoardList" :key="board.boardId">
-        <td>{{ board.boardId }}</td>
-        <td>
-          <a @click="boardDetail(board.boardId, 'help')">
-            {{ board.title }}
-            <span v-if="board.answer">(답변완료)</span>
-            <span v-if="!board.answer">(미답변)</span>
-            <span v-if="board.secretFlag">
-              <i class="fas fa-lock"></i>
-            </span>
-            <span v-if="isNew(board.createdAt)" class="new-label">new</span>
-          </a>
-        </td>
-      </tr>
-    </table>
-  </article>
+                  <span v-if="isNew(board.createdAt)"
+                        class="new-label">new</span>
+                </a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </article>
+        <!-- 문의 게시판 -->
+        <article class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="m-0 text-center flex-grow-1">문의 게시판</h3>
+            <div class="text-right">
+              <a @click="goToBoardList('help')" class="text-decoration-none">
+                <span class="mr-2">더보기</span>
+                <i class="fas fa-plus"></i>
+              </a>
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col">번호</th>
+              <th scope="col">제목</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="board in helpBoardList" :key="board.boardId">
+              <td>{{ board.boardId }}</td>
+              <td>
+                <a @click="boardDetail(board.boardId, 'help')">
+                  {{ board.title }}
+                  <span v-if="board.answer">(답변완료)</span>
+                  <span v-if="!board.answer">(미답변)</span>
+                  <span v-if="board.secretFlag">
+                <i class="fas fa-lock"></i>
+              </span>
+                  <span v-if="isNew(board.createdAt)"
+                        class="new-label">new</span>
+                </a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </article>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -256,4 +311,15 @@ export default {
   color: red;
   margin-left: 5px;
 }
+
+article {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.double-height {
+  height: 81px
+}
+
 </style>

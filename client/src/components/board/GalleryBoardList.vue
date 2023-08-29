@@ -1,14 +1,19 @@
 <template>
-  <div v-for="board in boardList" :key="board.boardId">
-    <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl" alt="Image">
-    <a @click="boardDetail(board.boardId)">
-      {{ board.title }}
-      +{{ board.imageCount }}
-    </a>
-    <span v-if="isNew(board.createdAt)" class="new-label">new</span>
+  <div v-for="board in boardList" :key="board.boardId" class="mb-3 border p-3">
+    <div class="align-items-start">
+      <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl" alt="Image" class="mr-2">
+    </div>
+    <div class="title">
+      <a @click="boardDetail(board.boardId)" class="text-decoration-none">
+        {{ board.title }}
+        +{{ board.imageCount }}
+      </a>
+      <span v-if="isNew(board.createdAt)" class="new-label ml-2">new</span>
+    </div>
     <div class="content">{{ board.content }}</div>
   </div>
 </template>
+
 
 <script>
 import {isNew} from "@/utils/dateUtil";

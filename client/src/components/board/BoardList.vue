@@ -1,18 +1,20 @@
 <template>
   <div>
-    <table class="boardList">
+    <table class="table border-bottom">
+      <thead>
       <tr>
-        <td>번호</td>
-        <td v-if="type !== 'help'">분류</td>
-        <td>제목</td>
-        <td>조회수</td>
-        <td>등록 일시</td>
-        <td>작성자</td>
+        <th scope="col">번호</th>
+        <th v-if="type !== 'help'" scope="col">분류</th>
+        <th scope="col">제목</th>
+        <th scope="col">조회수</th>
+        <th scope="col">등록 일시</th>
+        <th scope="col">작성자</th>
       </tr>
+      </thead>
+      <tbody>
       <!-- notice 인 경우에만 랜더링 -->
       <template v-if="type === 'notice' && notificationList">
-        <tr v-for="notification in notificationList"
-            :key="notification.boardId">
+        <tr v-for="notification in notificationList" :key="notification.boardId">
           <td></td>
           <td>알림</td>
           <td>
@@ -34,14 +36,14 @@
             <span v-if="type === 'help' && board.answer">(답변완료)</span>
             <span v-if="type === 'help' && !board.answer">(미답변)</span>
             <span v-if="type === 'help' && board.secretFlag">
-              <i class="fas fa-lock"></i>
-            </span>
-            <span v-if="type === 'free'">
-              ({{ board.commentCount }})
-              <span v-if="board.isAttached">
-                <i class="fas fa-paperclip"></i>
+                <i class="fas fa-lock"></i>
               </span>
-            </span>
+            <span v-if="type === 'free'">
+                ({{ board.commentCount }})
+                <span v-if="board.isAttached">
+                  <i class="fas fa-paperclip"></i>
+                </span>
+              </span>
             <span v-if="isNew(board.createdAt)" class="new-label">new</span>
           </a>
         </td>
@@ -49,6 +51,7 @@
         <td>{{ formatDate(board.createdAt) }}</td>
         <td>{{ board.writer }}</td>
       </tr>
+      </tbody>
     </table>
   </div>
 </template>

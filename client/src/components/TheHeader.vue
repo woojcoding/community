@@ -1,6 +1,8 @@
 <template>
-  <header>
-    <h1> 커뮤니티 </h1>
+  <header class="header">
+    <div class="container">
+      <router-link class="h1 text-decoration-none text-dark" to="/home">커뮤니티</router-link>
+    </div>
   </header>
 </template>
 
