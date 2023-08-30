@@ -137,7 +137,6 @@ export function downloadFile(fileId) {
         responseType: 'blob'
     })
         .then((response) => {
-            console.log(response.headers)
             //header content-disposition 헤더에서 파일이름 추출.
             const encodedName = response.headers['content-disposition'].split('filename=')[1]
 
@@ -159,7 +158,6 @@ export function downloadFile(fileId) {
             link.remove();
         })
         .catch((error) => {
-            console.log(error);
             throw error.response.data.message
         })
 }

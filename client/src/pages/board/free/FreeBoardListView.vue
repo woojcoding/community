@@ -54,7 +54,6 @@ export default {
   watch: {
     $route(to, from) {
       if (to.query !== from.query) {
-        console.log(to.query)
         this.boardSearch = {
           ...this.boardSearch,
           ...to.query

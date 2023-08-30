@@ -36,7 +36,6 @@ export default {
 
         this.boardData = response.data.board;
       } catch (error) {
-        console.log(error);
         alert(error);
       }
     },

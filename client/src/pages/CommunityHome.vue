@@ -275,6 +275,7 @@ export default {
         board.thumbnailUrl = response.data.url;
       } catch (error) {
         console.log(error);
+        alert(error);
       }
     },
     /**

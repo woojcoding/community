@@ -2,14 +2,19 @@
   <div>
     <div class="board-details mt-4">
       <div class="row justify-content-start border-bottom pb-2">
-        <div class="col-md-1">{{ board.categoryName }}</div>
-        <div class="col-md-8 text-start">
+        <div v-if="type !== 'help'" class="col-md-1">
+          {{ board.categoryName }}
+        </div>
+        <div v-if="type !== 'help'" class="col-md-8 text-start">
           <div>
             {{ board.title }}
-            <span v-if="type === 'help'">
-              <span v-if="board.answer" class="badge bg-success">답변완료</span>
-              <span v-else class="badge bg-warning text-dark">미답변</span>
-            </span>
+          </div>
+        </div>
+        <div v-else class="col-md-9 text-start">
+          <div>
+            <span v-if="board.answer" class="badge bg-success">답변완료</span>
+            <span v-else class="badge bg-warning text-dark">미답변</span>
+            {{ board.title }}
           </div>
         </div>
         <div class="col-md-3 text-end">
@@ -32,23 +37,28 @@
       <div class="files text-start" v-if="type === 'free'">
         <div v-for="file in fileList" :key="file.fileId">
           <a @click="downloadFile(file.fileId)">
-            <span><i class="fas fa-paperclip"></i> {{ file.originalName }}</span>
+            <span><i class="fas fa-paperclip"></i> {{
+                file.originalName
+              }}</span>
           </a>
         </div>
       </div>
-      <div class="answer" v-if="type === 'help'">
+      <div class="d-flex justify-content-start font-weight-bold bg-light p-2"
+           v-if="type === 'help'">
         <template v-if="board.answer">
-          <div class="info">
-            {{ board.answerer }} {{ formatDate(board.answeredAt) }}
-          </div>
-          <div>
-            <span class="answer">{{ board.answer }}</span>
+          <div class="row text-start justify-content-start">
+            <div class="col-md-12">
+              {{ board.answerer }} {{ formatDate(board.answeredAt) }}
+            </div>
+            <pre>
+              <div class="text-start">{{ board.answer }}</div>
+            </pre>
           </div>
         </template>
         <template v-else>
-          <div class="no-answer">
+          <span class="text-center">
             아직 등록된 답변이 없습니다.
-          </div>
+          </span>
         </template>
       </div>
       <div class="buttons mt-4">

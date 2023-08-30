@@ -47,7 +47,6 @@ export default {
         this.boardData = response.data.board;
         this.fileListData = response.data.fileList;
       } catch (error) {
-        console.log(error);
         alert(error);
       }
     },

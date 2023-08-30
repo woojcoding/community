@@ -26,7 +26,7 @@
         </div>
         <div class="col-md-1" v-else></div>
         <div class="col-md-2">
-          <input type="text" v-model="boardSearch.keyword"
+          <input id="keyword" type="text" v-model="boardSearch.keyword"
                  :placeholder="type === 'notice' ? '제목 or 내용' : (type === 'help' ? '제목 or 내용 or 등록자' : '제목 or 내용 or 작성자')">
         </div>
         <div v-if="type==='help'" class="col-md-3">
@@ -37,7 +37,7 @@
         </div>
       </div>
       <div v-if="type === 'help'" class="col-md-12">
-        <input type="checkbox" v-model="boardSearch.displayMyPostsOnly">
+        <input id="my-post-only" type="checkbox" v-model="boardSearch.displayMyPostsOnly">
         <span class="ml-1">나의 문의내역만 보기</span>
       </div>
     </form>
@@ -45,7 +45,7 @@
   <div class="sort-container">
     <div class="row mt-4 justify-content-start">
       <div class="col-md-6">
-        <select v-model="boardSearch.pageSize" @change="search">
+        <select id="page-size" v-model="boardSearch.pageSize" @change="search">
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="30">30</option>
@@ -62,7 +62,7 @@
         <p>정렬</p>
       </div>
       <div class="col-md-4">
-        <select v-model="boardSearch.sortBy" @change="search">
+        <select id="sort-by" v-model="boardSearch.sortBy" @change="search">
           <option value="createdAt">등록일시</option>
           <option v-if="type !== 'help'" value="category">분류</option>
           <option value="title">제목</option>
@@ -70,7 +70,7 @@
         </select>
       </div>
       <div class="col-md-2">
-        <select v-model="boardSearch.sort" @change="search">
+        <select id="sort" v-model="boardSearch.sort" @change="search">
           <option value="desc">내림차순</option>
           <option value="asc">오름차순</option>
         </select>
