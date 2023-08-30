@@ -1,16 +1,28 @@
 <template>
-  <div v-for="board in boardList" :key="board.boardId" class="mb-3 border p-3">
-    <div class="align-items-start">
-      <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl" alt="Image" class="mr-2">
-    </div>
-    <div class="title">
+  <div class="gallery-list">
+    <div v-for="board in boardList" :key="board.boardId"
+         class="gallery-item">
       <a @click="boardDetail(board.boardId)" class="text-decoration-none">
-        {{ board.title }}
-        +{{ board.imageCount }}
+        <div class="align-items-start">
+          <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl" alt="Image"
+               class="mr-2">
+        </div>
       </a>
-      <span v-if="isNew(board.createdAt)" class="new-label ml-2">new</span>
+      <div class="row">
+        <div class="col-md-12">
+          <a @click="boardDetail(board.boardId)" class="text-decoration-none">
+            {{ board.title }}
+          <span v-if="board.imageCount > 1">+{{ board.imageCount - 1 }}</span>
+          </a>
+          <span v-if="isNew(board.createdAt)"
+                class="new-label ml-2">new</span>
+        </div>
+        <div class="col-md-12 align-self-start content">{{
+            board.content
+          }}
+        </div>
+      </div>
     </div>
-    <div class="content">{{ board.content }}</div>
   </div>
 </template>
 
@@ -26,12 +38,6 @@ export default {
       default: undefined,
       required: true,
       description: '게시글 리스트'
-    },
-    boardSearchCondition: {
-      type: Object,
-      default: undefined,
-      required: true,
-      description: '검색 조건'
     },
     type: {
       type: String,
@@ -49,10 +55,7 @@ export default {
     boardDetail(boardId) {
       this.$router.push({
         path: `/boards/${this.type}/${boardId}`,
-        query: {
-          ...this.boardSearch,
-          boardId: boardId
-        }
+        query: this.$route.query
       });
     },
     /**
@@ -72,5 +75,19 @@ export default {
   font-weight: bold;
   color: red;
   margin-left: 5px;
+}
+
+.gallery-list {
+  display: flex;
+  flex-direction: column; /* 수직 정렬 설정 */
+  align-items: center;
+}
+
+.gallery-item {
+  border: 1px solid #e5e5e5;
+  box-sizing: border-box;
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
 }
 </style>

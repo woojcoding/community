@@ -46,4 +46,14 @@ public class CommentService {
     public void deleteComment(int commentId) {
         commentRepository.deleteComment(commentId);
     }
+
+    /**
+     * 댓글을 조회하는 메서드
+     *
+     * @param commentId 댓글Id
+     * @return CommentDto
+     */
+    public CommentDto getComment(int commentId) {
+        return commentRepository.getComment(commentId);
+    }
 }

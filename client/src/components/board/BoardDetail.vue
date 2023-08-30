@@ -1,25 +1,38 @@
 <template>
   <div>
-    <div class="board-details">
-      <div class="board-header">
-        <span class="category">{{ board.categoryName }}</span>
-        <span class="title">{{ board.title }}</span>
-        <span v-if="type === 'help' && board.answer">(답변완료)</span>
-        <span v-if="type === 'help' && !board.answer">(미답변)</span>
-        <span class="info">{{ formatDate(board.createdAt) }} {{ board.writer }}</span>
+    <div class="board-details mt-4">
+      <div class="row justify-content-start border-bottom pb-2">
+        <div class="col-md-1">{{ board.categoryName }}</div>
+        <div class="col-md-8 text-start">
+          <div>
+            {{ board.title }}
+            <span v-if="type === 'help'">
+              <span v-if="board.answer" class="badge bg-success">답변완료</span>
+              <span v-else class="badge bg-warning text-dark">미답변</span>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-3 text-end">
+          {{ formatDate(board.createdAt) }}
+          {{ board.writer }}
+        </div>
       </div>
-      <div class="views">
-        조회수: {{ board.views }}
+      <div class="row justify-content-end mt-2">
+        <div class="col-md-4 text-end">
+          조회수: {{ board.views }}
+        </div>
       </div>
       <image-container v-if="type === 'gallery'"
                        :file-list="fileList"></image-container>
-      <div class="content">
-        {{ board.content }}
-      </div>
-      <div class="files" v-if="type === 'free'">
+      <pre>
+        <div class="border border-2 rounded mt-4 p-4 text-start">{{
+            board.content
+          }}</div>
+      </pre>
+      <div class="files text-start" v-if="type === 'free'">
         <div v-for="file in fileList" :key="file.fileId">
           <a @click="downloadFile(file.fileId)">
-            <span>{{ file.originalName }}</span>
+            <span><i class="fas fa-paperclip"></i> {{ file.originalName }}</span>
           </a>
         </div>
       </div>
@@ -38,10 +51,14 @@
           </div>
         </template>
       </div>
-      <div class="buttons">
-        <button @click="moveToList">목록</button>
-        <button v-if="isAuthorized" @click="moveToModifyForm">수정</button>
-        <button v-if="isAuthorized" @click="confirmDelete">삭제</button>
+      <div class="buttons mt-4">
+        <button @click="moveToList" class="btn btn-secondary">목록</button>
+        <button v-if="isAuthorized" @click="moveToModifyForm"
+                class="btn btn-primary">수정
+        </button>
+        <button v-if="isAuthorized" @click="confirmDelete"
+                class="btn btn-danger">삭제
+        </button>
       </div>
     </div>
   </div>

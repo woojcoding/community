@@ -1,11 +1,9 @@
 package com.portfolio.communityuser.controllers;
 
 import com.portfolio.communityuser.dtos.BoardDto;
-import com.portfolio.communityuser.dtos.CategoryDto;
 import com.portfolio.communityuser.dtos.CommentDto;
 import com.portfolio.communityuser.dtos.FileDto;
 import com.portfolio.communityuser.dtos.Free;
-import com.portfolio.communityuser.enums.BoardType;
 import com.portfolio.communityuser.repositories.BoardSearchCondition;
 import com.portfolio.communityuser.services.CategoryService;
 import com.portfolio.communityuser.services.CommentService;
@@ -392,8 +390,13 @@ public class FreeBoardController {
 
         commentService.postComment(commentDto);
 
+        String message =
+                messageSource.getMessage("post.comment.success",
+                        null, LocaleContextHolder.getLocale());
+
         ApiResult apiResult = ApiResult.builder()
                 .status(ApiStatus.SUCCESS)
+                .message(message)
                 .build();
 
         return ResponseEntity
@@ -402,26 +405,36 @@ public class FreeBoardController {
     }
 
     /**
-     * 자유게시글에 해당하는 카테고리를 반환해주는 메서드
+     * 댓글을 삭제하는 메서드
      *
-     * @return ResponseEntity<ApiResult> 반환
+     * @param commentId             댓글 Id
+     * @return ResponseEntity<ApiResult>
      */
-    @GetMapping("/boards/free/category")
-    public ResponseEntity<ApiResult> getFreeBoardCategory() {
-        List<CategoryDto> categoryList =
-                categoryService.getCategoryList(BoardType.FREE);
+    @DeleteMapping("/boards/free/comments/{commentId}")
+    public ResponseEntity<ApiResult> deleteComment(
+            @PathVariable("commentId") int commentId
+    ) {
+        // 본인 글만 삭제 가능하도록 예외처리
+        CommentDto comment = commentService.getComment(commentId);
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("categoryList", categoryList);
+        String commentUserId = comment.getUserId();
+
+        String userId = AuthenticationUtil.getAccountId();
+
+        if ((commentUserId == null || !commentUserId.equals(userId))) {
+            throw new AccessDeniedException("access.denied");
+        }
+
+        // 게시글을 삭제
+        commentService.deleteComment(commentId);
 
         String message =
-                messageSource.getMessage("get.category.success",
+                messageSource.getMessage("delete.comment.success",
                         null, LocaleContextHolder.getLocale());
 
         ApiResult apiResult = ApiResult.builder()
                 .status(ApiStatus.SUCCESS)
                 .message(message)
-                .data(data)
                 .build();
 
         return ResponseEntity

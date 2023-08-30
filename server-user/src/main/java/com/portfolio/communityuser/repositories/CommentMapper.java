@@ -32,4 +32,12 @@ public interface CommentMapper {
      * @param commentId 댓글 Id
      */
     void deleteComment(int commentId);
+
+    /**
+     * 댓글을 조회하는 메서드
+     *
+     * @param commentId 댓글Id
+     * @return CommentDto
+     */
+    CommentDto getComment(int commentId);
 }

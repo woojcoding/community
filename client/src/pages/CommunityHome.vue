@@ -69,9 +69,9 @@
             <tbody>
             <tr v-for="board in galleryBoardList" :key="board.boardId"
                 class="double-height">
-              <td>{{ board.boardId }}</td>
-              <td>{{ board.categoryName }}</td>
-              <td>
+              <td class="align-middle">{{ board.boardId }}</td>
+              <td class="align-middle">{{ board.categoryName }}</td>
+              <td class="align-middle">
                 <a @click="boardDetail(board.boardId, 'gallery')">
                   <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl"
                        alt="Image">
@@ -319,7 +319,7 @@ article {
 }
 
 .double-height {
-  height: 81px
+  height: 80.2px
 }
 
 </style>

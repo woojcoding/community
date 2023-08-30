@@ -1,60 +1,62 @@
 <template>
-  <form id="writeForm" @submit.prevent="submitForm">
-    <table>
-      <!-- 카테고리 (문의게시글 미사용) -->
-      <tr v-if="type !== 'help'">
-        <td>분류</td>
-        <td>
-          <select v-model="board.categoryId" name="categoryId">
-            <option value="all" selected disabled>카테고리 선택</option>
-            <option v-for="category in categoryListData"
-                    :key="category.categoryId" :value="category.categoryId">
-              {{ category.name }}
-            </option>
-          </select>
-        </td>
-      </tr>
-      <!-- 제목 -->
-      <tr>
-        <td>제목</td>
-        <td>
-          <textarea rows="1" cols="100" name="title" id="title"
-                    style="resize: none; overflow: hidden"
-                    v-model="board.title"></textarea>
-        </td>
-      </tr>
-      <!-- 내용 (문의 게시판의 경우 질문) -->
-      <tr>
-        <td>{{ type === 'help' ? '질문' : '내용' }}</td>
-        <td>
-          <textarea rows="20" cols="100" name="content" id="content"
-                    style="resize: none"
-                    v-model="board.content"></textarea>
-        </td>
-      </tr>
-      <!-- 문의글에서만 사용되는 비밀글 체크 -->
-      <tr v-if="type === 'help'">
-        <td>비밀글</td>
-        <td><input type="checkbox" v-model="board.secretFlag"></td>
-      </tr>
-      <!-- 공지글에서만 사용되는 알림글 체크 -->
-      <tr v-if="type === 'notice'">
-        <td>알림글</td>
-        <td>
-          <input type="checkbox" name="notificationFlag"
-                 v-model="board.notificationFlag">
-        </td>
-      </tr>
-    </table>
-    <!-- 갤러리와 자유게시판에서 사용되는 파일 -->
-    <file-input
-        v-if="type === 'gallery' || type === 'free'"
-        :type=type
-        :file-list-data="fileListData"
-        @files-updated="updateFiles"
-        @files-deleted="deleteFiles"></file-input>
-    <button type="submit">등록</button>
-    <button @click="cancel">취소</button>
+  <form id="writeForm" @submit.prevent="submitForm" class="mt-4">
+    <div class="table-responsive">
+      <table class="table border">
+        <!-- 카테고리 (문의게시글 미사용) -->
+        <tr v-if="type !== 'help'" class="border-bottom">
+          <td class="align-middle">분류</td>
+          <td>
+            <select v-model="board.categoryId" name="categoryId"
+                    class="form-select">
+              <option value="all" selected disabled>카테고리 선택</option>
+              <option v-for="category in categoryListData"
+                      :key="category.categoryId" :value="category.categoryId">
+                {{ category.name }}
+              </option>
+            </select>
+          </td>
+        </tr>
+        <!-- 제목 -->
+        <tr>
+          <td class="align-middle border-bottom" >제목</td>
+          <td>
+            <textarea rows="1" cols="100" name="title" id="title"
+                      style="resize: none; overflow: hidden"
+                      v-model="board.title" class="form-control"></textarea>
+          </td>
+        </tr>
+        <!-- 내용 (문의 게시판의 경우 질문) -->
+        <tr>
+          <td class="align-middle border-bottom">{{ type === 'help' ? '질문' : '내용' }}</td>
+          <td>
+            <textarea rows="20" cols="100" name="content" id="content"
+                      style="resize: none"
+                      v-model="board.content" class="form-control"></textarea>
+          </td>
+        </tr>
+        <!-- 문의글에서만 사용되는 비밀글 체크 -->
+        <tr v-if="type === 'help'">
+          <td class="align-middle border-bottom">비밀글</td>
+          <td><input type="checkbox" v-model="board.secretFlag"
+                     class="form-check-input"></td>
+        </tr>
+        <!-- 갤러리와 자유게시판에서 사용되는 파일 -->
+        <tr v-if="type === 'gallery' || type === 'free'">
+          <td class="align-middle border-bottom">첨부</td>
+          <td>
+            <file-input
+                :type=type
+                :file-list-data="fileListData"
+                @files-updated="updateFiles"
+                @files-deleted="deleteFiles"></file-input>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+      <button type="submit" class="btn btn-primary me-2">등록</button>
+      <button @click="cancel" class="btn btn-secondary">취소</button>
+    </div>
   </form>
 </template>
 

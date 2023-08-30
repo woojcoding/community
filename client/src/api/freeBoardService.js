@@ -183,3 +183,18 @@ export function postComment(boardId, comment) {
             throw error.response.data.message;
         });
 }
+
+/**
+ * 댓글을 삭제하기 위해 axios 요청
+ *
+ * @param commentId
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
+export function deleteComment(commentId) {
+    return instance.delete(`/api/v1/boards/free/comments/${commentId}`
+    ).then((response) => {
+        return response.data;
+    }).catch((error) => {
+        throw error.response.data.message;
+    });
+}

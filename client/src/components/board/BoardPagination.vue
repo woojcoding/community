@@ -1,14 +1,16 @@
 <template>
   <div class="pagination">
-    <a v-if="currentPage > 1" @click="changePage(1)">&lt;&lt;</a>
-    <a v-if="currentPage > 1"
+    <a v-if="currentPage > 1" class="page-link"
+       @click="changePage(1)">&lt;&lt;</a>
+    <a v-if="currentPage > 1" class="page-link"
        @click="changePage(Math.max(currentPage - 1, 1))">&lt;</a>
-    <a v-for="page in pages" :key="page" @click="changePage(page)">
+    <a v-for="page in pages" :key="page" class="page-link"
+       @click="changePage(page)">
       {{ page }}
     </a>
-    <a v-if="currentPage < pageCount"
+    <a v-if="currentPage < pageCount" class="page-link"
        @click="changePage(Math.min(currentPage + 1, pageCount))">&gt;</a>
-    <a v-if="currentPage < pageCount"
+    <a v-if="currentPage < pageCount" class="page-link"
        @click="changePage(pageCount)">&gt;&gt;</a>
   </div>
 </template>
@@ -102,5 +104,9 @@ export default {
 </script>
 
 <style scoped>
-
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

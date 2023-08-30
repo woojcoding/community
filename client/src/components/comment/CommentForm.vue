@@ -1,20 +1,26 @@
 <template>
-  <div class="comment-section">
+  <div class="comment-section mt-4 bg-light">
     <table class="table">
       <tr>
-        <td colspan="4">
+        <td colspan="4" class="bg-light p-3">
           <textarea rows="2" class="form-control" placeholder="댓글을 입력해 주세요."
-                    v-model="comment.content"></textarea>
+                    v-model="commentData.content"></textarea>
           <button @click="postComment" class="btn btn-primary mt-2">등록</button>
         </td>
       </tr>
-      <tr v-for="(comment, index) in commentList" :key="index">
+      <tr class="border" v-for="(comment, index) in commentList" :key="index">
         <td colspan="4">
-          <div class="d-flex justify-content-between align-items-center font-weight-bold">
+          <div
+              class="d-flex justify-content-start font-weight-bold bg-light p-2">
             <span class="comment-writer">{{ comment.writer }}</span>
-            <span class="text-muted">{{ comment.createdAt }}</span>
+            <span class="text-muted"> &nbsp; {{ formatDate(comment.createdAt) }} &nbsp;</span>
+            <div v-if="isAuthorized">
+              <button class="btn btn-sm btn-danger"
+                      @click="confirmDelete(comment.commentId)">삭제
+              </button>
+            </div>
           </div>
-          <div class="comment-content mt-2">
+          <div class="comment-content text-start bg-light p-2">
             {{ comment.content }}
           </div>
         </td>
@@ -24,7 +30,8 @@
 </template>
 
 <script>
-import {postComment} from "@/api/freeBoardService";
+import {deleteComment, postComment} from "@/api/freeBoardService";
+import {formatDate} from "@/utils/dateUtil";
 
 export default {
   name: "CommentForm",
@@ -42,9 +49,16 @@ export default {
       description: '게시글 Id'
     }
   },
+  computed: {
+    isAuthorized() {
+      const accountId = this.$store.getters.accountId;
+
+      return this.commentList.map(commentItem => commentItem.userId === accountId);
+    },
+  },
   data() {
     return {
-      comment: {content: ''},
+      commentData: {content: ''},
     };
   },
   methods: {
@@ -55,13 +69,43 @@ export default {
      */
     async postComment() {
       try {
-        await postComment(this.boardId, this.comment);
+        await postComment(this.boardId, this.commentData);
 
         location.reload();
       } catch (error) {
         alert(error)
       }
-    }
+    },
+    /**
+     * 댓글을 delete하는 메서드
+     *
+     * @returns {Promise<void>}
+     */
+    async deleteComment(commentId) {
+      try {
+        await deleteComment(commentId);
+
+        location.reload();
+      } catch (error) {
+        alert(error)
+      }
+    },
+    /**
+     * 삭제 여부를 물어보는 메서드
+     */
+    confirmDelete(commentId) {
+      if (confirm("정말로 삭제하시겠습니까?")) {
+        this.deleteComment(commentId);
+      }
+    },
+    /**
+     * 날짜를 포맷에 맞게 수정하는 메서드
+     * @param date
+     * @returns {string}
+     */
+    formatDate(date) {
+      return formatDate(date);
+    },
   }
 }
 </script>

@@ -82,13 +82,19 @@ public class FileService {
         return savedFileList;
     }
 
+    /**
+     * 파일 타입 체크하는 메서드
+     *
+     * @param file 파일
+     * @param allowZip Zip 파일 허용 여부
+     * @return boolean
+     */
     private boolean isAllowedFileType(MultipartFile file, boolean allowZip) {
         String contentType = file.getContentType();
 
         if (contentType != null) {
             // 이미지 파일인지 체크
             if (contentType.equals(MediaType.IMAGE_JPEG_VALUE) ||
-                    contentType.equals(MediaType.IMAGE_PNG_VALUE) ||
                     contentType.equals(MediaType.IMAGE_PNG_VALUE) ||
                     contentType.equals(MediaType.IMAGE_GIF_VALUE)
             ) {
@@ -138,7 +144,7 @@ public class FileService {
                 String thumbnailFullPath = getFullPath(thumbnailName);
 
                 Thumbnails.of(fullPath)
-                        .size(30, 30)
+                        .forceSize(60, 60)
                         .toFile(thumbnailFullPath);
 
                 // db에 반영하기 위해 FileDto를 만들어 List에 담아줌

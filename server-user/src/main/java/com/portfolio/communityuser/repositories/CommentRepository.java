@@ -45,4 +45,14 @@ public class CommentRepository {
     public void deleteComment(int commentId) {
         commentMapper.deleteComment(commentId);
     }
+
+    /**
+     * 댓글을 조회하는 메서드
+     *
+     * @param commentId 댓글Id
+     * @return CommentDto
+     */
+    public CommentDto getComment(int commentId) {
+        return commentMapper.getComment(commentId);
+    }
 }

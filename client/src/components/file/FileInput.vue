@@ -1,38 +1,34 @@
 <template>
-  <table>
+  <!--<input type="file" name="files" style="display: none;"> -->
+  <table id="fileInputTable">
+    <tbody>
     <tr>
-      <td>첨부</td>
-      <td>
-        <!--<input type="file" name="files" style="display: none;"> -->
-        <table id="fileInputTable">
-          <tbody>
-          <tr>
-            <td v-if="type === 'free'">jpg, gif, png, zip 파일만 파일사이즈 2MB까지 업로드
-              가능합니다.
-            </td>
-            <td v-if="type === 'gallery'">jpg, gif, png 파일만 파일사이즈 2MB까지 업로드
-              가능합니다.
-            </td>
-          </tr>
-          <tr v-for="file in fileListData" :key="file.fileId">
-            <td>
-              <img v-if="file.imageUrl"
-                   :src="file.imageUrl" alt="thumbnail">
-              <a :id="'downloadTag_' + file.fileId"
-                 @click="downloadFile(file.fileId)">
-                <span>{{ file.originalName }}</span>
-              </a>
-            </td>
-            <td>
-              <button type="button" @click="removeFile(file.fileId)">X</button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <button type="button" @click="addFileInput">추가</button>
+      <td v-if="type === 'free'">jpg, gif, png, zip 파일만 파일사이즈 2MB까지 업로드
+        가능합니다.
+      </td>
+      <td v-if="type === 'gallery'">jpg, gif, png 파일만 파일사이즈 2MB까지 업로드
+        가능합니다.
       </td>
     </tr>
+    <tr v-for="file in fileListData" :key="file.fileId">
+      <td class="align-middle img-cell">
+        <img class="img-thumbnail" v-if="file.imageUrl"
+             :src="file.imageUrl" alt="thumbnail">
+        <a :id="'downloadTag_' + file.fileId"
+           @click="downloadFile(file.fileId)">
+          <span>{{ file.originalName }}</span>
+        </a>
+      </td>
+      <td>
+        <button type="button" class="btn btn-sm btn-danger" @click="removeFile(file.fileId)">X</button>
+      </td>
+    </tr>
+    </tbody>
   </table>
+  <div class="d-flex justify-content-start mt-3">
+    <button type="button" class="btn btn-primary me-2" @click="addFileInput">추가
+    </button>
+  </div>
 </template>
 
 <script>
@@ -70,7 +66,7 @@ export default {
      */
     addFileInput() {
       if (this.fileCount >= this.MAX_FILES) {
-        alert('최대' + (this.MAX_FILES) + '개까지만 첨부 가능합니다.');
+        alert('최대 ' + this.MAX_FILES + '개까지만 첨부 가능합니다.');
         return;
       }
 
@@ -81,10 +77,12 @@ export default {
       const newRow = document.createElement('tr');
 
       const inputCell = document.createElement('td');
+      inputCell.classList.add('align-middle');
 
       const inputField = document.createElement('input');
       inputField.setAttribute('type', 'file');
       inputField.setAttribute('id', 'fileInput_' + fileIndex);
+      inputField.classList.add('form-control-file');
       inputField.addEventListener('change', (event) => this.handleFileChange(event, fileIndex));
 
       if (this.type === 'gallery') {
@@ -93,17 +91,18 @@ export default {
 
         const thumbnailImg = document.createElement('img');
         thumbnailImg.setAttribute('id', 'thumbnailImg_' + fileIndex);
-        thumbnailImg.style.width = '20px';
-        thumbnailImg.style.height = '20px';
+        thumbnailImg.classList.add('img-cell', 'img-thumbnail');
+        thumbnailImg.style.width = '60px';
+        thumbnailImg.style.height = '60px';
 
         inputCell.appendChild(thumbnailImg);
       } else {
         inputField.setAttribute('accept', '.jpg, .jpeg, .gif, .png, application/zip');
       }
 
-      // tr을 없애는 버튼 생성
       const removeButton = document.createElement('button');
       removeButton.setAttribute('type', 'button');
+      removeButton.classList.add('btn', 'btn-danger', 'btn-sm');
       removeButton.innerText = 'X';
 
       removeButton.addEventListener('click', () => {
@@ -177,7 +176,7 @@ export default {
 
       const thumbnailImg = document.getElementById('thumbnailImg_' + fileIndex);
 
-      thumbnailImg.src= '';
+      thumbnailImg.src = '';
 
       const file = fileInput.files[0];
 
@@ -209,3 +208,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.img-cell {
+  text-align: left;
+}
+</style>
