@@ -40,15 +40,17 @@ export default {
       name: ""
     }
   },
+  watch: {
+    isLoggedIn(newValue) {
+      if (newValue) {
+        this.name = this.$store.getters.name;
+      }
+    },
+  },
   computed: {
     isLoggedIn() {
       return this.$store.getters.isAuthenticated;
     },
-  },
-  created() {
-    if (this.isLoggedIn) {
-      this.name = this.$store.getters.name;
-    }
   },
   methods: {
     /**
