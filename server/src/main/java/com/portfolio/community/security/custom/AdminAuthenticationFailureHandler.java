@@ -30,7 +30,12 @@ public class AdminAuthenticationFailureHandler
             HttpServletResponse response,
             AuthenticationException exception
     ) throws IOException, ServletException {
-        response.sendRedirect("admin/login");
+        // 비밀번호가 틀렸을 때 알림을 보여줄 스크립트를 작성
+        String errorMessage = "아이디 또는 비밀번호가 잘못되었습니다.";
+        String script = "<script>alert('" + errorMessage + "');window.location.href='/admin/login';</script>";
+
+        // 스크립트를 응답으로 전송
+        response.setContentType("text/html;charset=UTF-8");
+        response.getWriter().print(script);
     }
 }
-

@@ -33,10 +33,5 @@ spring:
       max-file-size: 2MB
       max-request-size: 40MB
 
-jwt:
-  secret: wooj123wooj123wooj123wooj
-
 file:
   dir: C:\Users\82103\Desktop\upload\
-
-

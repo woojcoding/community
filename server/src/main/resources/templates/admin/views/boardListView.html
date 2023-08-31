@@ -4,7 +4,7 @@
         layout:decorate="~{admin/layout/layout.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>게시판 관리</title>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.9/dayjs.min.js"></script>
@@ -14,18 +14,22 @@
     <th:block layout:fragment="content">
         <div th:replace="admin/fragments/searchForm :: common-search-container"></div>
         <div th:replace="admin/fragments/sortOption :: sortOption"></div>
-            <a th:href="@{/admin/board/{type}
-            (type=${#strings.toLowerCase(type)},
-            pageNum=${boardSearch.pageNum},
-            pageSize=${boardSearch.pageSize},
-            startDate=${boardSearch.startDate},
-            endDate=${boardSearch.endDate},
-            category=${boardSearch.category},
-            keyword=${boardSearch.keyword},
-            sortBy=${boardSearch.sortBy},
-            sort=${boardSearch.sort})}">
-                <button th:if="${type != 'HELP'}">등록</button>
-            </a>
+        <div class="row">
+            <div class="col text-right">
+                <a th:href="@{/admin/board/{type}
+                (type=${#strings.toLowerCase(type)},
+                pageNum=${boardSearch.pageNum},
+                pageSize=${boardSearch.pageSize},
+                startDate=${boardSearch.startDate},
+                endDate=${boardSearch.endDate},
+                category=${boardSearch.category},
+                keyword=${boardSearch.keyword},
+                sortBy=${boardSearch.sortBy},
+                sort=${boardSearch.sort})}">
+                    <button class="btn btn-primary" th:if="${type != 'HELP'}">등록</button>
+                </a>
+            </div>
+        </div>
         <div th:replace="admin/fragments/boardListTable :: boardListTable"></div>
         <div th:replace="admin/fragments/pagination :: pagination"></div>
     </th:block>

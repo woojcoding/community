@@ -2,179 +2,199 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="writeForm">
-    <form id="writeForm" th:object="${boardDto}"
-          enctype="multipart/form-data" method="post">
-        <table>
-            <!-- 카테고리 (문의게시글 미사용) -->
-            <tr th:unless="${type == 'HELP'}">
-                <td>분류</td>
-                <td>
-                    <select name="categoryId" id="categoryId"
-                            th:field="*{categoryId}">
-                        <option value="all">카테고리 선택</option>
-                        <option th:each="category : ${categoryList}"
-                                th:value="${category.categoryId}"
-                                th:text="${category.name}"
-                                th:selected="${category.categoryId == boardDto.categoryId}"></option>
-                    </select>
-                    <div th:errors="*{categoryId}"></div>
-                </td>
-            </tr>
-            <!-- 제목 -->
-            <tr>
-                <td>제목</td>
-                <td>
+    <form id="writeForm" th:object="${boardDto}" enctype="multipart/form-data"
+          method="post" class="mt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <table class="table">
+                        <!-- 카테고리 (문의게시글 미사용) -->
+                        <tr th:unless="${type == 'HELP'}">
+                            <td>분류</td>
+                            <td>
+                                <select name="categoryId" id="categoryId"
+                                        class="form-control"
+                                        th:field="*{categoryId}">
+                                    <option value="all">카테고리 선택</option>
+                                    <option th:each="category : ${categoryList}"
+                                            th:value="${category.categoryId}"
+                                            th:text="${category.name}"
+                                            th:selected="${category.categoryId == boardDto.categoryId}"></option>
+                                </select>
+                                <div th:errors="*{categoryId}"></div>
+                            </td>
+                        </tr>
+                        <!-- 제목 -->
+                        <tr>
+                            <td>제목</td>
+                            <td>
                     <textarea rows="1" cols="100" name="title" id="title"
                               style="resize: none; overflow: hidden"
+                              class="form-control"
                               th:value="*{title}"
                               th:field="*{title}"></textarea>
-                    <div th:errors="*{title}"></div>
-                    <span th:if="${type == 'HELP' && boardDto.answer != null}">(답변완료)</span>
-                    <span th:if="${type == 'HELP' && boardDto.answer == null}">(미답변)</span>
-                </td>
-            </tr>
-            <!--내용 (문의 게시판의 경우 질문) -->
-            <tr>
-                <td th:text="${type == 'HELP' ? '질문' : '내용' }"></td>
-                <td>
+                                <div th:errors="*{title}"></div>
+                                <span th:if="${type == 'HELP' && boardDto.answer != null}">(답변완료)</span>
+                                <span th:if="${type == 'HELP' && boardDto.answer == null}">(미답변)</span>
+                            </td>
+                        </tr>
+                        <!--내용 (문의 게시판의 경우 질문) -->
+                        <tr>
+                            <td th:text="${type == 'HELP' ? '질문' : '내용' }"></td>
+                            <td>
                     <textarea rows="20" cols="100" name="content"
+                              class="form-control"
                               id="content"
                               style="resize: none"
                               th:value="*{content}"
                               th:field="*{content}"></textarea>
-                    <div th:errors="*{content}"></div>
-                </td>
-            </tr>
-            <!-- 문의게시판에서만 사용되는 답변 -->
-            <tr th:if="${type == 'HELP'}">
-                <td>답변</td>
-                <td>
+                                <div th:errors="*{content}"></div>
+                            </td>
+                        </tr>
+                        <!-- 문의게시판에서만 사용되는 답변 -->
+                        <tr th:if="${type == 'HELP'}">
+                            <td>답변</td>
+                            <td>
                     <textarea rows="20" cols="100" name="answer"
                               id="answer"
+                              class="form-control"
                               style="resize: none"
                               th:value="*{answer}"
                               th:field="*{answer}"></textarea>
-                    <div th:errors="*{answer}"></div>
-                </td>
-            </tr>
-            <!-- 공지글에서만 사용되는 알림글 체크 -->
-            <tr th:if="${type == 'NOTICE'}">
-                <td>알림글</td>
-                <td>
-                    <input type="checkbox"
-                           name="notificationFlag"
-                           th:field="${boardDto.notificationFlag}"
-                           th:checked="${boardDto.notificationFlag == 1}">
-                </td>
-            </tr>
+                                <div th:errors="*{answer}"></div>
+                            </td>
+                        </tr>
+                        <!-- 공지글에서만 사용되는 알림글 체크 -->
+                        <tr th:if="${type == 'NOTICE'}">
+                            <td>알림</td>
+                            <td>
+                                <input type="checkbox"
+                                       class="form-control"
+                                       name="notificationFlag"
+                                       th:field="${boardDto.notificationFlag}"
+                                       th:checked="${boardDto.notificationFlag == 1}">
+                            </td>
+                        </tr>
 
-            <!-- 갤러리와 자유게시판에서 사용되는 파일 -->
-            <th:block
-                    th:replace="admin/fragments/fileRow :: fileRow"></th:block>
-        </table>
+                        <!-- 갤러리와 자유게시판에서 사용되는 파일 -->
+                        <tr th:if="${type == 'FREE' or type == 'GALLERY'}">
+                            <td>첨부</td>
+                            <td>
+                                <th:block
+                                        th:replace="admin/fragments/fileRow :: fileRow"></th:block>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
     </form>
 
-    <!-- 자유게시판에서 사용되는 댓글 -->
-    <th:block
-            th:replace="admin/fragments/commentForm :: commentForm"></th:block>
+<!-- 자유게시판에서 사용되는 댓글 -->
+<th:block
+        th:replace="admin/fragments/commentForm :: commentForm"></th:block>
 
-    <button
-            onclick="return validateForm()"
-            form="writeForm"
-            th:text="${type == 'HELP' ? '답변완료' : '등록 / 수정'}"></button>
-    <a th:href="@{/admin/boards/{type}/
-            (type=${#strings.toLowerCase(type)},
-            pageNum=${boardSearch.pageNum},
-            pageSize=${boardSearch.pageSize},
-            startDate=${boardSearch.startDate},
-            endDate=${boardSearch.endDate},
-            category=${boardSearch.category},
-            keyword=${boardSearch.keyword},
-            sortBy=${boardSearch.sortBy},
-            sort=${boardSearch.sort})}">
-        <button>목록</button>
-    </a>
-    <a th:href="@{/admin/board/{type}/delete/{boardId}
-            (type=${#strings.toLowerCase(type)},
-            boardId=${boardId},
-            pageNum=${boardSearch.pageNum},
-            pageSize=${boardSearch.pageSize},
-            startDate=${boardSearch.startDate},
-            endDate=${boardSearch.endDate},
-            category=${boardSearch.category},
-            keyword=${boardSearch.keyword},
-            sortBy=${boardSearch.sortBy},
-            sort=${boardSearch.sort})}">
-        <button onclick="return deleteConfirm()">삭제</button>
-    </a>
+    <div class="d-flex justify-content-center">
+        <button onclick="return validateForm()"
+                form="writeForm"
+                th:text="${type == 'HELP' ? '답변완료' : '등록 / 수정'}"
+                class="btn btn-primary"></button>
+        <a th:href="@{/admin/boards/{type}/
+                (type=${#strings.toLowerCase(type)},
+                pageNum=${boardSearch.pageNum},
+                pageSize=${boardSearch.pageSize},
+                startDate=${boardSearch.startDate},
+                endDate=${boardSearch.endDate},
+                category=${boardSearch.category},
+                keyword=${boardSearch.keyword},
+                sortBy=${boardSearch.sortBy},
+                sort=${boardSearch.sort})}"
+           class="btn btn-secondary">
+            <button class="btn btn-secondary">목록</button>
+        </a>
+        <a th:href="@{/admin/board/{type}/delete/{boardId}
+                (type=${#strings.toLowerCase(type)},
+                boardId=${boardId},
+                pageNum=${boardSearch.pageNum},
+                pageSize=${boardSearch.pageSize},
+                startDate=${boardSearch.startDate},
+                endDate=${boardSearch.endDate},
+                category=${boardSearch.category},
+                keyword=${boardSearch.keyword},
+                sortBy=${boardSearch.sortBy},
+                sort=${boardSearch.sort})}"
+           class="btn btn-danger">
+            <button onclick="return deleteConfirm()" class="btn btn-danger">삭제</button>
+        </a>
+    </div>
 
-    <script th:inline="javascript">
-        function validateForm() {
-            const type = [[${type}]];
+<script th:inline="javascript">
+    function validateForm() {
+        const type = [[${type}]];
 
-            let category = null;
+        let category = null;
 
-            let answer = null;
+        let answer = null;
 
-            const title = document.getElementById("title").value;
+        const title = document.getElementById("title").value;
 
-            const content = document.getElementById("content").value;
+        const content = document.getElementById("content").value;
 
-            const formType = [[${formType}]];
+        const formType = [[${formType}]];
 
-            let message = null;
+        let message = null;
 
-            if (formType === 'MODIFY') {
-                message = '수정'
-            } else if (formType === 'POST') {
-                message = '등록'
-            } else if (formType === 'ANSWER') {
-                message = '답변'
-            }
+        if (formType === 'MODIFY') {
+            message = '수정'
+        } else if (formType === 'POST') {
+            message = '등록'
+        } else if (formType === 'ANSWER') {
+            message = '답변'
+        }
 
-            // 카테고리 필수 선택 검증
-            if (type !== 'HELP') {
-                category = document.getElementById("categoryId").value;
+        // 카테고리 필수 선택 검증
+        if (type !== 'HELP') {
+            category = document.getElementById("categoryId").value;
 
-                if (category === "all") {
-                    alert("카테고리를 선택해주세요.");
-
-                    return false;
-                }
-            }
-
-            // 제목 필수, 글자 수 검증
-            if (title.length === 0 || title.length >= 100) {
-                alert("제목은 필수 사항이며, 100글자 미만으로 입력해주세요.");
+            if (category === "all") {
+                alert("카테고리를 선택해주세요.");
 
                 return false;
             }
+        }
 
-            // 내용 필수, 글자 수 검증
-            if (content.length === 0 || content.length >= 2000) {
-                alert("내용은 필수 사항이며, 2000글자 미만으로 입력해주세요.");
+        // 제목 필수, 글자 수 검증
+        if (title.length === 0 || title.length >= 100) {
+            alert("제목은 필수 사항이며, 100글자 미만으로 입력해주세요.");
+
+            return false;
+        }
+
+        // 내용 필수, 글자 수 검증
+        if (content.length === 0 || content.length >= 2000) {
+            alert("내용은 필수 사항이며, 2000글자 미만으로 입력해주세요.");
+
+            return false;
+        }
+
+        // 답변 필수, 글자 수 검증
+        if (type === 'HELP') {
+            answer = document.getElementById("answer").value;
+
+            if (answer.length === 0 || answer.length >= 4000) {
+                alert("답변은 필수 사항이며, 4000글자 미만으로 입력해주세요.");
 
                 return false;
             }
-
-            // 답변 필수, 글자 수 검증
-            if (type === 'HELP') {
-                answer = document.getElementById("answer").value;
-
-                if (answer.length === 0 || answer.length >= 4000) {
-                    alert("답변은 필수 사항이며, 4000글자 미만으로 입력해주세요.");
-
-                    return false;
-                }
-            }
-
-            return confirm("정말로 " + message + " 하시겠습니까?");
         }
 
-        function deleteConfirm() {
-            return confirm("정말로 삭제 하시겠습니까?")
-        }
-    </script>
+        return confirm("정말로 " + message + " 하시겠습니까?");
+    }
+
+    function deleteConfirm() {
+        return confirm("정말로 삭제 하시겠습니까?")
+    }
+</script>
 </div>
 
 </html>

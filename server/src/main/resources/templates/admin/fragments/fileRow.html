@@ -2,41 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="fileRow" th:if="${type == 'FREE' or type == 'GALLERY'}">
-    <table>
+    <input type="file" name="files" style="display: none;">
+    <table id="fileInputTable">
+        <tbody>
         <tr>
-            <td>첨부</td>
-            <td>
-                <input type="file" name="files" style="display: none;">
-                <table id="fileInputTable">
-                    <tbody>
-                    <tr>
-                        <td th:if="${type == 'FREE'}">jpg, gif, png, zip 파일만 파일사이즈 2MB까지 업로드 가능합니다.</td>
-                        <td th:if="${type == 'GALLERY'}">jpg, gif, png 파일만 파일사이즈 2MB까지 업로드 가능합니다.</td>
-                    </tr>
-                    <tr th:each="file : ${fileDtoList}">
-                        <td>
-                            <img th:if="${file.thumbnailName}"
-                                 th:src="@{'/thumbnails/' + ${file.thumbnailName}}"
-                                 alt="thumbnail">
-                            <a th:id="'downloadTag_' + ${file.fileId}"
-                               th:href="@{/admin/files/{fileId}(fileId=${file.fileId})}">
-                                <p th:text="${file.originalName}"></p>
-                            </a>
-                        </td>
-                        <td>
-                            <button type="button"
-                                    th:id="'removeFileButton_' + ${file.fileId}"
-                                    th:onclick="'removeFile(' + ${file.fileId} + ')'">
-                                X
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <button type="button" onclick="addFileInput()">추가</button>
+            <td th:if="${type == 'FREE'}">jpg, gif, png, zip 파일만 파일사이즈 2MB까지 업로드
+                가능합니다.
+            </td>
+            <td th:if="${type == 'GALLERY'}">jpg, gif, png 파일만 파일사이즈 2MB까지 업로드
+                가능합니다.
             </td>
         </tr>
+        <tr th:each="file : ${fileDtoList}">
+            <td>
+                <img th:if="${file.thumbnailName}"
+                     th:src="@{'/thumbnails/' + ${file.thumbnailName}}"
+                     alt="thumbnail">
+                <a th:id="'downloadTag_' + ${file.fileId}"
+                   th:href="@{/admin/files/{fileId}(fileId=${file.fileId})}">
+                    <p th:text="${file.originalName}"></p>
+                </a>
+            </td>
+            <td>
+                <button type="button"
+                        class="btn btn-danger"
+                        th:id="'removeFileButton_' + ${file.fileId}"
+                        th:onclick="'removeFile(' + ${file.fileId} + ')'">
+                    X
+                </button>
+            </td>
+        </tr>
+        </tbody>
     </table>
+    <button type="button" class="btn btn-primary" onclick="addFileInput()">추가</button>
 
     <script th:inline="javascript">
         let fileCount = [[${fileDtoList.size()}]];
@@ -62,9 +60,12 @@
 
             const inputCell = document.createElement('td');
 
+            const removeButtonCell = document.createElement("td");
+
             const inputField = document.createElement('input');
             inputField.setAttribute('type', 'file');
             inputField.setAttribute('name', 'files');
+            inputField.setAttribute('class', 'form-control');
             inputField.setAttribute('id', 'fileInput_' + fileCount);
 
             if (type === 'GALLERY') {
@@ -73,8 +74,8 @@
 
                 const thumbnailImg = document.createElement('img');
                 thumbnailImg.setAttribute('id', 'thumbnailImg_' + fileCount);
-                thumbnailImg.style.width = '30px';
-                thumbnailImg.style.height = '30px';
+                thumbnailImg.style.width = '60px';
+                thumbnailImg.style.height = '60px';
 
                 inputCell.appendChild(thumbnailImg);
             } else {
@@ -84,6 +85,7 @@
             // tr을 없애는 버튼 생성
             const removeButton = document.createElement('button');
             removeButton.setAttribute('type', 'button');
+            removeButton.setAttribute('class', "btn btn-danger")
             removeButton.innerText = 'X';
 
             removeButton.addEventListener('click', function () {
@@ -92,9 +94,11 @@
             });
 
             inputCell.appendChild(inputField);
-            inputCell.appendChild(removeButton);
+
+            removeButtonCell.appendChild(removeButton);
 
             newRow.appendChild(inputCell);
+            newRow.appendChild(removeButtonCell);
 
             fileInputTable.appendChild(newRow);
 

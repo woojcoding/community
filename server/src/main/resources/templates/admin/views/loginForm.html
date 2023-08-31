@@ -3,18 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>관리자 로그인</title>
+    <!-- 부트스트랩 CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-  <form th:object="${loginDto}" th:action="@{/admin/login}" th:method="post">
-    <div>
-      <input type="text"
-             th:field="${loginDto.accountId}"
-             placeholder="아이디">
-      <input type="password"
-             th:field="${loginDto.password}"
-             placeholder="비밀번호">
-      <button>로그인</button>
+<form th:object="${loginDto}" th:action="@{/admin/login}" th:method="post"
+      class="container mt-5">
+    <div class="form-group">
+        <input type="text"
+               th:field="${loginDto.accountId}"
+               placeholder="아이디"
+               class="form-control">
     </div>
-  </form>
+    <div class="form-group">
+        <input type="password"
+               th:field="${loginDto.password}"
+               placeholder="비밀번호"
+               class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">로그인</button>
+</form>
+
+<!-- 부트스트랩 JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

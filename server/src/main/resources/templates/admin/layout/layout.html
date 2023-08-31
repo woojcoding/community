@@ -1,22 +1,49 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <!-- 부트스트랩 CSS -->
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <!-- header -->
-    <th:block th:replace="admin/fragments/header :: headerFragment"></th:block>
+<div class="container-fluid">
+    <div class="row border-bottom mb-3">
+        <div class="col-md-12">
+            <!-- header -->
+            <th:block
+                    th:replace="admin/fragments/header :: headerFragment"></th:block>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 border-right">
+            <!-- sidebar -->
+            <th:block
+                    th:replace="admin/fragments/sidebar :: sidebarFragment"></th:block>
+        </div>
+        <div class="col-md-10">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <!-- title -->
+                    <th:block
+                            th:replace="admin/fragments/boardTitle :: boardTitle"></th:block>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- content -->
+                    <th:block layout:fragment="content"></th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <!-- sidebar -->
-    <th:block th:replace="admin/fragments/sidebar :: sidebarFragment"></th:block>
-
-    <!-- title -->
-    <th:block th:replace="admin/fragments/boardTitle :: boardTitle"></th:block>
-
-    <!-- content -->
-    <th:block layout:fragment="content"></th:block>
+<!-- 부트스트랩 JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

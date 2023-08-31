@@ -3,120 +3,132 @@
 
 <html>
 <div th:fragment="pagination">
-    <p id="paging">
-    <script th:inline="javascript">
-        document.addEventListener("DOMContentLoaded", function () {
-            // 보드 타입
-            const type = [[${type}]].toLowerCase();
+    <ul class="pagination justify-content-center" id="paging">
+        <script th:inline="javascript">
+            document.addEventListener("DOMContentLoaded", function () {
+                // 보드 타입
+                const type = [[${type}]].toLowerCase();
 
-            // 현재 페이지
-            const currentPage = [[${boardSearch.pageNum}]];
+                // 현재 페이지
+                const currentPage = [[${boardSearch.pageNum}]];
 
-            // 총 게시글 수
-            const totalBoardCount = [[${totalBoardCount}]];
+                // 총 게시글 수
+                const totalBoardCount = [[${totalBoardCount}]];
 
-            // 페이지에 보여질 게시글 수
-            let pageSize = [[${boardSearch.pageSize}]];
+                // 페이지에 보여질 게시글 수
+                let pageSize = [[${boardSearch.pageSize}]];
 
-            // 페이지 블록의 크기
-            const pageLimit = 10;
+                // 페이지 블록의 크기
+                const pageLimit = 10;
 
-            // 시작 페이지
-            const startPage = Math.floor((currentPage - 1) / pageLimit) * pageLimit + 1;
+                // 시작 페이지
+                const startPage = Math.floor((currentPage - 1) / pageLimit) * pageLimit + 1;
 
-            // 마지막 페이지
-            let endPage = startPage + pageLimit - 1;
+                // 마지막 페이지
+                let endPage = startPage + pageLimit - 1;
 
-            // 총 페이지 수
-            const pageCount = Math.ceil(totalBoardCount / pageSize);
+                // 총 페이지 수
+                const pageCount = Math.ceil(totalBoardCount / pageSize);
 
-            if (endPage > pageCount) {
-                endPage = pageCount
-            }
+                if (endPage > pageCount) {
+                    endPage = pageCount
+                }
 
-            const pagingElement = document.getElementById("paging");
+                const pagingElement = document.getElementById("paging");
 
-            // 널(null) 값일 경우 빈 문자열로 처리하는 함수
-            function nullToEmptyString(value) {
-                return value == null ? '' : value;
-            }
+                // 널(null) 값일 경우 빈 문자열로 처리하는 함수
+                function nullToEmptyString(value) {
+                    return value == null ? '' : value;
+                }
 
-            const startDate = nullToEmptyString([[${boardSearch.startDate}]]);
+                const startDate = nullToEmptyString([[${boardSearch.startDate}]]);
 
-            const endDate = nullToEmptyString([[${boardSearch.endDate}]]);
+                const endDate = nullToEmptyString([[${boardSearch.endDate}]]);
 
-            const category = nullToEmptyString([[${boardSearch.category}]]);
+                const category = nullToEmptyString([[${boardSearch.category}]]);
 
-            const keyword = nullToEmptyString([[${boardSearch.keyword}]]);
+                const keyword = nullToEmptyString([[${boardSearch.keyword}]]);
 
-            const sortBy = nullToEmptyString([[${boardSearch.sortBy}]]);
+                const sortBy = nullToEmptyString([[${boardSearch.sortBy}]]);
 
-            pageSize = nullToEmptyString([[${boardSearch.pageSize}]]);
+                pageSize = nullToEmptyString([[${boardSearch.pageSize}]]);
 
-            const sort = nullToEmptyString([[${boardSearch.sort}]]);
+                const sort = nullToEmptyString([[${boardSearch.sort}]]);
 
-            const linkTemplate = "/admin/boards/" + type +
-                "?pageNum={pageNum}" +
-                "&pageSize=" + encodeURIComponent(pageSize) +
-                "&startDate=" + encodeURIComponent(startDate) +
-                "&endDate=" + encodeURIComponent(endDate) +
-                "&category=" + encodeURIComponent(category) +
-                "&keyword=" + encodeURIComponent(keyword) +
-                "&sortBy=" + encodeURIComponent(sortBy) +
-                "&sort=" + encodeURIComponent(sort);
+                const linkTemplate = "/admin/boards/" + type +
+                    "?pageNum={pageNum}" +
+                    "&pageSize=" + encodeURIComponent(pageSize) +
+                    "&startDate=" + encodeURIComponent(startDate) +
+                    "&endDate=" + encodeURIComponent(endDate) +
+                    "&category=" + encodeURIComponent(category) +
+                    "&keyword=" + encodeURIComponent(keyword) +
+                    "&sortBy=" + encodeURIComponent(sortBy) +
+                    "&sort=" + encodeURIComponent(sort);
 
-            // 1페이지로 이동
-            const firstLink = document.createElement("a");
+                // 1페이지로 이동
+                const firstLink = document.createElement("a");
 
-            firstLink.href = linkTemplate.replace("{pageNum}", 1);
-            firstLink.textContent = "<<";
+                firstLink.href = linkTemplate.replace("{pageNum}", 1);
+                firstLink.textContent = "<<";
+                firstLink.classList.add("page-link");
 
-            pagingElement.appendChild(firstLink);
+                pagingElement.appendChild(firstLink);
 
-            // 이전 페이지 블록으로 이동
-            const prevLink = document.createElement("a");
+                // 이전 페이지 블록으로 이동
+                const prevLink = document.createElement("a");
 
-            prevLink.href = linkTemplate.replace("{pageNum}", Math.max(startPage - pageLimit, 1));
-            prevLink.textContent = "<";
+                prevLink.href = linkTemplate.replace("{pageNum}", Math.max(currentPage - 1, 1));
+                prevLink.textContent = "<";
+                prevLink.classList.add("page-link");
 
-            if (startPage === 1) {
-                prevLink.style.display = "none";
-            }
+                if (currentPage === 1) {
+                    prevLink.style.display = "none";
+                }
 
-            pagingElement.appendChild(prevLink);
+                pagingElement.appendChild(prevLink);
 
-            // 페이지 번호
-            for (let pageNum = startPage; pageNum <= endPage && pageNum <= pageCount; pageNum++) {
-                const pageLink = document.createElement("a");
+                // 페이지 번호
+                for (let pageNum = startPage; pageNum <= endPage && pageNum <= pageCount; pageNum++) {
+                    const pageItem = document.createElement("li");
+                    pageItem.classList.add("page-item");
 
-                pageLink.href = linkTemplate.replace("{pageNum}", pageNum);
-                pageLink.textContent = pageNum;
+                    const pageLink = document.createElement("a");
+                    pageLink.classList.add("page-link");
+                    pageLink.href = linkTemplate.replace("{pageNum}", pageNum);
+                    pageLink.textContent = pageNum;
 
-                pagingElement.appendChild(pageLink);
-            }
+                    if (pageNum === currentPage) {
+                        pageItem.classList.add("active");
+                    }
 
-            // 다음 페이지 블록으로 이동
-            const nextLink = document.createElement("a");
+                    pageItem.appendChild(pageLink);
+                    pagingElement.appendChild(pageItem);
+                }
 
-            nextLink.href = linkTemplate.replace("{pageNum}", Math.min(startPage + pageLimit, pageCount));
-            nextLink.textContent = ">";
+                // 다음 페이지 블록으로 이동
+                const nextLink = document.createElement("a");
 
-            if (endPage === pageCount) {
-                nextLink.style.display = "none";
-            }
+                nextLink.href = linkTemplate.replace("{pageNum}", Math.min(currentPage + 1, pageCount));
+                nextLink.textContent = ">";
+                nextLink.classList.add("page-link");
 
-            pagingElement.appendChild(nextLink);
+                if (currentPage === pageCount) {
+                    nextLink.style.display = "none";
+                }
 
-            // 마지막 페이지 블록으로 이동
-            const lastLink = document.createElement("a");
+                pagingElement.appendChild(nextLink);
 
-            lastLink.href = linkTemplate.replace("{pageNum}", pageCount);
-            lastLink.textContent = ">>";
+                // 마지막 페이지 블록으로 이동
+                const lastLink = document.createElement("a");
 
-            pagingElement.appendChild(lastLink);
-        });
-    </script>
-    </p>
+                lastLink.href = linkTemplate.replace("{pageNum}", pageCount);
+                lastLink.textContent = ">>";
+                lastLink.classList.add("page-link");
+
+                pagingElement.appendChild(lastLink);
+            });
+        </script>
+    </ul>
 </div>
 
 </html>

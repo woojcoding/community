@@ -1,26 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-  <div th:fragment="boardListTable">
-    <table class="boardList">
-      <tr>
-        <td>번호</td>
-        <td th:if="${type != 'HELP'}">
-          분류
+<div th:fragment="boardListTable" class="d-flex align-items-center">
+  <table class="table">
+    <thead class="table-light">
+    <tr>
+      <th scope="col">번호</th>
+      <th th:if="${type != 'HELP'}" scope="col">분류</th>
+      <th scope="col">제목</th>
+      <th class="text-center" scope="col">조회수</th>
+      <th class="text-center" scope="col">등록 일시</th>
+      <th class="text-center" scope="col">작성자</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:if="${type == 'NOTICE' and notificationDtoList != null}">
+      <tr th:each="notification : ${notificationDtoList}">
+        <td class="text-center align-middle"></td>
+        <td th:text="'알림'" class="text-center align-middle"></td>
+        <td>
+          <a th:href="@{/admin/boards/{type}/{boardId}
+              (type=${#strings.toLowerCase(type)},
+              boardId=${notification.boardId},
+              pageNum=${boardSearch.pageNum},
+              pageSize=${boardSearch.pageSize},
+              startDate=${boardSearch.startDate},
+              endDate=${boardSearch.endDate},
+              category=${boardSearch.category},
+              keyword=${boardSearch.keyword},
+              sortBy=${boardSearch.sortBy},
+              sort=${boardSearch.sort})}" style="text-decoration:none;" th:text="${notification.title}"></a>
         </td>
-        <td>제목</td>
-        <td>조회수</td>
-        <td>등록 일시</td>
-        <td>작성자</td>
+        <td class="text-center align-middle" th:text="${notification.views}"></td>
+        <td class="text-center align-middle" th:text="${notification.createdAt}"></td>
+        <td class="text-center align-middle" th:text="${notification.writer}"></td>
       </tr>
-      <th:block th:if="${type == 'NOTICE' and notificationDtoList != null}">
-        <tr th:each="notification : ${notificationDtoList}">
-          <td></td>
-          <td th:text="'알림'"></td>
-          <td>
-            <a th:href="@{/admin/boards/{type}/{boardId}
+    </th:block>
+    <tr th:each="board, iterStat : ${boardDtoList}">
+      <td class="text-center align-middle" th:text="${totalBoardCount - ((boardSearch.pageNum - 1) * boardSearch.pageSize) - iterStat.count + 1}"></td>
+      <td th:if="${type!= 'HELP'}" th:text="${board.categoryName}" class="text-center align-middle"></td>
+      <td>
+        <a th:href="@{/admin/boards/{type}/{boardId}
             (type=${#strings.toLowerCase(type)},
-            boardId=${notification.boardId},
+            boardId=${board.boardId},
             pageNum=${boardSearch.pageNum},
             pageSize=${boardSearch.pageSize},
             startDate=${boardSearch.startDate},
@@ -28,47 +50,21 @@
             category=${boardSearch.category},
             keyword=${boardSearch.keyword},
             sortBy=${boardSearch.sortBy},
-            sort=${boardSearch.sort})}" style="text-decoration:none;" th:text="${notification.title}"></a>
-          </td>
-          <td th:text="${notification.views}"></td>
-          <td th:text="${notification.createdAt}"></td>
-          <td th:text="${notification.writer}"></td>
-        </tr>
-      </th:block>
-      <tr th:each="board, iterStat : ${boardDtoList}">
-        <td th:text="${totalBoardCount - ((boardSearch.pageNum - 1) * boardSearch.pageSize) - iterStat.count + 1}"></td>
-        <td th:if="${type!= 'HELP'}"
-            th:text="${board.categoryName}">
-        </td>
-        <td>
-          <img th:if="${board.thumbnailName}"
-               th:src="@{'/thumbnails/' + ${board.thumbnailName}}"
-               alt="thumbnail">
-            <span th:if="${type == 'GALLERY'}" th:text="'+' + ${board.imageCount}"></span>
-          <a th:href="@{/admin/boards/{type}/{boardId}
-           (type=${#strings.toLowerCase(type)},
-           boardId=${board.boardId},
-           pageNum=${boardSearch.pageNum},
-           pageSize=${boardSearch.pageSize},
-           startDate=${boardSearch.startDate},
-           endDate=${boardSearch.endDate},
-           category=${boardSearch.category},
-           keyword=${boardSearch.keyword},
-           sortBy=${boardSearch.sortBy},
-           sort=${boardSearch.sort})}" style="text-decoration:none;">
-            <span th:text="${board.title}"></span>
-            <span th:if="${type == 'HELP' && board.answer != null}">(답변완료)</span>
-            <span th:if="${type == 'HELP' && board.answer == null}">(미답변)</span>
-            <span th:if="${type == 'HELP' && board.secretFlag}" class="fas fa-lock"></span>
-            <span th:if="${type == 'FREE'}" th:text="'(' + ${board.commentCount} + ')'"></span>
-            <span th:if="${type == 'FREE' && board.isAttached}" class="fas fa-paperclip"></span>
-          </a>
-        </td>
-        <td th:text="${board.views}"></td>
-        <td th:text="${board.createdAt}"></td>
-        <td th:text="${board.writer}"></td>
-      </tr>
-    </table>
-  </div>
-
-</html>
+            sort=${boardSearch.sort})}" style="text-decoration:none;" class="text-center align-middle">
+          <img th:if="${board.thumbnailName}" th:src="@{'/thumbnails/' + ${board.thumbnailName}}" alt="thumbnail">
+          <span th:if="${type == 'GALLERY' && board.imageCount > 1}" th:text="'+' + ${board.imageCount - 1}" class="text-center align-middle"></span>
+          <span th:text="${board.title}" class="text-center align-middle"></span>
+          <span th:if="${type == 'HELP' && board.answer != null}" class="text-center align-middle">(답변완료)</span>
+          <span th:if="${type == 'HELP' && board.answer == null}" class="text-center align-middle">(미답변)</span>
+          <span th:if="${type == 'HELP' && board.secretFlag}" class="fas fa-lock text-center align-middle"></span>
+          <span th:if="${type == 'FREE'}" th:text="'(' + ${board.commentCount} + ')'" class="text-center align-middle"></span>
+          <span th:if="${type == 'FREE' && board.isAttached}" class="fas fa-paperclip text-center align-middle"></span>
+        </a>
+      </td>
+      <td class="text-center align-middle" th:text="${board.views}"></td>
+      <td class="text-center align-middle" th:text="${board.createdAt}"></td>
+      <td class="text-center align-middle" th:text="${board.writer}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

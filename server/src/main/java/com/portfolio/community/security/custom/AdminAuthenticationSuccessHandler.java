@@ -20,7 +20,7 @@ public class AdminAuthenticationSuccessHandler
      *
      * @param request HttpServletRequest
      * @param response HttpServletResponse
-     * @param authentication Authenticationng
+     * @param authentication Authentication
      * @throws IOException
      * @throws ServletException
      */
@@ -33,4 +33,3 @@ public class AdminAuthenticationSuccessHandler
         response.sendRedirect("/admin/home");
     }
 }
-

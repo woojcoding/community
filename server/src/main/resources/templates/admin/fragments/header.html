@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<header th:fragment="headerFragment">
-    <span th:text="${#authentication.name + ' 님 안녕하세요!'}"></span>
-    <form action="/admin/logout" method="post">
-        <button>로그아웃</button>
-    </form>
+<header th:fragment="headerFragment" class="bg-light p-3">
+    <div class="row d-flex align-items-center">
+        <div class="col-md-auto ml-auto">
+            <span th:text="${#authentication.name + ' 님 안녕하세요!'}"></span>
+            <form action="/admin/logout" method="post" class="d-inline">
+                <button class="btn btn-danger">로그아웃</button>
+            </form>
+        </div>
+    </div>
 </header>
 
 </html>

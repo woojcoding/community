@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
 <aside th:fragment="sidebarFragment">
-    <ul>
-        <li><a href="/admin/boards/notice">공지사항 관리</a></li>
-        <li><a href="/admin/boards/free">자유 게시판 관리</a></li>
-        <li><a href="/admin/boards/gallery">갤러리 게시판 관리</a></li>
-        <li><a href="/admin/boards/help">문의 게시판 관리</a></li>
+    <ul class="list-group">
+        <li class="list-group-item"><a class="nav-link" href="/admin/boards/notice">공지사항 관리</a></li>
+        <li class="list-group-item"><a class="nav-link" href="/admin/boards/free">자유 게시판 관리</a></li>
+        <li class="list-group-item"><a class="nav-link" href="/admin/boards/gallery">갤러리 게시판 관리</a></li>
+        <li class="list-group-item"><a class="nav-link" href="/admin/boards/help">문의 게시판 관리</a></li>
     </ul>
 </aside>
+</body>
 
 </html>

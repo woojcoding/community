@@ -1,44 +1,49 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="commentForm" th:if="${type== 'FREE' and formType.toString() == 'MODIFY'}">
+<div th:fragment="commentForm"
+     th:if="${type== 'FREE' and formType.toString() == 'MODIFY'}"
+class="border">
     <form th:action="@{/admin/boards/free/{boardId}/comment(boardId=${boardId})}"
           th:object="${commentDto}" method="post">
-        <table>
-            <tr class="commentEnd">
-                <td>
-                    <textarea
-                            th:field="${commentDto.content}"
-                            placeholder="댓글을 입력해주세요."></textarea>
-                    <div th:errors="${commentDto.content}"></div>
-                </td>
-                <td>
-                    <button type="submit">등록</button>
-                </td>
-            </tr>
-        </table>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <textarea class="form-control"
+                              th:field="${commentDto.content}"
+                              placeholder="댓글을 입력해주세요."></textarea>
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">등록
+                        </button>
+                    </div>
+                </div>
+                <div th:errors="${commentDto.content}"
+                     class="text-danger"></div>
+            </div>
+        </div>
     </form>
-    <table class="comment" th:each="comment : ${commentList}">
+    <table class="table table-borderless">
+        <tbody th:each="comment : ${commentList}">
         <tr>
             <td>
                 <label th:text="${comment.writer}"></label>
-            </td>
-            <td>
                 <label th:text="${comment.createdAt}"></label>
             </td>
-            <td>
+            <td class="text-right">
                 <form th:action="@{/admin/boards/free/{boardId}/comments/{commentId}
-                (boardId=${boardId},commentId=${comment.commentId})}" method="post">
+                    (boardId=${boardId},commentId=${comment.commentId})}"
+                      method="post">
                     <input type="hidden" name="_method" value="delete">
-                    <button type="submit">삭제</button>
+                    <button class="btn btn-link" type="submit">삭제</button>
                 </form>
             </td>
         </tr>
-        <tr>
+        <tr class="border-bottom">
             <td colspan="3">
                 <p th:text="${comment.content}"></p>
             </td>
         </tr>
+        </tbody>
     </table>
 </div>
 

@@ -2,9 +2,9 @@
 <html lang="en">
 
 <div th:fragment="boardTitle" th:switch="${type}">
-  <h2 th:case="'NOTICE'">공지사항 관리</h2>
-  <h2 th:case="'FREE'">자유 게시판 관리</h2>
-  <h2 th:case="'GALLRY'">갤러리 게시판 관리</h2>
-  <h2 th:case="'HELP'">문의 게시판 관리</h2>
+    <h2 th:case="'NOTICE'" class="mb-4">공지사항 관리</h2>
+    <h2 th:case="'FREE'" class="mb-4">자유 게시판 관리</h2>
+    <h2 th:case="'GALLERY'" class="mb-4">갤러리 게시판 관리</h2>
+    <h2 th:case="'HELP'" class="mb-4">문의 게시판 관리</h2>
 </div>
 </html>
