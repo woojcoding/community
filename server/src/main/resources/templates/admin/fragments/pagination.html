@@ -28,7 +28,7 @@
                 let endPage = startPage + pageLimit - 1;
 
                 // 총 페이지 수
-                const pageCount = Math.ceil(totalBoardCount / pageSize);
+                const pageCount = Math.max(1, Math.ceil(totalBoardCount / pageSize));
 
                 if (endPage > pageCount) {
                     endPage = pageCount
@@ -71,6 +71,10 @@
                 firstLink.href = linkTemplate.replace("{pageNum}", 1);
                 firstLink.textContent = "<<";
                 firstLink.classList.add("page-link");
+
+                if (pageCount === 1) {
+                    firstLink.style.display = "none";
+                }
 
                 pagingElement.appendChild(firstLink);
 
@@ -124,6 +128,10 @@
                 lastLink.href = linkTemplate.replace("{pageNum}", pageCount);
                 lastLink.textContent = ">>";
                 lastLink.classList.add("page-link");
+
+                if (pageCount === 1) {
+                    lastLink.style.display = "none";
+                }
 
                 pagingElement.appendChild(lastLink);
             });
