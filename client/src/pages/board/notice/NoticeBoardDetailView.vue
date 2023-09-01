@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>공지 사항</h3>
+    <p class="h3 p-4 text-start">공지사항</p>
     <board-detail
         :board="boardData"
     ></board-detail>

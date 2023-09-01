@@ -1,27 +1,25 @@
 <template>
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light p-4">
-      <div class="container">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul id="nav1" class="nav justify-content-start bg-light">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/boards/notice">공지사항</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/boards/free">자유 게시판</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/boards/gallery">갤러리</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/boards/help">문의 게시판</router-link>
-            </li>
-          </ul>
-        </div>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul id="nav1" class="nav bg-light">
+          <li class="nav-item">
+            <router-link class="nav-link custom-link" to="/boards/notice">공지사항</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link custom-link" to="/boards/free">자유 게시판</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link custom-link" to="/boards/gallery">갤러리</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link custom-link" to="/boards/help">문의 게시판</router-link>
+          </li>
+        </ul>
       </div>
       <div class="navbar-right">
-        <div v-if="isLoggedIn" >
-          {{ name }} 님 환영합니다
+        <div v-if="isLoggedIn">
+          <span class="user-greeting">{{ name }} 님 환영합니다</span>
           <button @click="logout" class="btn btn-danger">Logout</button>
         </div>
         <div v-else>
@@ -31,7 +29,6 @@
     </nav>
   </div>
 </template>
-
 <script>
 export default {
   name: "TheNavigator",
@@ -61,11 +58,26 @@ export default {
      */
     logout() {
       this.$store.dispatch('logout');
+
+      this.$router.push("/home")
     }
   }
 }
 </script>
 
 <style scoped>
+.custom-link {
+  color: #007bff; 
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
 
+.custom-link:hover {
+  color: #0056b3;
+}
+
+.user-greeting {
+  margin-right: 10px;
+}
 </style>

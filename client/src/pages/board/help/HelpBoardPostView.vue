@@ -1,5 +1,5 @@
 <template>
-  <h3>문의 게시판</h3>
+  <p class="h3 p-4 text-start">문의 게시판</p>
   <board-write-form
       :type="'help'"
       @save="handleSave"

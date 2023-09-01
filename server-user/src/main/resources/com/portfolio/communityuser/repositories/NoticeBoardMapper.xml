@@ -27,10 +27,13 @@
                b.created_at,
                b.views,
                a.name as writer,
-               b.category_id
+               b.category_id,
+               c.name AS categoryName
         FROM board b
-            JOIN admin a
+            LEFT JOIN admin a
                 ON a.account_id = b.admin_id
+            LEFT JOIN category c
+                ON c.category_id = b.category_id
         WHERE board_id = #{boardId}
     </select>
 </mapper>

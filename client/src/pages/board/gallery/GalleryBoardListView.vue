@@ -1,5 +1,5 @@
 <template>
-  <h3>갤러리</h3>
+  <p class="h3 p-4 text-start">갤러리</p>
   <search-form :category-list="categoryList"
                :type="type"
                @search-board="searchBoard"></search-form>

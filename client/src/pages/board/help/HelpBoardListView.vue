@@ -1,5 +1,5 @@
 <template>
-  <h3>문의 게시판</h3>
+  <p class="h3 p-4 text-start">문의 게시판</p>
   <search-form :type="type"
                @search-board="searchBoard"></search-form>
   <div class="d-flex justify-content-end p-4">
