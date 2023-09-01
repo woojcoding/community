@@ -172,7 +172,7 @@
 import {isNew} from "@/utils/dateUtil";
 import {loadNoticeBoardList} from "@/api/noticeBoardService";
 import {loadFreeBoardList} from "@/api/freeBoardService";
-import {loadGalleryBoardList, loadThumbnail} from "@/api/galleryBoardService";
+import {loadGalleryBoardList} from "@/api/galleryBoardService";
 import {loadHelpBoardList} from "@/api/helpBoardService";
 
 export default {
@@ -240,9 +240,6 @@ export default {
         const response = await loadGalleryBoardList(this.boardSearch);
 
         this.galleryBoardList = response.data.boardList;
-        for (const board of this.galleryBoardList) {
-          await this.loadThumbnailUrl(board);
-        }
       } catch (error) {
         alert(error);
       }
@@ -259,22 +256,6 @@ export default {
         const response = await loadHelpBoardList(this.boardSearch);
         this.helpBoardList = response.data.boardList;
       } catch (error) {
-        alert(error);
-      }
-    },
-    /**
-     * 썸네일을 불러와 board에 지정해주는 메서드
-     *
-     * @param board
-     * @returns {Promise<void>}
-     */
-    async loadThumbnailUrl(board) {
-      try {
-        const response = await loadThumbnail(board.boardId);
-
-        board.thumbnailUrl = response.data.url;
-      } catch (error) {
-        console.log(error);
         alert(error);
       }
     },

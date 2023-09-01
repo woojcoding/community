@@ -125,17 +125,3 @@ export function deleteGalleryBoard(boardId) {
         throw error.response.data.message;
     });
 }
-
-/**
- * 갤러리 게시글의 썸네일을 조회하기 위해 axios 요청
- *
- * @returns {Promise<axios.AxiosResponse<any>>}
- */
-export function loadThumbnail(boardId) {
-    return instance.get(`/api/v1/boards/gallery/${boardId}/thumbnail`)
-        .then((response) => {
-            return response.data;
-        }).catch((error) => {
-            throw error.response.data.message
-        });
-}

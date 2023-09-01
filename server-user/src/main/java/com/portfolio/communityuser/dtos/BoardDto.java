@@ -146,4 +146,9 @@ public class BoardDto {
      * 파일 첨부 여부
      */
     private boolean isAttached;
+
+    /**
+     * 이미지 주소
+     */
+    private String thumbnailUrl;
 }

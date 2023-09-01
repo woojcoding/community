@@ -76,9 +76,22 @@ public class GalleryBoardController {
     public ResponseEntity<ApiResult> getGalleryBoardList(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition
-    ) {
+    ) throws IOException {
         List<BoardDto> boardDtoList =
                 galleryBoardService.getGalleryBoardList(boardSearchCondition);
+
+        for (BoardDto boardDto : boardDtoList) {
+            Path imagePath = Paths.get(
+                    fileService.getFullPath(boardDto.getThumbnailName())
+            );
+
+            byte[] imageBytes = Files.readAllBytes(imagePath);
+
+            String imageDataUrl = "data:image/jpeg;base64," +
+                    Base64.getEncoder().encodeToString(imageBytes);
+
+            boardDto.setThumbnailUrl(imageDataUrl);
+        }
 
         List<CategoryDto> categoryList =
                 categoryService.getCategoryList(BoardType.GALLERY);
@@ -104,40 +117,6 @@ public class GalleryBoardController {
         return ResponseEntity
                 .ok()
                 .body(apiResult);
-    }
-
-    /**
-     * 썸네일을 전달하는 메서드
-     *
-     * @param boardId 게시글 Id
-     * @return
-     */
-    @GetMapping("/boards/gallery/{boardId}/thumbnail")
-    public ResponseEntity<ApiResult> getThumbnail(
-            @PathVariable("boardId") int boardId
-    ) throws IOException {
-
-        FileDto fileDto = fileService.getThumbnail(boardId);
-
-        // 이미지 파일을 읽어서 Base64 인코딩
-        Path imagePath = Paths.get(
-                fileService.getFullPath(fileDto.getThumbnailName())
-        );
-
-        byte[] imageBytes = Files.readAllBytes(imagePath);
-
-        String imageDataUrl = "data:image/jpeg;base64," +
-                Base64.getEncoder().encodeToString(imageBytes);
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("url", imageDataUrl);
-
-        ApiResult apiResult = ApiResult.builder()
-                .status(ApiStatus.SUCCESS)
-                .data(data)
-                .build();
-
-        return ResponseEntity.ok().body(apiResult);
     }
 
     /**

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {loadGalleryBoardList, loadThumbnail} from "@/api/galleryBoardService";
+import {loadGalleryBoardList} from "@/api/galleryBoardService";
 import SearchForm from "@/components/board/SearchForm";
 import GalleryBoardList from "@/components/board/GalleryBoardList";
 import {loadCategoryList} from "@/api/categoryService";
@@ -100,10 +100,6 @@ export default {
 
         this.boardList = response.data.boardList;
         this.totalBoardCount = response.data.totalBoardCount;
-
-        for (const board of this.boardList) {
-          await this.loadThumbnailUrl(board);
-        }
       } catch (error) {
         console.log(error);
         alert(error);
@@ -121,21 +117,6 @@ export default {
         this.categoryList = response.data.categoryList;
       } catch (error) {
         alert(error);
-      }
-    },
-    /**
-     * 썸네일을 불러와 board에 지정해주는 메서드
-     *
-     * @param board
-     * @returns {Promise<void>}
-     */
-    async loadThumbnailUrl(board) {
-      try {
-        const response = await loadThumbnail(board.boardId);
-
-        board.thumbnailUrl = response.data.url;
-      } catch (error) {
-        console.log(error);
       }
     },
     /**
