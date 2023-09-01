@@ -40,6 +40,9 @@ export default {
       name: ""
     }
   },
+  created() {
+    this.name = this.$store.getters.name;
+  },
   watch: {
     isLoggedIn(newValue) {
       if (newValue) {

@@ -12,7 +12,7 @@
     </tr>
     <tr v-for="file in fileListData" :key="file.fileId">
       <td class="align-middle img-cell">
-        <img class="img-thumbnail" v-if="file.imageUrl"
+        <img v-if="file.imageUrl"
              :src="file.imageUrl" alt="thumbnail">
         <a :id="'downloadTag_' + file.fileId"
            @click="downloadFile(file.fileId)">
@@ -77,7 +77,9 @@ export default {
       const newRow = document.createElement('tr');
 
       const inputCell = document.createElement('td');
-      inputCell.classList.add('align-middle');
+      inputCell.classList.add('align-middle', 'image-cell', 'd-flex', 'justify-content-start');
+
+      const removeButtonCell = document.createElement('td');
 
       const inputField = document.createElement('input');
       inputField.setAttribute('type', 'file');
@@ -91,7 +93,7 @@ export default {
 
         const thumbnailImg = document.createElement('img');
         thumbnailImg.setAttribute('id', 'thumbnailImg_' + fileIndex);
-        thumbnailImg.classList.add('img-cell', 'img-thumbnail');
+        thumbnailImg.classList.add('img-cell');
         thumbnailImg.style.width = '60px';
         thumbnailImg.style.height = '60px';
 
@@ -114,9 +116,11 @@ export default {
       });
 
       inputCell.appendChild(inputField);
-      inputCell.appendChild(removeButton);
+
+      removeButtonCell.appendChild(removeButton);
 
       newRow.appendChild(inputCell);
+      newRow.appendChild(removeButtonCell);
 
       fileInputTable.appendChild(newRow);
 

@@ -2,26 +2,34 @@
   <div class="gallery-list">
     <div v-for="board in boardList" :key="board.boardId"
          class="gallery-item">
-      <a @click="boardDetail(board.boardId)" class="text-decoration-none">
-        <div class="align-items-start">
-          <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl" alt="Image"
-               class="mr-2">
+      <a @click="boardDetail(board.boardId)" class="text-decoration-none text-dark">
+        <div class="row">
+          <div class="col-md-2 align-self-start">
+            <a @click="boardDetail(board.boardId)" class="text-decoration-none">
+              <div class="align-items-start">
+                <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl"
+                     alt="Image" class="mr-2">
+              </div>
+            </a>
+          </div>
+          <div class="col-md-10">
+            <div class="row">
+              <div class="col-md-12 text-start">
+                {{ board.title }}
+                <span v-if="board.imageCount > 1">
+                  +{{ board.imageCount - 1 }}</span>
+                <span v-if="isNew(board.createdAt)"
+                      class="new-label ml-2">new</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 text-start content">
+                {{ board.content }}
+              </div>
+            </div>
+          </div>
         </div>
       </a>
-      <div class="row">
-        <div class="col-md-12">
-          <a @click="boardDetail(board.boardId)" class="text-decoration-none">
-            {{ board.title }}
-          <span v-if="board.imageCount > 1">+{{ board.imageCount - 1 }}</span>
-          </a>
-          <span v-if="isNew(board.createdAt)"
-                class="new-label ml-2">new</span>
-        </div>
-        <div class="col-md-12 align-self-start content">{{
-            board.content
-          }}
-        </div>
-      </div>
     </div>
   </div>
 </template>
