@@ -1,10 +1,12 @@
+server:
+  port: 8080
+
 mybatis:
   type-aliases-package: com.portfolio.communityuser.dtos
   configuration:
     map-underscore-to-camel-case: true
     level:
       com.study.springboard.repository: trace
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     default-enum-type-handler: com.portfolio.communityuser.enums.BoardTypeHandler
 
 spring:
