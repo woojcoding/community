@@ -75,7 +75,7 @@
                 <a @click="boardDetail(board.boardId, 'gallery')">
                   <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl"
                        alt="Image">
-                  +{{ board.imageCount }}
+                  <span>+{{ board.imageCount - 1 }}</span>
                   <span v-if="isNew(board.createdAt)"
                         class="new-label">new</span>
                 </a>
