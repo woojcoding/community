@@ -32,7 +32,7 @@ import java.util.Arrays;
  */
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfiguration {
     /**
      * 필터에서 사용하는 JwtUtil 의존성 주입
