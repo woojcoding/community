@@ -172,6 +172,6 @@ export default {
 <style scoped>
 .content {
   max-width: 100%;
-  white-space: normal;
+  white-space: pre-line;
 }
 </style>
