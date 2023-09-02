@@ -32,7 +32,7 @@
         <td v-if="type !== 'help'">{{ board.categoryName }}</td>
         <td>
           <a @click="boardDetail(board.boardId)">
-            {{ board.title }}
+            {{ truncateTitle(board.title) }}
             <span v-if="type === 'help' && board.answer">(답변완료)</span>
             <span v-if="type === 'help' && !board.answer">(미답변)</span>
             <span v-if="type === 'help' && board.secretFlag">
@@ -131,6 +131,20 @@ export default {
      */
     isNew(createdAt) {
       return isNew(createdAt);
+    },
+    /**
+     * 제목 길이를 제한하는 메서드
+     * @param title
+     * @returns {string|*}
+     */
+    truncateTitle(title) {
+      const maxLength = 20;
+
+      if (title.length <= maxLength) {
+        return title;
+      } else {
+        return title.slice(0, maxLength) + "...";
+      }
     },
   }
 }

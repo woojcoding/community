@@ -28,7 +28,7 @@
                 <td>알림</td>
                 <td>
                   <a @click="boardDetail(notificationList[0].boardId, 'notice')">
-                    {{ notificationList[0].title }}
+                    {{ truncateTitle(notificationList[0].title) }}
                   </a>
                 </td>
               </tr>
@@ -37,7 +37,7 @@
                 <td>{{ board.categoryName }}</td>
                 <td>
                   <a @click="boardDetail(board.boardId, 'notice')">
-                    {{ board.title }}
+                    {{ truncateTitle(board.title) }}
                     <span v-if="isNew(board.createdAt)"
                           class="new-label">new</span>
                   </a>
@@ -111,7 +111,7 @@
               <td>{{ board.categoryName }}</td>
               <td>
                 <a @click="boardDetail(board.boardId, 'free')">
-                  {{ board.title }}
+                  {{ truncateTitle(board.title) }}
                   <span>
                 ({{ board.commentCount }})
                 <span v-if="board.isAttached">
@@ -149,7 +149,7 @@
               <td>{{ board.boardId }}</td>
               <td>
                 <a @click="boardDetail(board.boardId, 'help')">
-                  {{ board.title }}
+                  {{ truncateTitle(board.title) }}
                   <span v-if="board.answer">(답변완료)</span>
                   <span v-if="!board.answer">(미답변)</span>
                   <span v-if="board.secretFlag">
@@ -278,11 +278,30 @@ export default {
         query: this.$route.query
       });
     },
+    /**
+     * 게시글 리스트로 이동하는 메서드
+     *
+     * @param type
+     */
     goToBoardList(type) {
       this.$router.push({
         path: `/boards/${type}`,
       });
-    }
+    },
+    /**
+     * 제목 길이를 제한하는 메서드
+     * @param title
+     * @returns {string|*}
+     */
+    truncateTitle(title) {
+      const maxLength = 20;
+
+      if (title.length <= maxLength) {
+        return title;
+      } else {
+        return title.slice(0, maxLength) + "...";
+      }
+    },
   }
 }
 </script>

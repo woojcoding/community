@@ -30,7 +30,7 @@
       <image-container v-if="type === 'gallery'"
                        :file-list="fileList"></image-container>
       <pre>
-        <div class="border border-2 rounded mt-4 p-4 text-start">{{
+        <div class="content border border-2 rounded mt-4 p-4 text-start">{{
             board.content
           }}</div>
       </pre>
@@ -51,7 +51,7 @@
               {{ board.answerer }} {{ formatDate(board.answeredAt) }}
             </div>
             <pre>
-              <div class="text-start">{{ board.answer }}</div>
+              <div class="text-start content">{{ board.answer }}</div>
             </pre>
           </div>
         </template>
@@ -170,5 +170,8 @@ export default {
 </script>
 
 <style scoped>
-
+.content {
+  max-width: 100%;
+  white-space: normal;
+}
 </style>

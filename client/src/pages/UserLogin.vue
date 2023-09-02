@@ -51,7 +51,7 @@ export default {
 
       try {
         await this.$store.dispatch('login', actionPayload);
-        this.$router.push('/home');
+        this.$router.push('/');
       } catch (error) {
         alert(error);
       }

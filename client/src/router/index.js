@@ -98,7 +98,7 @@ const router = createRouter({
             component: HelpBoardModifyView,
             beforeEnter: requireAuth
         },
-        {path: '/home', component: CommunityHome},
+        {path: '/', component: CommunityHome},
     ]
 })
 
@@ -107,7 +107,7 @@ router.beforeEach((to, _, next) => {
 
     // 로그인 페이지에 접근하려고 하면, 로그인 후에 다른 주소로 리다이렉트
     if (to.path === '/login' && isAuthenticated) {
-        next('/home');
+        next('/');
     } else {
         next(); // 다른 페이지로 이동을 허용
     }
