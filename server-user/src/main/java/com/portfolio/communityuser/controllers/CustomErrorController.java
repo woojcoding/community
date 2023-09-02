@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * 에러를 해결하기 위한 컨트롤러
+ * The type Custom Error controller.
  */
 @Controller
 public class CustomErrorController implements ErrorController {

@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+/**
+ * The type User controller.
+ */
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor

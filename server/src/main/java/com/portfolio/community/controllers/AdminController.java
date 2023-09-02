@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * ADMIN의 가입을 위해 만들어둔 컨트롤러
+ * The type Admin controller.
  */
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +25,7 @@ public class AdminController {
     /**
      * admin 가입을 하는 메서드
      *
-     * @param adminDto
+     * @param adminDto 어드민 정보
      */
     @PostMapping("/signup")
     public void signUp(@RequestBody AdminDto adminDto) {

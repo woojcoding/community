@@ -16,6 +16,9 @@ import org.springframework.web.util.UriUtils;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * The type File controller.
+ */
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/files")
