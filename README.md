@@ -53,3 +53,7 @@
 - AWS EC2: 클라우드 환경에서 서버 호스팅
 - AWS RDS: 관계형 데이터베이스 호스팅
 - DB: MySQL 8.0을 데이터베이스로 사용
+
+## ERD
+![portfolio](https://github.com/woojcoding/community/assets/110895459/f131ab28-02a8-4708-abdc-ec559212e75e)
+
