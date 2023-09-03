@@ -5,7 +5,6 @@ import com.portfolio.communityuser.dtos.CommentDto;
 import com.portfolio.communityuser.dtos.FileDto;
 import com.portfolio.communityuser.dtos.Free;
 import com.portfolio.communityuser.repositories.BoardSearchCondition;
-import com.portfolio.communityuser.services.CategoryService;
 import com.portfolio.communityuser.services.CommentService;
 import com.portfolio.communityuser.services.FileService;
 import com.portfolio.communityuser.services.FreeBoardService;
@@ -48,11 +47,6 @@ public class FreeBoardController {
      * 자유 게시글에 대한 로직을 처리하는 freeBoardService를 의존성 주입
      */
     private final FreeBoardService freeBoardService;
-
-    /**
-     * 카테고리에 대한 로직을 처리하는 categoryService를 의존성 주입
-     */
-    private final CategoryService categoryService;
 
     /**
      * 파일에 대한 로직을 처리하는 fileService를 의존성 주입
@@ -206,23 +200,7 @@ public class FreeBoardController {
     ) throws IOException {
         // 유효성 검증 실패 시
         if (bindingResult.hasErrors()) {
-            StringBuilder errorMessageBuilder = new StringBuilder();
-
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                errorMessageBuilder.append(fieldError.getDefaultMessage());
-                errorMessageBuilder.append("\n");
-            }
-
-            String combinedErrorMessage = errorMessageBuilder.toString();
-
-            ApiResult apiResult = ApiResult.builder()
-                    .status(ApiStatus.FAIL)
-                    .message(combinedErrorMessage)
-                    .build();
-
-            return ResponseEntity
-                    .badRequest()
-                    .body(apiResult);
+            return buildErrorResponse(bindingResult);
         }
 
         String userId = AuthenticationUtil.getAccountId();
@@ -277,23 +255,7 @@ public class FreeBoardController {
     ) throws IOException {
         // 유효성 검증 실패 시
         if (bindingResult.hasErrors()) {
-            StringBuilder errorMessageBuilder = new StringBuilder();
-
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                errorMessageBuilder.append(fieldError.getDefaultMessage());
-                errorMessageBuilder.append("\n");
-            }
-
-            String combinedErrorMessage = errorMessageBuilder.toString();
-
-            ApiResult apiResult = ApiResult.builder()
-                    .status(ApiStatus.FAIL)
-                    .message(combinedErrorMessage)
-                    .build();
-
-            return ResponseEntity
-                    .badRequest()
-                    .body(apiResult);
+            return buildErrorResponse(bindingResult);
         }
 
         // 본인 글만 업데이트 가능하도록 예외처리
@@ -439,6 +401,32 @@ public class FreeBoardController {
 
         return ResponseEntity
                 .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 유효성 검증 실패시 ResponseEntity<ApiResult>를 반환해주는 메서드
+     *
+     * @param bindingResult bindingResult
+     * @return ResponseEntity<ApiResult>
+     */
+    private ResponseEntity<ApiResult> buildErrorResponse(BindingResult bindingResult) {
+        StringBuilder errorMessageBuilder = new StringBuilder();
+
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            errorMessageBuilder.append(fieldError.getDefaultMessage());
+            errorMessageBuilder.append("\n");
+        }
+
+        String combinedErrorMessage = errorMessageBuilder.toString();
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.FAIL)
+                .message(combinedErrorMessage)
+                .build();
+
+        return ResponseEntity
+                .badRequest()
                 .body(apiResult);
     }
 }

@@ -50,9 +50,6 @@ public class CategoryController {
             case "gallery":
                 boardType = BoardType.GALLERY;
                 break;
-            case "free":
-                boardType = BoardType.FREE;
-                break;
             case "notice":
                 boardType = BoardType.NOTICE;
                 break;

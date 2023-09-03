@@ -1,12 +1,9 @@
 package com.portfolio.communityuser.controllers;
 
 import com.portfolio.communityuser.dtos.BoardDto;
-import com.portfolio.communityuser.dtos.CategoryDto;
 import com.portfolio.communityuser.dtos.FileDto;
 import com.portfolio.communityuser.dtos.Gallery;
-import com.portfolio.communityuser.enums.BoardType;
 import com.portfolio.communityuser.repositories.BoardSearchCondition;
-import com.portfolio.communityuser.services.CategoryService;
 import com.portfolio.communityuser.services.FileService;
 import com.portfolio.communityuser.services.GalleryBoardService;
 import com.portfolio.communityuser.utils.AuthenticationUtil;
@@ -52,11 +49,6 @@ public class GalleryBoardController {
     private final GalleryBoardService galleryBoardService;
 
     /**
-     * 카테고리에 대한 로직을 처리하는 categoryService를 의존성 주입
-     */
-    private final CategoryService categoryService;
-
-    /**
      * 파일에 대한 로직을 처리하는 fileService를 의존성 주입
      */
     private final FileService fileService;
@@ -93,15 +85,11 @@ public class GalleryBoardController {
             boardDto.setThumbnailUrl(imageDataUrl);
         }
 
-        List<CategoryDto> categoryList =
-                categoryService.getCategoryList(BoardType.GALLERY);
-
         int totalBoardCount =
                 galleryBoardService.getTotalBoardCount(boardSearchCondition);
 
         Map<String, Object> data = new HashMap<>();
         data.put("boardList", boardDtoList);
-        data.put("categoryList", categoryList);
         data.put("totalBoardCount", totalBoardCount);
 
         String message =
@@ -151,13 +139,9 @@ public class GalleryBoardController {
             fileDto.setImageUrl(imageUrl);
         }
 
-        List<CategoryDto> categoryList =
-                categoryService.getCategoryList(BoardType.GALLERY);
-
         Map<String, Object> data = new HashMap<>();
         data.put("board", boardDto);
         data.put("fileList", fileDtoList);
-        data.put("categoryList", categoryList);
 
         String message =
                 messageSource.getMessage("get.board.success",
@@ -321,23 +305,7 @@ public class GalleryBoardController {
     ) throws IOException {
         // 유효성 검증 실패 시
         if (bindingResult.hasErrors()) {
-            StringBuilder errorMessageBuilder = new StringBuilder();
-
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                errorMessageBuilder.append(fieldError.getDefaultMessage());
-                errorMessageBuilder.append("\n");
-            }
-
-            String combinedErrorMessage = errorMessageBuilder.toString();
-
-            ApiResult apiResult = ApiResult.builder()
-                    .status(ApiStatus.FAIL)
-                    .message(combinedErrorMessage)
-                    .build();
-
-            return ResponseEntity
-                    .badRequest()
-                    .body(apiResult);
+            return buildErrorResponse(bindingResult);
         }
 
         // 본인 글만 업데이트 가능하도록 예외처리
@@ -412,6 +380,32 @@ public class GalleryBoardController {
 
         return ResponseEntity
                 .ok()
+                .body(apiResult);
+    }
+
+    /**
+     * 유효성 검증 실패시 ResponseEntity<ApiResult>를 반환해주는 메서드
+     *
+     * @param bindingResult bindingResult
+     * @return ResponseEntity<ApiResult>
+     */
+    private ResponseEntity<ApiResult> buildErrorResponse(BindingResult bindingResult) {
+        StringBuilder errorMessageBuilder = new StringBuilder();
+
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            errorMessageBuilder.append(fieldError.getDefaultMessage());
+            errorMessageBuilder.append("\n");
+        }
+
+        String combinedErrorMessage = errorMessageBuilder.toString();
+
+        ApiResult apiResult = ApiResult.builder()
+                .status(ApiStatus.FAIL)
+                .message(combinedErrorMessage)
+                .build();
+
+        return ResponseEntity
+                .badRequest()
                 .body(apiResult);
     }
 }

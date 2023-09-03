@@ -2,7 +2,6 @@ package com.portfolio.communityuser.controllers;
 
 import com.portfolio.communityuser.dtos.BoardDto;
 import com.portfolio.communityuser.repositories.BoardSearchCondition;
-import com.portfolio.communityuser.services.CategoryService;
 import com.portfolio.communityuser.services.NoticeBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -31,11 +30,6 @@ public class NoticeBoardController {
      *  공지글에 대한 로직을 처리하는 noticeBoardService를 의존성 주입
      */
     private final NoticeBoardService noticeBoardService;
-
-    /**
-     * 카테고리에 대한 로직을 처리하는 categoryService를 의존성 주입
-     */
-    private final CategoryService categoryService;
 
     /**
      * 다국어 처리를 지원하는 messageSource를 의존성 주입
