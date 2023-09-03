@@ -30,8 +30,10 @@
 - Vue.js
 - Spring Boot
 - Thymeleaf
+- java 11
 
 ### 사용자 페이지
+
 - Vue.js: SPA (Single Page Application) 개발에 사용된 프론트엔드 프레임워크
 - Vuex: Vue.js 애플리케이션의 상태 관리를 위한 패턴 및 라이브러리
 - Spring Boot 2.7: 백엔드 서버 개발에 사용된 스프링 부트 버전
@@ -55,5 +57,6 @@
 - DB: MySQL 8.0을 데이터베이스로 사용
 
 ## ERD
-![portfolio](https://github.com/woojcoding/community/assets/110895459/f131ab28-02a8-4708-abdc-ec559212e75e)
+![portfolio](https://github.com/woojcoding/community/assets/110895459/38996dc5-f354-46bd-9f4c-7e2824cba464)
+
 
