@@ -26,10 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,19 +68,6 @@ public class GalleryBoardController {
         List<BoardDto> boardDtoList =
                 galleryBoardService.getGalleryBoardList(boardSearchCondition);
 
-        for (BoardDto boardDto : boardDtoList) {
-            Path imagePath = Paths.get(
-                    fileService.getFullPath(boardDto.getThumbnailName())
-            );
-
-            byte[] imageBytes = Files.readAllBytes(imagePath);
-
-            String imageDataUrl = "data:image/jpeg;base64," +
-                    Base64.getEncoder().encodeToString(imageBytes);
-
-            boardDto.setThumbnailUrl(imageDataUrl);
-        }
-
         int totalBoardCount =
                 galleryBoardService.getTotalBoardCount(boardSearchCondition);
 
@@ -116,7 +99,7 @@ public class GalleryBoardController {
     @GetMapping("/boards/gallery/{boardId}")
     public ResponseEntity<ApiResult> getGalleryBoard(
             @PathVariable("boardId") int boardId
-    ) throws IOException {
+    ) {
         galleryBoardService.updateViews(boardId);
 
         // 게시글 정보를 조회
@@ -124,20 +107,6 @@ public class GalleryBoardController {
                 galleryBoardService.getGalleryBoard(boardId);
 
         List<FileDto> fileDtoList = fileService.getFileList(boardId);
-
-        // 이미지 파일을 읽어서 Base64 인코딩
-        for (FileDto fileDto : fileDtoList) {
-            Path imagePath = Paths.get(
-                    fileService.getFullPath(fileDto.getSavedName())
-            );
-
-            byte[] imageBytes = Files.readAllBytes(imagePath);
-
-            String imageUrl = "data:image/jpeg;base64," +
-                    Base64.getEncoder().encodeToString(imageBytes);
-
-            fileDto.setImageUrl(imageUrl);
-        }
 
         Map<String, Object> data = new HashMap<>();
         data.put("board", boardDto);
@@ -168,7 +137,7 @@ public class GalleryBoardController {
     @GetMapping("/boards/gallery/modify/{boardId}")
     public ResponseEntity<ApiResult> getGalleryBoardForModify(
             @PathVariable("boardId") int boardId
-    ) throws IOException {
+    ) {
         // 게시글 정보를 조회
         BoardDto boardDto =
                 galleryBoardService.getGalleryBoard(boardId);
@@ -183,20 +152,6 @@ public class GalleryBoardController {
         }
 
         List<FileDto> fileDtoList = fileService.getFileList(boardId);
-
-        // 이미지 파일을 읽어서 Base64 인코딩
-        for (FileDto fileDto : fileDtoList) {
-            Path imagePath = Paths.get(
-                    fileService.getFullPath(fileDto.getThumbnailName())
-            );
-
-            byte[] imageBytes = Files.readAllBytes(imagePath);
-
-            String imageUrl = "data:image/jpeg;base64," +
-                    Base64.getEncoder().encodeToString(imageBytes);
-
-            fileDto.setImageUrl(imageUrl);
-        }
 
         Map<String, Object> data = new HashMap<>();
         data.put("board", boardDto);
@@ -233,23 +188,7 @@ public class GalleryBoardController {
     ) throws IOException {
         // 유효성 검증 실패 시
         if (bindingResult.hasErrors()) {
-            StringBuilder errorMessageBuilder = new StringBuilder();
-
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                errorMessageBuilder.append(fieldError.getDefaultMessage());
-                errorMessageBuilder.append("\n");
-            }
-
-            String combinedErrorMessage = errorMessageBuilder.toString();
-
-            ApiResult apiResult = ApiResult.builder()
-                    .status(ApiStatus.FAIL)
-                    .message(combinedErrorMessage)
-                    .build();
-
-            return ResponseEntity
-                    .badRequest()
-                    .body(apiResult);
+            return buildErrorResponse(bindingResult);
         }
 
         String userId = AuthenticationUtil.getAccountId();

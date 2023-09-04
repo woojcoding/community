@@ -55,23 +55,4 @@ public class FileRepository {
     public void deleteFile(int fileId) {
         fileMapper.deleteFile(fileId);
     }
-
-    /**
-     * 게시글 Id에 해당하는 file들을 삭제하는 메서드
-     *
-     * @param boardId 게시글 Id
-     */
-    public void deleteFilesByBoardId(int boardId) {
-        fileMapper.deleteFilesByBoardId(boardId);
-    }
-
-    /**
-     * 썸네일을 가져오는 메서드
-     *
-     * @param boardId 게시글 Id
-     * @return FileDto 파일정보
-     */
-    public FileDto getThumbnail(int boardId) {
-        return fileMapper.getThumbnail(boardId);
-    }
 }

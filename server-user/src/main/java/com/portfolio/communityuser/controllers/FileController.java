@@ -64,4 +64,16 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
                 .body(urlResource);
     }
+
+    /**
+     * 이미지를 전달
+     *
+     * @param  imgName 이미지 명
+     * @throws MalformedURLException MalformedURLException
+     */
+    @GetMapping("/images/{imgName}")
+    public Resource getImage(
+            @PathVariable("imgName") String imgName) throws MalformedURLException {
+        return new UrlResource("file:" + fileService.getFullPath(imgName));
+    }
 }

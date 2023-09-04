@@ -4,7 +4,7 @@
       <div class="carousel-inner">
         <div v-for="(file, index) in fileList" :key="file.fileId"
              class="carousel-item" :class="{ 'active': index === 0 }">
-          <img :src="file.imageUrl" alt="이미지 없음" class="img-fluid">
+          <img :src="`${dynamicDomain}/api/v1/files/images/${file.savedName}`" alt="이미지 없음" class="img-fluid">
         </div>
       </div>
       <button v-if="fileList.length > 1" class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import {ref} from "vue";
+
 export default {
   name: "ImageContainer",
   props: {
@@ -27,6 +29,13 @@ export default {
       required: false,
       description: "파일 리스트",
     },
+  },
+  setup() {
+    const dynamicDomain = ref(process.env.VUE_APP_API_URL);
+
+    return {
+      dynamicDomain,
+    };
   },
 };
 </script>

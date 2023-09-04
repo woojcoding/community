@@ -7,7 +7,6 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -35,11 +34,8 @@ public class FileService {
      * 파일 db에 정보를 저장하는 메서드
      *
      * @param fileDtoList 파일 Dto List
-     * @throws IOException the io exception
      */
-    @Transactional
-    public void uploadFiles(List<FileDto> fileDtoList)
-            throws IOException {
+    public void uploadFiles(List<FileDto> fileDtoList) {
         for (FileDto fileDto : fileDtoList) {
             fileRepository.postFile(fileDto);
         }
@@ -104,9 +100,7 @@ public class FileService {
             // zip 파일인지 체크
             String extension = extractExtension(file.getOriginalFilename());
 
-            if (allowZip && extension.equals("zip")) {
-                return true;
-            }
+            return allowZip && extension.equals("zip");
         }
 
         return false;
@@ -214,16 +208,6 @@ public class FileService {
      */
     public FileDto getFile(int fileId) {
         return fileRepository.getFile(fileId);
-    }
-
-    /**
-     * 게시글 Id로 썸네일을 조회하는 메서드
-     *
-     * @param boardId 파일 Id
-     * @return the file
-     */
-    public FileDto getThumbnail(int boardId) {
-        return fileRepository.getThumbnail(boardId);
     }
 
     /**

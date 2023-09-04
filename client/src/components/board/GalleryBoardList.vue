@@ -2,12 +2,14 @@
   <div class="gallery-list">
     <div v-for="board in boardList" :key="board.boardId"
          class="gallery-item">
-      <a @click="boardDetail(board.boardId)" class="text-decoration-none text-dark">
+      <a @click="boardDetail(board.boardId)"
+         class="text-decoration-none text-dark">
         <div class="row">
           <div class="col-md-2 align-self-start">
             <a @click="boardDetail(board.boardId)" class="text-decoration-none">
               <div class="align-items-start">
-                <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl"
+                <img v-if="board.thumbnailName"
+                     :src="`${dynamicDomain}/api/v1/files/images/${board.thumbnailName}`"
                      alt="Image" class="mr-2">
               </div>
             </a>
@@ -37,6 +39,7 @@
 
 <script>
 import {isNew} from "@/utils/dateUtil";
+import {ref} from "vue";
 
 export default {
   name: "GalleryBoardList",
@@ -53,6 +56,13 @@ export default {
       required: true,
       description: '게시글 타입'
     }
+  },
+  setup() {
+    const dynamicDomain = ref(process.env.VUE_APP_API_URL);
+
+    return {
+      dynamicDomain,
+    };
   },
   methods: {
     /**

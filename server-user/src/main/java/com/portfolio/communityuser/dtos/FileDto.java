@@ -37,11 +37,6 @@ public class FileDto {
     private String thumbnailName;
 
     /**
-     * 이미지 Url
-     */
-    private String imageUrl;
-
-    /**
      * 게시글 ID
      */
     private int boardId;

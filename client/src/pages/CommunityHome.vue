@@ -73,7 +73,8 @@
               <td class="align-middle">{{ board.categoryName }}</td>
               <td class="align-middle">
                 <a @click="boardDetail(board.boardId, 'gallery')">
-                  <img v-if="board.thumbnailUrl" :src="board.thumbnailUrl"
+                  <img v-if="board.thumbnailName"
+                       :src="`${dynamicDomain}/api/v1/files/images/${board.thumbnailName}`"
                        alt="Image">
                   <span>+{{ board.imageCount - 1 }}</span>
                   <span v-if="isNew(board.createdAt)"
@@ -174,6 +175,7 @@ import {loadNoticeBoardList} from "@/api/noticeBoardService";
 import {loadFreeBoardList} from "@/api/freeBoardService";
 import {loadGalleryBoardList} from "@/api/galleryBoardService";
 import {loadHelpBoardList} from "@/api/helpBoardService";
+import {ref} from "vue";
 
 export default {
   name: "CommunityHome",
@@ -194,6 +196,13 @@ export default {
     this.loadFreeBoardList();
     this.loadGalleryBoardList();
     this.loadHelpBoardList();
+  },
+  setup() {
+    const dynamicDomain = ref(process.env.VUE_APP_API_URL);
+
+    return {
+      dynamicDomain,
+    };
   },
   methods: {
     /**
