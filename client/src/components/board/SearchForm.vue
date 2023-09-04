@@ -25,15 +25,14 @@
           </option>
         </select>
       </div>
-      <div class="col-md-4">
-        <div class="input-group">
-          <input id="keyword" type="text" v-model="boardSearch.keyword"
-                 class="form-control"
-                 :placeholder="type === 'notice' ? '제목 or 내용' : (type === 'help' ? '제목 or 내용 or 등록자' : '제목 or 내용 or 작성자')">
-          <div class="input-group-append">
-            <button type="submit" class="btn btn-primary">검색</button>
-          </div>
-        </div>
+      <div class="col-md-2 d-flex justify-content-center" v-else></div>
+      <div class="col-md-3">
+        <input id="keyword" type="text" v-model="boardSearch.keyword"
+               class="form-control"
+               :placeholder="type === 'notice' ? '제목 or 내용' : (type === 'help' ? '제목 or 내용 or 등록자' : '제목 or 내용 or 작성자')">
+      </div>
+      <div class="col-md-1 text-end">
+        <button type="submit" class="btn btn-primary">검색</button>
       </div>
       <div v-if="type === 'help'" class="col-md-12 text-start">
         <input id="my-post-only" type="checkbox"
@@ -44,7 +43,8 @@
   </div>
   <div class="row mt-4 p-4">
     <div class="col-md-4 text-start">
-      <select id="page-size" class="form-control-sm" v-model="boardSearch.pageSize" @change="search">
+      <select id="page-size" class="form-control-sm"
+              v-model="boardSearch.pageSize" @change="search">
         <option value="10">10</option>
         <option value="20">20</option>
         <option value="30">30</option>
@@ -55,13 +55,15 @@
     </div>
     <div class="col-md-8 text-end">
       <span>정렬 </span>
-      <select id="sort-by" class="form-control-sm" v-model="boardSearch.sortBy" @change="search">
+      <select id="sort-by" class="form-control-sm" v-model="boardSearch.sortBy"
+              @change="search">
         <option value="createdAt">등록일시</option>
         <option v-if="type !== 'help'" value="category">분류</option>
         <option value="title">제목</option>
         <option value="views">조회수</option>
       </select>
-      <select id="sort" class="form-control-sm" v-model="boardSearch.sort" @change="search">
+      <select id="sort" class="form-control-sm" v-model="boardSearch.sort"
+              @change="search">
         <option value="desc">내림차순</option>
         <option value="asc">오름차순</option>
       </select>

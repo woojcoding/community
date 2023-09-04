@@ -17,34 +17,34 @@
         <tr v-for="notification in notificationList" :key="notification.boardId">
           <td></td>
           <td>알림</td>
-          <td>
+          <td class="text-start">
             <a @click="boardDetail(notification.boardId)">
               {{ notification.title }}
             </a>
           </td>
           <td>{{ notification.views }}</td>
-          <td>{{ notification.createdAt }}</td>
-          <td>{{ notification.writer }}</td>
+          <td>{{ formatDate(notification.createdAt) }}</td>
+          <td >{{ notification.writer }}</td>
         </tr>
       </template>
       <tr v-for="(board, index) in boardList" :key="board.boardId">
         <td>{{ calculatedNumber(index) }}</td>
         <td v-if="type !== 'help'">{{ board.categoryName }}</td>
-        <td>
+        <td class="text-start">
           <a @click="boardDetail(board.boardId)">
             {{ truncateTitle(board.title) }}
             <span v-if="type === 'help' && board.answer">(답변완료)</span>
             <span v-if="type === 'help' && !board.answer">(미답변)</span>
             <span v-if="type === 'help' && board.secretFlag">
-                <i class="fas fa-lock"></i>
+                <i class="fas fa-lock ms-2"></i>
               </span>
-            <span v-if="type === 'free'">
+            <span v-if="type === 'free'" class="ms-1">
                 ({{ board.commentCount }})
                 <span v-if="board.isAttached">
-                  <i class="fas fa-paperclip"></i>
+                  <i class="fas fa-paperclip ms-2"></i>
                 </span>
               </span>
-            <span v-if="isNew(board.createdAt)" class="new-label">new</span>
+            <span v-if="isNew(board.createdAt)" class="new-label ms-2">new</span>
           </a>
         </td>
         <td>{{ board.views }}</td>

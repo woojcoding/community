@@ -12,8 +12,9 @@
     </tr>
     <tr v-for="file in fileListData" :key="file.fileId">
       <td class="align-middle img-cell">
-        <img v-if="file.imageUrl"
-             :src="file.imageUrl" alt="thumbnail">
+        <img v-if="file.thumbnailName"
+             :src="`${dynamicDomain}/api/v1/files/images/${file.thumbnailName}`"
+             alt="Image">
         <a :id="'downloadTag_' + file.fileId"
            @click="downloadFile(file.fileId)">
           <span>{{ file.originalName }}</span>
@@ -33,6 +34,7 @@
 
 <script>
 import {downloadFile} from "@/api/freeBoardService";
+import {ref} from "vue";
 
 export default {
   name: "FileInput",
@@ -57,6 +59,13 @@ export default {
       deleteFileIds: [],
       MAX_FILES: this.type === 'gallery' ? 20 : 5,
       fileCount: this.fileListData ? this.fileListData.length : 0
+    };
+  },
+  setup() {
+    const dynamicDomain = ref(process.env.VUE_APP_API_URL);
+
+    return {
+      dynamicDomain,
     };
   },
   methods: {

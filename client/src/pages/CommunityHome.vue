@@ -26,7 +26,7 @@
               <tr v-if="notificationList.length > 0">
                 <td>{{ notificationList[0].boardId }}</td>
                 <td>알림</td>
-                <td>
+                <td class="text-start">
                   <a @click="boardDetail(notificationList[0].boardId, 'notice')">
                     {{ truncateTitle(notificationList[0].title) }}
                   </a>
@@ -35,11 +35,11 @@
               <tr v-for="board in noticeBoardList" :key="board.boardId">
                 <td>{{ board.boardId }}</td>
                 <td>{{ board.categoryName }}</td>
-                <td>
+                <td class="text-start">
                   <a @click="boardDetail(board.boardId, 'notice')">
                     {{ truncateTitle(board.title) }}
                     <span v-if="isNew(board.createdAt)"
-                          class="new-label">new</span>
+                          class="new-label ms-2">new</span>
                   </a>
                 </td>
               </tr>
@@ -71,14 +71,14 @@
                 class="double-height">
               <td class="align-middle">{{ board.boardId }}</td>
               <td class="align-middle">{{ board.categoryName }}</td>
-              <td class="align-middle">
+              <td class="align-middle text-start">
                 <a @click="boardDetail(board.boardId, 'gallery')">
                   <img v-if="board.thumbnailName"
                        :src="`${dynamicDomain}/api/v1/files/images/${board.thumbnailName}`"
                        alt="Image">
-                  <span>+{{ board.imageCount - 1 }}</span>
+                  <span class="ms-2">+{{ board.imageCount - 1 }}</span>
                   <span v-if="isNew(board.createdAt)"
-                        class="new-label">new</span>
+                        class="new-label ms-2">new</span>
                 </a>
               </td>
             </tr>
@@ -110,17 +110,17 @@
             <tr v-for="board in freeBoardList" :key="board.boardId">
               <td>{{ board.boardId }}</td>
               <td>{{ board.categoryName }}</td>
-              <td>
+              <td class="text-start">
                 <a @click="boardDetail(board.boardId, 'free')">
                   {{ truncateTitle(board.title) }}
-                  <span>
+                  <span class="ms-1">
                 ({{ board.commentCount }})
-                <span v-if="board.isAttached">
+                <span class="ms-2" v-if="board.isAttached">
                   <i class="fas fa-paperclip"></i>
                 </span>
-              </span>
+                  </span>
                   <span v-if="isNew(board.createdAt)"
-                        class="new-label">new</span>
+                        class="new-label ms-2">new</span>
                 </a>
               </td>
             </tr>
@@ -148,16 +148,16 @@
             <tbody>
             <tr v-for="board in helpBoardList" :key="board.boardId">
               <td>{{ board.boardId }}</td>
-              <td>
+              <td class="text-start">
                 <a @click="boardDetail(board.boardId, 'help')">
                   {{ truncateTitle(board.title) }}
                   <span v-if="board.answer">(답변완료)</span>
                   <span v-if="!board.answer">(미답변)</span>
                   <span v-if="board.secretFlag">
-                <i class="fas fa-lock"></i>
+                <i class="fas fa-lock ms-2"></i>
               </span>
                   <span v-if="isNew(board.createdAt)"
-                        class="new-label">new</span>
+                        class="new-label ms-2">new</span>
                 </a>
               </td>
             </tr>
