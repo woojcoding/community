@@ -68,3 +68,35 @@ Spring Boot와 Thymeleaf를 사용하여 MPA로 구현
 - AWS RDS
 - DB: MySQL 8.0
 - JDK 11
+
+## 사용자 페이지 화면
+
+<img src="https://github.com/woojcoding/community/assets/110895459/a95ab810-a6f3-4933-b50e-1d5b3eae3855" alt="사용자 홈 화면">
+
+| **로그인 화면** | **회원가입 화면** |
+| :-: | :-: |
+| <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/42aaa486-9c31-42e8-ac4a-7d00260281ee" alt="로그인 화면"> | <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/aef0f123-0d4f-4a96-870b-d829b0a78a2b" alt="회원가입 화면"> |
+
+| **문의 상세화면** | **갤러리 리스트 화면** |
+| :-: | :-: |
+| <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/fbc19c95-1164-4f4c-a1b5-2db1b61f887f" alt="문의 상세 화면"> | <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/371f40c6-1891-4945-92fd-4e16be7f844f" alt="갤러리 리스트 화면"> |
+
+| **갤러리 등록 화면** | **갤러리 수정 화면** |
+| :-: | :-: |
+| <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/69e50613-9d66-4591-a724-a862b2d5f183" alt="갤러리 등록 화면"> | <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/75bab379-6233-4563-98f4-960c2f910d57" alt="갤러리 수정 화면"> |
+
+## 관리자 페이지 화면
+
+![관리자 - 게시판 관리](https://github.com/woojcoding/community/assets/110895459/5ca49a6c-c5ba-4c45-b68d-2cc867476d05)
+
+| **관리자 로그인 화면** | **갤러리 작성 화면** |
+| :-: | :-: |
+| <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/34533da4-5c38-43b5-8f2d-e3d1d14b365d" alt="관리자 로그인 화면"> | <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/1ba45174-1986-475c-b8f7-841bfe7639aa" alt="갤러리 작성 화면"> |
+
+| **공지 수정 화면** | **자유 수정 화면** |
+| :-: | :-: |
+| <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/1f82a7a6-63b9-4435-ba90-3e93cb9e650a" alt="공지 관리 화면"> | <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/5e51d62a-ac87-4e98-8683-25f02f2d01a1" alt="자유 관리 화면"> |
+
+| **갤러리 수정 화면** | **문의 수정 화면** |
+| :-: | :-: |
+| <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/39dbd808-43e0-4a9a-b55d-1819f85b3543" alt="갤러리 관리 화면"> | <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/f36ee13f-543d-4303-b109-62fe5b228c68" alt="문의 관리 화면"> |
