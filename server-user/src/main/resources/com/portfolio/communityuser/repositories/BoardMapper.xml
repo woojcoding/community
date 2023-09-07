@@ -40,7 +40,7 @@
                 )
                 THEN 1
                 ELSE 0
-            END AS isAttached
+            END AS hasAttached
         FROM board b
             LEFT JOIN user u
                 ON u.account_id = b.user_id

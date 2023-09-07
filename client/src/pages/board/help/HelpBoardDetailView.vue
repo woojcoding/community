@@ -3,7 +3,9 @@
   <div>
     <board-detail
         :board="boardData"
-        :type="'help'"
+        :show-category="false"
+        :show-answer-status="true"
+        :show-answer="true"
         @delete-board="deleteBoard"
     ></board-detail>
   </div>

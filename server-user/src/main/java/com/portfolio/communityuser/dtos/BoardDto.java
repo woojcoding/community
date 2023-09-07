@@ -145,5 +145,5 @@ public class BoardDto {
     /**
      * 파일 첨부 여부
      */
-    private boolean isAttached;
+    private boolean hasAttached;
 }

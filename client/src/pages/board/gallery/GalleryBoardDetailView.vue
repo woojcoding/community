@@ -3,8 +3,8 @@
   <div>
     <board-detail
         :board="boardData"
+        :show-image="true"
         :file-list="fileListData"
-        :type="'gallery'"
         @delete-board="deleteBoard"
     ></board-detail>
   </div>

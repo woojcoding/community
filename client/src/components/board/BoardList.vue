@@ -38,15 +38,16 @@
             <span v-if="showAnswerStatus && !board.answer">(미답변)</span>
             <span v-if="board.secretFlag">
                 <i class="fas fa-lock ms-2"></i>
-              </span>
+            </span>
             <span v-if="showCommentCount" class="ms-1">
                 ({{ board.commentCount }})
-                <span v-if="board.isAttached">
-                  <i class="fas fa-paperclip ms-2"></i>
-                </span>
-              </span>
+            </span>
+            <span v-if="board.hasAttached">
+              <i class="fas fa-paperclip ms-2"></i>
+            </span>
             <span v-if="isNew(board.createdAt)"
-                  class="new-label ms-2">new</span>
+                  class="new-label ms-2">new
+            </span>
           </a>
         </td>
         <td>{{ board.views }}</td>

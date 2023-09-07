@@ -2,18 +2,18 @@
   <div>
     <div class="board-details mt-4">
       <div class="row justify-content-start border-bottom pb-2">
-        <div v-if="type !== 'help'" class="col-md-1">
+        <div v-if="showCategory" class="col-md-1">
           {{ board.categoryName }}
         </div>
-        <div v-if="type !== 'help'" class="col-md-8 text-start">
-          <div>
-            {{ board.title }}
-          </div>
-        </div>
-        <div v-else class="col-md-9 text-start">
+        <div v-if="showAnswerStatus" class="col-md-9 text-start">
           <div>
             <span v-if="board.answer" class="badge bg-success">답변완료</span>
             <span v-else class="badge bg-warning text-dark">미답변</span>
+            {{ board.title }}
+          </div>
+        </div>
+        <div v-else class="col-md-8 text-start">
+          <div>
             {{ board.title }}
           </div>
         </div>
@@ -27,14 +27,14 @@
           조회수: {{ board.views }}
         </div>
       </div>
-      <image-container v-if="type === 'gallery'"
+      <image-container v-if="showImage"
                        :file-list="fileList"></image-container>
       <pre>
         <div class="content border border-2 rounded mt-4 p-4 text-start">{{
             board.content
           }}</div>
       </pre>
-      <div class="files text-start" v-if="type === 'free'">
+      <div class="files text-start" v-if="fileList">
         <div v-for="file in fileList" :key="file.fileId">
           <a @click="downloadFile(file.fileId)">
             <span><i class="fas fa-paperclip"></i> {{
@@ -44,7 +44,7 @@
         </div>
       </div>
       <div class="d-flex justify-content-start font-weight-bold bg-light p-2"
-           v-if="type === 'help'">
+           v-if="showAnswer">
         <template v-if="board.answer">
           <div class="row text-start justify-content-start">
             <div class="col-md-12">
@@ -101,12 +101,30 @@ export default {
       required: false,
       description: '파일 리스트'
     },
-    type: {
-      type: String,
-      default: undefined,
+    showCategory: {
+      type: Boolean,
+      default: true,
       required: false,
-      description: '게시글 타입'
-    }
+      description: '카테고리를 보여줄 필요 여부'
+    },
+    showAnswerStatus: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '답변 상태를 보여줄 필요의 여부'
+    },
+    showImage: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '이미지를 보여줄 필요의 여부'
+    },
+    showAnswer: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '답변을 보여줄 필요의 여부'
+    },
   },
   computed: {
     isAuthorized() {
@@ -133,10 +151,20 @@ export default {
      * 목록으로 이동하는 메서드
      */
     moveToList() {
-      this.$router.push({
-        path: `/boards/${this.type}/`,
-        query: this.$route.query
-      });
+      const pathArray = this.$route.path.split('/');
+
+      const typeIndex = pathArray.indexOf('boards') + 1;
+
+      if (typeIndex > 0 && typeIndex < pathArray.length) {
+        const type = pathArray[typeIndex];
+
+        const path = `/boards/${type}`;
+
+        this.$router.push({
+          path: `${path}`,
+          query: this.$route.query
+        });
+      }
     },
     /**
      * 수정폼으로 이동하는 메서드
@@ -144,10 +172,20 @@ export default {
     moveToModifyForm() {
       const boardId = this.board.boardId;
 
-      this.$router.push({
-        path: `/boards/${this.type}/modify/${boardId}`,
-        query: this.$route.query
-      });
+      const pathArray = this.$route.path.split('/');
+
+      const typeIndex = pathArray.indexOf('boards') + 1;
+
+      if (typeIndex > 0 && typeIndex < pathArray.length) {
+        const type = pathArray[typeIndex];
+
+        const path = `/boards/${type}/`;
+
+        this.$router.push({
+          path: `${path}/modify/${boardId}`,
+          query: this.$route.query
+        });
+      }
     },
     /**
      * 삭제 여부를 물어보는 메서드

@@ -115,7 +115,7 @@
                   {{ truncateTitle(board.title) }}
                   <span class="ms-1">
                 ({{ board.commentCount }})
-                <span class="ms-2" v-if="board.isAttached">
+                <span class="ms-2" v-if="board.hasAttached">
                   <i class="fas fa-paperclip"></i>
                 </span>
                   </span>
