@@ -2,6 +2,7 @@
   <p class="h3 p-4 text-start">공지사항</p>
   <search-form :category-list="categoryList"
                :type="type"
+               :placeholder-message="'제목 or 내용'"
                @search-board="searchBoard"></search-form>
   <board-list :type="type"
               :notification-list="notificationList"

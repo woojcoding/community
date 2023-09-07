@@ -1,7 +1,6 @@
 <template>
   <p class="h3 p-4 text-start">자유 게시판</p>
   <search-form :category-list="categoryList"
-               :type="type"
                @search-board="searchBoard"></search-form>
   <div class="d-flex justify-content-end p-4">
     <button v-if="isLoggedIn" class="btn btn-primary" @click="moveToWriteForm">글등록</button>

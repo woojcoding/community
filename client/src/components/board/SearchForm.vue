@@ -15,7 +15,7 @@
         <input type="date" v-model="boardSearch.endDate" class="form-control">
       </div>
       <div class="col-md-2 d-flex justify-content-center"
-           v-if="type !== 'help'">
+           v-if="categoryList">
         <select v-model="boardSearch.category"
                 class="form-select">
           <option value="all">전체 카테고리</option>
@@ -29,12 +29,12 @@
       <div class="col-md-3">
         <input id="keyword" type="text" v-model="boardSearch.keyword"
                class="form-control"
-               :placeholder="type === 'notice' ? '제목 or 내용' : (type === 'help' ? '제목 or 내용 or 등록자' : '제목 or 내용 or 작성자')">
+               :placeholder="placeholderMessage">
       </div>
       <div class="col-md-1 text-end">
         <button type="submit" class="btn btn-primary">검색</button>
       </div>
-      <div v-if="type === 'help'" class="col-md-12 text-start">
+      <div v-if="requireMyPostOnlyOption" class="col-md-12 text-start">
         <input id="my-post-only" type="checkbox"
                v-model="boardSearch.displayMyPostsOnly">
         <span class="ml-1"> 나의 문의내역만 보기</span>
@@ -58,7 +58,7 @@
       <select id="sort-by" class="form-control-sm" v-model="boardSearch.sortBy"
               @change="search">
         <option value="createdAt">등록일시</option>
-        <option v-if="type !== 'help'" value="category">분류</option>
+        <option v-if="categoryList" value="category">분류</option>
         <option value="title">제목</option>
         <option value="views">조회수</option>
       </select>
@@ -83,12 +83,18 @@ export default {
       required: false,
       description: '카테고리 리스트'
     },
-    type: {
+    placeholderMessage: {
       type: String,
-      default: undefined,
-      required: true,
-      description: '게시글 타입'
+      default: '제목 or 내용 or 작성자',
+      required: false,
+      description: '검색창에 보여줄 메세지'
     },
+    requireMyPostOnlyOption: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '나의 게시글만 보기 필요 여부'
+    }
   },
   emits: ['searchBoard']
   ,

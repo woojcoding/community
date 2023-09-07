@@ -1,6 +1,7 @@
 <template>
   <p class="h3 p-4 text-start">문의 게시판</p>
-  <search-form :type="type"
+  <search-form :placeholder-message="'제목 or 내용 or 등록자'"
+               :require-my-post-only-option="true"
                @search-board="searchBoard"></search-form>
   <div class="d-flex justify-content-end p-4">
     <button v-if="isLoggedIn" class="btn btn-primary" @click="moveToWriteForm">글등록</button>
