@@ -2,7 +2,11 @@
   <p class="h3 p-4 text-start">자유 게시판</p>
   <board-write-form
       :category-list-data="categoryListData"
-      :type="'free'"
+      :require-title-tr="true"
+      :require-content-tr="true"
+      :require-file-tr="true"
+      :max-file-count="5"
+      :accept-file-format="'.jpg, .jpeg, .gif, .png, application/zip'"
       @save="handleSave"
   ></board-write-form>
 </template>

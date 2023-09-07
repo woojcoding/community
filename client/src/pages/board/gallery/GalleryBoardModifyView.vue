@@ -4,7 +4,12 @@
       :board-data="boardData"
       :file-list-data="fileListData"
       :category-list-data="categoryListData"
-      :type="'gallery'"
+      :require-title-tr="true"
+      :require-content-tr="true"
+      :require-file-tr="true"
+      :require-thumbnail="true"
+      :max-file-count="20"
+      :accept-file-format="'.jpg, .jpeg, .gif, .png'"
       v-if="boardData.boardId"
       @save="handleSave"
   ></board-write-form>

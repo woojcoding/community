@@ -1,7 +1,9 @@
 <template>
   <p class="h3 p-4 text-start">문의 게시판</p>
   <board-write-form
-      :type="'help'"
+      :require-title-tr="true"
+      :require-question-tr="true"
+      :require-secret-option-tr="true"
       @save="handleSave"
   ></board-write-form>
 </template>

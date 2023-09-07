@@ -4,7 +4,11 @@
       :board-data="boardData"
       :file-list-data="fileListData"
       :category-list-data="categoryListData"
-      :type="'free'"
+      :require-title-tr="true"
+      :require-content-tr="true"
+      :require-file-tr="true"
+      :max-file-count="5"
+      :accept-file-format="'.jpg, .jpeg, .gif, .png, application/zip'"
       v-if="boardData.boardId"
       @save="handleSave"
   ></board-write-form>

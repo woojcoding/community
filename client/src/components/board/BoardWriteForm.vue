@@ -2,8 +2,8 @@
   <form id="writeForm" @submit.prevent="submitForm" class="mt-4">
     <div class="table-responsive">
       <table class="table border">
-        <!-- 카테고리 (문의게시글 미사용) -->
-        <tr v-if="type !== 'help'" class="border-bottom">
+        <!-- 카테고리 -->
+        <tr v-if="categoryListData" class="border-bottom">
           <td class="align-middle">분류</td>
           <td>
             <select v-model="board.categoryId" name="categoryId"
@@ -17,36 +17,47 @@
           </td>
         </tr>
         <!-- 제목 -->
-        <tr>
-          <td class="align-middle border-bottom" >제목</td>
+        <tr v-if="requireTitleTr">
+          <td class="align-middle border-bottom">제목</td>
           <td>
             <textarea rows="1" cols="100" name="title" id="title"
                       style="resize: none; overflow: hidden"
                       v-model="board.title" class="form-control"></textarea>
           </td>
         </tr>
-        <!-- 내용 (문의 게시판의 경우 질문) -->
-        <tr>
-          <td class="align-middle border-bottom">{{ type === 'help' ? '질문' : '내용' }}</td>
+        <!-- 질문 -->
+        <tr v-if="requireQuestionTr">
+          <td class="align-middle border-bottom">질문</td>
           <td>
             <textarea rows="20" cols="100" name="content" id="content"
                       style="resize: none"
                       v-model="board.content" class="form-control"></textarea>
           </td>
         </tr>
-        <!-- 문의글에서만 사용되는 비밀글 체크 -->
-        <tr v-if="type === 'help'">
+        <!-- 내용 -->
+        <tr v-if="requireContentTr">
+          <td class="align-middle border-bottom">내용</td>
+          <td>
+            <textarea rows="20" cols="100" name="content" id="content"
+                      style="resize: none"
+                      v-model="board.content" class="form-control"></textarea>
+          </td>
+        </tr>
+        <!-- 비밀글 체크 -->
+        <tr v-if="requireSecretOptionTr">
           <td class="align-middle border-bottom">비밀글</td>
           <td><input type="checkbox" v-model="board.secretFlag"
                      class="form-check-input"></td>
         </tr>
-        <!-- 갤러리와 자유게시판에서 사용되는 파일 -->
-        <tr v-if="type === 'gallery' || type === 'free'">
+        <!-- 파일 -->
+        <tr v-if="requireFileTr">
           <td class="align-middle border-bottom">첨부</td>
           <td>
             <file-input
-                :type=type
+                :accept-file-format="acceptFileFormat"
+                :max-file-count="maxFileCount"
                 :file-list-data="fileListData"
+                :require-thumbnail="requireThumbnail"
                 @files-updated="updateFiles"
                 @files-deleted="deleteFiles"></file-input>
           </td>
@@ -85,11 +96,53 @@ export default {
       required: true,
       description: '카테고리 리스트'
     },
-    type: {
+    requireTitleTr: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '제목 tr 필요 여부'
+    },
+    requireQuestionTr: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '질문 tr 필요 여부'
+    },
+    requireContentTr: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '내용 tr 필요 여부'
+    },
+    requireSecretOptionTr: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '비밀글 체크 tr 필요 여부'
+    },
+    requireFileTr: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '파일 tr 필요 여부'
+    },
+    requireThumbnail: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '썸네일 필요 여부'
+    },
+    maxFileCount: {
+      type: Number,
+      default: 0,
+      required: false,
+      description: '첨부 가능한 파일 수'
+    },
+    acceptFileFormat: {
       type: String,
       default: undefined,
-      required: true,
-      description: '게시글 타입'
+      required: false,
+      description: '첨부 가능한 파일 포맷'
     },
   },
   emits: ['save'],
@@ -118,7 +171,7 @@ export default {
     validateForm() {
       const errorMessages = [];
 
-      if (this.board.categoryId === 'all' && this.type !== 'help') {
+      if (this.board.categoryId === 'all' && this.categoryListData) {
         errorMessages.push('카테고리를 선택해주세요.');
       }
       if (!this.board.title) {
@@ -152,21 +205,32 @@ export default {
     /**
      * 취소를 눌러 이전 페이지로 가는 메서드
      */
+    /**
+     * 취소를 눌러 이전 페이지로 가는 메서드
+     */
     cancel() {
       const boardId = this.$route.params.boardId;
 
-      let path = `/boards/${this.type}`;
+      const pathArray = this.$route.path.split('/'); // URL을 '/'로 분할하여 배열로
 
-      if (boardId) {
-        path += `/${boardId}`;
-      }
+      const typeIndex = pathArray.indexOf('boards') + 1; // 'boards' 다음에 있는 요소의 인덱스
 
-      this.$router.push({
-        path: path,
-        query: {
-          ...this.$route.query
+      if (typeIndex > 0 && typeIndex < pathArray.length) {
+        const type = pathArray[typeIndex];
+
+        let path = `/boards/${type}`;
+
+        if (boardId) {
+          path += `/${boardId}`;
         }
-      });
+
+        this.$router.push({
+          path: path,
+          query: {
+            ...this.$route.query
+          }
+        });
+      }
     },
     /**
      * 자식 컴포넌트로 부터 file을 받아 데이터를 반영하는 메서드

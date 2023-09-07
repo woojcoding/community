@@ -50,12 +50,6 @@ export default {
       required: true,
       description: '게시글 리스트'
     },
-    type: {
-      type: String,
-      default: undefined,
-      required: true,
-      description: '게시글 타입'
-    }
   },
   setup() {
     const dynamicDomain = ref(process.env.VUE_APP_API_URL);
@@ -72,7 +66,7 @@ export default {
      */
     boardDetail(boardId) {
       this.$router.push({
-        path: `/boards/${this.type}/${boardId}`,
+        path: `/boards/gallery/${boardId}`,
         query: this.$route.query
       });
     },

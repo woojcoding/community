@@ -3,10 +3,7 @@
   <table id="fileInputTable">
     <tbody>
     <tr>
-      <td v-if="type === 'free'">jpg, gif, png, zip 파일만 파일사이즈 2MB까지 업로드
-        가능합니다.
-      </td>
-      <td v-if="type === 'gallery'">jpg, gif, png 파일만 파일사이즈 2MB까지 업로드
+      <td>{{ acceptFileFormat }} 파일만 파일사이즈 2MB까지 업로드
         가능합니다.
       </td>
     </tr>
@@ -29,21 +26,21 @@
     </tr>
     <tr v-for="(file, index) in inputFiles" :key="'input_' + index">
       <td class="align-middle img-cell">
-        <img v-if="type === 'gallery' && thumbnails[index]"
+        <img v-if="requireThumbnail && thumbnails[index]"
              :src="thumbnails[index]" alt="Image">
         <input
-            v-if="type === 'help'"
+            v-if="requireThumbnail"
             type="file"
-            @change="handleFileChange($event, index)"
+            @change="handleFileChange($event, index); showThumbnail($event)"
             class="form-control-file"
-            accept=".jpg, .jpeg, .gif, .png, application/zip"
+            accept={{acceptFileFormat}}
         >
         <input
             v-else
             type="file"
-            @change="handleFileChange($event, index); showThumbnail($event)"
+            @change="handleFileChange($event, index)"
             class="form-control-file"
-            accept=".jpg, .jpeg, .gif, .png"
+            accept={{acceptFileFormat}}
         >
       </td>
       <td>
@@ -67,17 +64,29 @@ import {ref} from "vue";
 export default {
   name: "FileInput",
   props: {
-    type: {
-      type: String,
-      default: undefined,
-      required: true,
-      description: '게시글 타입'
-    },
     fileListData: {
       type: Array,
       default: undefined,
       required: false,
       description: '파일 리스트'
+    },
+    maxFileCount: {
+      type: Number,
+      default: 0,
+      required: false,
+      description: '첨부 가능한 파일 수'
+    },
+    acceptFileFormat: {
+      type: String,
+      default: undefined,
+      required: false,
+      description: '첨부 가능한 파일 포맷'
+    },
+    requireThumbnail: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '썸네일 필요 여부'
     },
   },
   created() {
@@ -90,7 +99,6 @@ export default {
       thumbnails: [],
       uploadedFiles: [],
       deleteFileIds: [],
-      MAX_FILES: this.type === 'gallery' ? 20 : 5,
       fileCount: this.uploadedFiles ? this.uploadedFiles.length : 0
     };
   },
@@ -107,8 +115,8 @@ export default {
      * 데이터 변동 사항을 부모 컴포넌트로 emit할 수 있도록 이벤트 리스너 추가
      */
     addFileInput() {
-      if (this.fileCount + this.inputFiles.length >= this.MAX_FILES) {
-        alert('최대 ' + this.MAX_FILES + '개까지만 첨부 가능합니다.');
+      if (this.fileCount + this.inputFiles.length >= this.maxFileCount) {
+        alert('최대 ' + this.maxFileCount + '개까지만 첨부 가능합니다.');
 
         return;
       }
@@ -124,9 +132,15 @@ export default {
       const selectedFile = event.target.files[0];
 
       if (selectedFile) {
-        this.inputFiles[index] = selectedFile;
-
-        this.$emit('files-updated', this.inputFiles);
+        // 파일 크기를 확인하여 2MB 이하인지 검사
+        if (selectedFile.size <= 2 * 1024 * 1024) {
+          this.inputFiles[index] = selectedFile;
+          this.$emit('files-updated', this.inputFiles);
+        } else {
+          alert('파일은 2MB 이하만 가능합니다.');
+          
+          event.target.value = ''; // 파일 선택 취소
+        }
       }
     },
     /**
@@ -192,6 +206,7 @@ export default {
 .img-cell {
   text-align: left;
 }
+
 img {
   height: 60px;
   width: 60px;
