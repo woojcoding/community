@@ -6,7 +6,8 @@
   <div class="d-flex justify-content-end p-4">
     <button v-if="isLoggedIn" class="btn btn-primary" @click="moveToWriteForm">글등록</button>
   </div>
-  <board-list :type="type"
+  <board-list :show-category="false"
+              :show-answer-status="true"
               :board-list="boardList"
               :board-search-condition="boardSearch"
               :total-board-count="totalBoardCount"></board-list>

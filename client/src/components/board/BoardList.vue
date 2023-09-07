@@ -4,7 +4,7 @@
       <thead>
       <tr>
         <th scope="col">번호</th>
-        <th v-if="type !== 'help'" scope="col">분류</th>
+        <th v-if="showCategory" scope="col">분류</th>
         <th scope="col">제목</th>
         <th scope="col">조회수</th>
         <th scope="col">등록 일시</th>
@@ -12,9 +12,10 @@
       </tr>
       </thead>
       <tbody>
-      <!-- notice 인 경우에만 랜더링 -->
-      <template v-if="type === 'notice' && notificationList">
-        <tr v-for="notification in notificationList" :key="notification.boardId">
+      <!-- notificationList 데이터가 있는 경우에만 랜더링 -->
+      <template v-if="notificationList">
+        <tr v-for="notification in notificationList"
+            :key="notification.boardId">
           <td></td>
           <td>알림</td>
           <td class="text-start">
@@ -24,27 +25,28 @@
           </td>
           <td>{{ notification.views }}</td>
           <td>{{ formatDate(notification.createdAt) }}</td>
-          <td >{{ notification.writer }}</td>
+          <td>{{ notification.writer }}</td>
         </tr>
       </template>
       <tr v-for="(board, index) in boardList" :key="board.boardId">
         <td>{{ calculatedNumber(index) }}</td>
-        <td v-if="type !== 'help'">{{ board.categoryName }}</td>
+        <td v-if="showCategory">{{ board.categoryName }}</td>
         <td class="text-start">
           <a @click="boardDetail(board.boardId)">
             {{ truncateTitle(board.title) }}
-            <span v-if="type === 'help' && board.answer">(답변완료)</span>
-            <span v-if="type === 'help' && !board.answer">(미답변)</span>
-            <span v-if="type === 'help' && board.secretFlag">
+            <span v-if="showAnswerStatus && board.answer">(답변완료)</span>
+            <span v-if="showAnswerStatus && !board.answer">(미답변)</span>
+            <span v-if="board.secretFlag">
                 <i class="fas fa-lock ms-2"></i>
               </span>
-            <span v-if="type === 'free'" class="ms-1">
+            <span v-if="showCommentCount" class="ms-1">
                 ({{ board.commentCount }})
                 <span v-if="board.isAttached">
                   <i class="fas fa-paperclip ms-2"></i>
                 </span>
               </span>
-            <span v-if="isNew(board.createdAt)" class="new-label ms-2">new</span>
+            <span v-if="isNew(board.createdAt)"
+                  class="new-label ms-2">new</span>
           </a>
         </td>
         <td>{{ board.views }}</td>
@@ -87,12 +89,24 @@ export default {
       required: true,
       description: '총 게시글 수'
     },
-    type: {
-      type: String,
-      default: undefined,
-      required: true,
-      description: '게시글 타입'
-    }
+    showCategory: {
+      type: Boolean,
+      default: true,
+      required: false,
+      description: '카테고리 보여줄 필요 여부'
+    },
+    showAnswerStatus: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '답변 상태를 보여줄 필요의 여부'
+    },
+    showCommentCount: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '댓글 개수를 보여줄 필요의 여부'
+    },
   },
   computed: {
     /**
@@ -111,10 +125,20 @@ export default {
      * @param boardId
      */
     boardDetail(boardId) {
-      this.$router.push({
-        path: `/boards/${this.type}/${boardId}`,
-        query: this.$route.query
-      });
+      const pathArray = this.$route.path.split('/');
+
+      const typeIndex = pathArray.indexOf('boards') + 1;
+
+      if (typeIndex > 0 && typeIndex < pathArray.length) {
+        const type = pathArray[typeIndex];
+
+        const path = `/boards/${type}`;
+
+        this.$router.push({
+          path: `${path}/${boardId}`,
+          query: this.$route.query
+        });
+      }
     },
     /**
      * 날짜를 포맷에 맞게 수정하는 메서드
