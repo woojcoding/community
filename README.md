@@ -101,7 +101,7 @@ Spring Boot와 Thymeleaf를 사용하여 MPA로 구현
 | :-: | :-: |
 | <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/39dbd808-43e0-4a9a-b55d-1819f85b3543" alt="갤러리 관리 화면"> | <img width="400" height="300" src="https://github.com/woojcoding/community/assets/110895459/f36ee13f-543d-4303-b109-62fe5b228c68" alt="문의 관리 화면"> |
 
-## ⭐ 주요기술
+## ⭐ 주요 기능
 
 ### 로그인 및 인증 - <a href="https://github.com/woojcoding/community/wiki/%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EB%B0%8F-%EC%9D%B8%EC%A6%9D">자세히보기 </a>
 사용자
