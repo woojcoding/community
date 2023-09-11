@@ -70,11 +70,9 @@ Spring Boot와 Thymeleaf를 사용하여 MPA로 구현
 
 ### 배포환경
 
-프로젝트의 배포 환경:
-
 - AWS EC2
 - AWS RDS
-- DB: MySQL 8.0
+- MySQL 8.0
 - JDK 11
 
 ## 🖼️ 사용자 페이지 화면
