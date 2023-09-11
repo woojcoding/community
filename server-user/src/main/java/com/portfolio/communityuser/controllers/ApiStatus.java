@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * API 호출의 결과를 담고 있는 enum입니다.
+ * API 호출의 결과를 담고 있는 enum
  */
 @Getter
 @RequiredArgsConstructor

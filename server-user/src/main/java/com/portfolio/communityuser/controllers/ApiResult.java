@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- *  API 결과를 반환해줄 때 사용해주는 공통 클래스입니다.
+ *  API 결과를 반환해줄 때 사용해주는 공통 클래스
  *  {
  *     "status": "",
  *     "message": "",
