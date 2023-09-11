@@ -34,7 +34,7 @@
             board.content
           }}</div>
       </pre>
-      <div class="files text-start" v-if="fileList">
+      <div class="files text-start" v-if="showFiles">
         <div v-for="file in fileList" :key="file.fileId">
           <a @click="downloadFile(file.fileId)">
             <span><i class="fas fa-paperclip"></i> {{
@@ -124,6 +124,12 @@ export default {
       default: false,
       required: false,
       description: '답변을 보여줄 필요의 여부'
+    },
+    showFiles: {
+      type: Boolean,
+      default: false,
+      required: false,
+      description: '파일 다운로드를 보여줄 여부'
     },
   },
   computed: {

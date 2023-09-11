@@ -4,6 +4,7 @@
     <board-detail
         :board="boardData"
         :file-list="fileListData"
+        :show-files="true"
         @delete-board="deleteBoard"
     ></board-detail>
     <comment-form
