@@ -42,7 +42,7 @@ import {isNew} from "@/utils/dateUtil";
 import {ref} from "vue";
 
 export default {
-  name: "GalleryBoardList",
+  name: "ThumbnailBoardList",
   props: {
     boardList: {
       type: Array,

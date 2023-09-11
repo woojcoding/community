@@ -5,9 +5,9 @@
   <div class="d-flex justify-content-end p-4">
     <button v-if="isLoggedIn" class="btn btn-primary" @click="moveToWriteForm">글등록</button>
   </div>
-  <gallery-board-list :type="type"
+  <thumbnail-board-list :type="type"
                       :board-list="boardList"
-                      :board-search-condition="boardSearch"></gallery-board-list>
+                      :board-search-condition="boardSearch"></thumbnail-board-list>
   <board-pagination :board-search-condition="boardSearch"
                     :total-board-count="totalBoardCount"
                     @search="searchBoard"></board-pagination>
@@ -16,14 +16,14 @@
 <script>
 import {loadGalleryBoardList} from "@/api/galleryBoardService";
 import SearchForm from "@/components/board/SearchForm";
-import GalleryBoardList from "@/components/board/GalleryBoardList";
+import ThumbnailBoardList from "@/components/board/ThumbnailBoardList";
 import {loadCategoryList} from "@/api/categoryService";
 import dayjs from "dayjs";
 import BoardPagination from "@/components/board/BoardPagination";
 
 export default {
   name: "GalleryBoardListView",
-  components: {BoardPagination, GalleryBoardList, SearchForm},
+  components: {BoardPagination, ThumbnailBoardList, SearchForm},
   props: {
     type: String,
   },

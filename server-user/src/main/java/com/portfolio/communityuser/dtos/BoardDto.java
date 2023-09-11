@@ -42,6 +42,8 @@ public class BoardDto {
      * <p>
      * 카테고리 ID는 "all"을 제외한 다른 값을 가져야 합니다.
      */
+    @NotBlank(groups = {Free.class, Notice.class, Gallery.class},
+            message = "{notBlank.boardDto.categoryId}")
     @Pattern(regexp = "^(?!all$).*$",
             groups = {Free.class, Notice.class, Gallery.class},
             message = "{pattern.boardDto.categoryId}")
