@@ -32,6 +32,8 @@ Spring Boot와 Thymeleaf를 사용하여 MPA로 구현
 
 ![Vue.js](https://img.shields.io/badge/Vue.js-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white)
 ![Vuex](https://img.shields.io/badge/Vuex-34495E?style=for-the-badge&logo=vuex&logoColor=white)
+![vue-router](https://img.shields.io/badge/vue--router-42b983?style=for-the-badge&logo=vue.js&logoColor=white)
+![axios](https://img.shields.io/badge/axios-35495E?style=for-the-badge&logo=axios&logoColor=white)
 ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
 
@@ -50,6 +52,8 @@ Spring Boot와 Thymeleaf를 사용하여 MPA로 구현
 
 - Vue.js
 - Vuex
+- vue-router
+- axios
 - Bootstrap
 - Spring Boot 2.7
 - MyBatis
