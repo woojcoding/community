@@ -22,6 +22,8 @@ Spring Boot와 Thymeleaf를 사용하여 MPA로 구현
 - 관리자 비밀번호: 123qwe!
 
 ## 📄 <a href="http://woojcoding.s3-website.ap-northeast-2.amazonaws.com/com/portfolio/communityuser/controllers/package-summary.html">Java Doc</a>
+## 📄 <a href="https://documenter.getpostman.com/view/23680957/2s9YC1XaZ2">API 문서</a>
+
 
 ## 🖼️ ERD
 ![portfolio](https://github.com/woojcoding/community/assets/110895459/38996dc5-f354-46bd-9f4c-7e2824cba464)
