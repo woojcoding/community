@@ -14,7 +14,7 @@
               class="d-flex justify-content-start font-weight-bold bg-light p-2">
             <span class="comment-writer">{{ comment.writer }}</span>
             <span class="text-muted"> &nbsp; {{ formatDate(comment.createdAt) }} &nbsp;</span>
-            <div v-if="isAuthorized">
+            <div v-if="isAuthorized(comment)">
               <button class="btn btn-sm btn-danger"
                       @click="confirmDelete(comment.commentId)">삭제
               </button>
@@ -48,13 +48,6 @@ export default {
       required: true,
       description: '게시글 Id'
     }
-  },
-  computed: {
-    isAuthorized() {
-      const accountId = this.$store.getters.accountId;
-
-      return this.commentList.map(commentItem => commentItem.userId === accountId);
-    },
   },
   data() {
     return {
@@ -105,6 +98,16 @@ export default {
      */
     formatDate(date) {
       return formatDate(date);
+    },
+    /**
+     * 댓글에 대한 권한이 있는지 여부
+     * @param comment
+     * @returns {boolean}
+     */
+    isAuthorized(comment) {
+      const accountId = this.$store.getters.accountId;
+
+      return comment.userId === accountId;
     },
   }
 }
