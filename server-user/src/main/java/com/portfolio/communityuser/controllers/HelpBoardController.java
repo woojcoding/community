@@ -183,7 +183,7 @@ public class HelpBoardController {
      * @return ResponseEntity<ApiResult>
      */
     @PostMapping("/boards/help")
-    public ResponseEntity<ApiResult> postFreeBoard(
+    public ResponseEntity<ApiResult> postHelpBoard(
             @Validated(Help.class) @RequestBody
             BoardDto boardDto
     ) {
@@ -221,7 +221,7 @@ public class HelpBoardController {
      * @return ResponseEntity<ApiResult>
      */
     @PatchMapping("/boards/help/{boardId}")
-    public ResponseEntity<ApiResult> patchFreeBoard(
+    public ResponseEntity<ApiResult> patchHelpBoard(
             @PathVariable("boardId") int boarId,
             @Validated(Help.class) @RequestBody
             BoardDto boardDto
@@ -259,7 +259,7 @@ public class HelpBoardController {
      * @return ResponseEntity<ApiResult>
      */
     @DeleteMapping("/boards/help/{boardId}")
-    public ResponseEntity<ApiResult> deleteFreeBoard(
+    public ResponseEntity<ApiResult> deleteHelpBoard(
             @PathVariable("boardId") int boardId
     ) {
         // 본인 글만 삭제 가능하도록 예외처리

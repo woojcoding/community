@@ -12,7 +12,7 @@ const instance = axios.create({
  * @returns {Promise<boolean|*>}
  */
 export function confirmIdDuplication(accountId) {
-    return instance.get("/api/v1/user/accountId", {
+    return instance.get("/api/v1/users", {
         params: {
             accountId: encodeURIComponent(accountId)
         }
@@ -35,7 +35,7 @@ export function confirmIdDuplication(accountId) {
  * @returns {Promise<boolean>}
  */
 export function signUpUser(userDto) {
-    return instance.post("/api/v1/user", userDto)
+    return instance.post("/api/v1/users", userDto)
         .then((response) => {
             return response.data;
         }).catch((error) => {

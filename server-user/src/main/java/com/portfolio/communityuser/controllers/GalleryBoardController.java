@@ -181,7 +181,7 @@ public class GalleryBoardController {
      * @throws IOException the io exception
      */
     @PostMapping("/boards/gallery")
-    public ResponseEntity<ApiResult> postFreeBoard(
+    public ResponseEntity<ApiResult> postGalleryBoard(
             @Validated(Gallery.class) @ModelAttribute
             BoardDto boardDto,
             BindingResult bindingResult
@@ -291,7 +291,7 @@ public class GalleryBoardController {
      * @return ResponseEntity<ApiResult>
      */
     @DeleteMapping("/boards/gallery/{boardId}")
-    public ResponseEntity<ApiResult> deleteFreeBoard(
+    public ResponseEntity<ApiResult> deleteHelpBoard(
             @PathVariable("boardId") int boardId
     ) {
         // 본인 글만 삭제 가능하도록 예외처리

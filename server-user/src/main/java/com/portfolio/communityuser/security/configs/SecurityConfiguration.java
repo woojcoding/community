@@ -83,7 +83,7 @@ public class SecurityConfiguration {
                 .accessDeniedHandler(new UserAccessDeniedHandler(errorResponder))
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.POST, "/api/v1/user").permitAll()
+                        .antMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
                         .antMatchers(HttpMethod.GET, "/**").permitAll()
                         .anyRequest().authenticated());
 

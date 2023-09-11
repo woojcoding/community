@@ -23,7 +23,7 @@ import javax.validation.Valid;
  * The type User controller.
  */
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
     /**
@@ -73,9 +73,9 @@ public class UserController {
      * 아이디 중복 체크를 하기 위한 메서드
      *
      * @param idCheckDto 아이디
-     * @return
+     * @return ResponseEntity<ApiResult>
      */
-    @GetMapping("/accountId")
+    @GetMapping
     public ResponseEntity<ApiResult> confirmAccountIdDuplication(
             @Valid @ModelAttribute IdCheckDto idCheckDto,
             BindingResult bindingResult
