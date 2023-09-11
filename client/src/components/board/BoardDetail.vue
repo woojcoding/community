@@ -179,7 +179,7 @@ export default {
       if (typeIndex > 0 && typeIndex < pathArray.length) {
         const type = pathArray[typeIndex];
 
-        const path = `/boards/${type}/`;
+        const path = `/boards/${type}`;
 
         this.$router.push({
           path: `${path}/modify/${boardId}`,
