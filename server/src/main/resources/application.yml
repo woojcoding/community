@@ -7,7 +7,7 @@ mybatis:
     map-underscore-to-camel-case: true
     level:
       com.study.springboard.repository: trace
-    default-enum-type-handler: com.portfolio.community.enums.BoardTypeHandler
+    default-enum-type-handler: com.portfolio.community.type.BoardTypeHandler
 
 spring:
   datasource:

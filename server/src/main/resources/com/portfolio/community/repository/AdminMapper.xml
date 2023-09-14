@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portfolio.community.repository.AdminMapper">
+
+    <!--어드민 회원가입 -->
+    <insert id="signUp">
+        INSERT INTO admin (
+                           account_id,
+                           password,
+                           name
+                           )
+        VALUES (
+                #{accountId},
+                #{password},
+                #{name}
+                )
+    </insert>
+
+    <!--어드민 아이디 중복 조회-->
+    <select id="findAdminByAccountId" resultType="AdminDto">
+        SELECT *
+        FROM admin
+        WHERE account_id = #{accountId}
+    </select>
+</mapper>
