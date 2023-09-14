@@ -1,6 +1,6 @@
 package com.portfolio.communityuser.security.custom;
 
-import com.portfolio.communityuser.repositories.UserRepository;
+import com.portfolio.communityuser.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,6 +1,6 @@
 package com.portfolio.communityuser.security.custom;
 
-import com.portfolio.communityuser.utils.ErrorResponder;
+import com.portfolio.communityuser.util.ErrorResponder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;

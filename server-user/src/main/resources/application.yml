@@ -2,12 +2,12 @@ server:
   port: 8080
 
 mybatis:
-  type-aliases-package: com.portfolio.communityuser.dtos
+  type-aliases-package: com.portfolio.communityuser.dto
   configuration:
     map-underscore-to-camel-case: true
     level:
       com.study.springboard.repository: trace
-    default-enum-type-handler: com.portfolio.communityuser.enums.BoardTypeHandler
+    default-enum-type-handler: com.portfolio.communityuser.type.BoardTypeHandler
 
 spring:
   datasource:

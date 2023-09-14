@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.portfolio.communityuser.repository.NoticeBoardMapper">
+
+    <!-- 알림글만 가져옴-->
+    <select id="getNotificationList" resultType="BoardDto">
+        SELECT b.board_id,
+               b.title,
+               b.content,
+               b.views,
+               b.notification_flag,
+               b.created_at,
+               a.name AS writer
+        FROM board b
+                 JOIN admin a
+                     ON b.admin_id = a.account_id
+        WHERE b.notification_flag = 1
+        ORDER BY b.created_at DESC
+        LIMIT 5
+    </select>
+
+    <!-- 게시글 상세보기를 위해 정보들을 조회 -->
+    <select id="getNoticeBoard" resultType="BoardDto">
+        SELECT b.title,
+               b.content,
+               b.created_at,
+               b.views,
+               a.name as writer,
+               b.category_id,
+               c.name AS categoryName
+        FROM board b
+            LEFT JOIN admin a
+                ON a.account_id = b.admin_id
+            LEFT JOIN category c
+                ON c.category_id = b.category_id
+        WHERE board_id = #{boardId}
+    </select>
+</mapper>
