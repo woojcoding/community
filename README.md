@@ -22,6 +22,8 @@ Spring Boot와 Thymeleaf를 사용하여 MPA로 구현
 - 관리자 비밀번호: 123qwe!
 
 ## 📄 <a href="http://woojcoding.s3-website.ap-northeast-2.amazonaws.com/com/portfolio/communityuser/controllers/package-summary.html">Java Doc</a>
+## 📄 <a href="https://documenter.getpostman.com/view/23680957/2s9YC1XaZ2">API 문서</a>
+
 
 ## 🖼️ ERD
 ![portfolio](https://github.com/woojcoding/community/assets/110895459/38996dc5-f354-46bd-9f4c-7e2824cba464)
@@ -30,6 +32,8 @@ Spring Boot와 Thymeleaf를 사용하여 MPA로 구현
 
 ![Vue.js](https://img.shields.io/badge/Vue.js-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white)
 ![Vuex](https://img.shields.io/badge/Vuex-34495E?style=for-the-badge&logo=vuex&logoColor=white)
+![vue-router](https://img.shields.io/badge/vue--router-42b983?style=for-the-badge&logo=vue.js&logoColor=white)
+![axios](https://img.shields.io/badge/axios-35495E?style=for-the-badge&logo=axios&logoColor=white)
 ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
 
@@ -48,6 +52,8 @@ Spring Boot와 Thymeleaf를 사용하여 MPA로 구현
 
 - Vue.js
 - Vuex
+- vue-router
+- axios
 - Bootstrap
 - Spring Boot 2.7
 - MyBatis
@@ -64,11 +70,9 @@ Spring Boot와 Thymeleaf를 사용하여 MPA로 구현
 
 ### 배포환경
 
-프로젝트의 배포 환경:
-
 - AWS EC2
 - AWS RDS
-- DB: MySQL 8.0
+- MySQL 8.0
 - JDK 11
 
 ## 🖼️ 사용자 페이지 화면
