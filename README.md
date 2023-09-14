@@ -1,4 +1,4 @@
-# 커뮤니티
+# 김정우's 포트폴리오
 Vue.js와 Spring Boot 기반의 개인 프로젝트
 
 ## ⭐ 개요
@@ -22,58 +22,35 @@ Spring Boot와 Thymeleaf를 사용하여 MPA로 구현
 - 관리자 비밀번호: 123qwe!
 
 ## 📄 <a href="http://woojcoding.s3-website.ap-northeast-2.amazonaws.com/com/portfolio/communityuser/controllers/package-summary.html">Java Doc</a>
+- 사용자 페이지 컨트롤러의 클래스 및 메서드를 작성한 Java Doc 문서
 ## 📄 <a href="https://documenter.getpostman.com/view/23680957/2s9YC1XaZ2">API 문서</a>
-
+- 사용자 페이지 컨트롤러의 엔드포인트 및 요청/응답 형식을 작성한 API 문서
 
 ## 🖼️ ERD
 ![portfolio](https://github.com/woojcoding/community/assets/110895459/38996dc5-f354-46bd-9f4c-7e2824cba464)
 
 ## ⭐ 사용 기술 및 도구
 
+### 프론트엔드
 ![Vue.js](https://img.shields.io/badge/Vue.js-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white)
 ![Vuex](https://img.shields.io/badge/Vuex-34495E?style=for-the-badge&logo=vuex&logoColor=white)
-![vue-router](https://img.shields.io/badge/vue--router-42b983?style=for-the-badge&logo=vue.js&logoColor=white)
-![axios](https://img.shields.io/badge/axios-35495E?style=for-the-badge&logo=axios&logoColor=white)
 ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
 
+### 백엔드
 ![Java 11](https://img.shields.io/badge/Java%2011-007396?style=for-the-badge&logo=java&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
 ![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
 ![MyBatis](https://img.shields.io/badge/MyBatis-000000?style=for-the-badge&logo=mybatis&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jwt&logoColor=white)
 
+### 인프라
 ![AWS EC2](https://img.shields.io/badge/AWS%20EC2-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white)
 ![AWS RDS](https://img.shields.io/badge/AWS%20RDS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white)
-![MySQL 8.0](https://img.shields.io/badge/MySQL%208.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![JDK 11](https://img.shields.io/badge/JDK%2011-007396?style=for-the-badge&logo=java&logoColor=white)
 
-### 사용자 페이지
-
-- Vue.js
-- Vuex
-- vue-router
-- axios
-- Bootstrap
-- Spring Boot 2.7
-- MyBatis
-- Spring Security
-- JWT
-
-### 관리자 페이지
-
-- Thymeleaf
-- Bootstrap
-- Spring Boot 2.7
-- MyBatis
-- Spring Security
-
-### 배포환경
-
-- AWS EC2
-- AWS RDS
-- MySQL 8.0
-- JDK 11
+### DB
+![MySQL 8.0](https://img.shields.io/badge/MySQL%208.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
 ## 🖼️ 사용자 페이지 화면
 
