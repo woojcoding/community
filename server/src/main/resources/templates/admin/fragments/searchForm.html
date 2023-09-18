@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="common-search-container" class="mb-4 border p-4">
+<div th:fragment="common-search-container" class="border p-4">
     <form th:action="@{'/admin/boards/' + ${#strings.toLowerCase(type)}}"
           method="get" class="row g-3 align-items-center">
         <div class="col-md-1">
@@ -19,65 +19,27 @@
         </div>
         <div class="col-md-2 d-flex justify-content-center">
             <select th:if="${type!= 'HELP'}" name="category"
-                    class="form-select">
+                    class="form-control">
                 <option value="all">전체 카테고리</option>
                 <option th:each="category : ${categoryList}"
                         th:value="${category.categoryId}"
+                        th:selected="${category.categoryId} == ${boardSearch.category}"
                         th:text="${category.name}"></option>
             </select>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-4">
             <div class="input-group">
                 <input type="text" name="keyword"
                        th:placeholder="${type == 'NOTICE' ? '제목 or 내용' :
                    (type == 'HELP' ? '제목 or 내용 or 등록자' : '제목 or 내용 or 작성자')}"
                        th:value="${param.keyword}" class="form-control">
-                <div class="input-group-append">
                     <input type="hidden" name="sortBy" th:value="${boardSearch.sortBy}">
                     <input type="hidden" name="sort" th:value="${boardSearch.sort}">
-                    <button type="submit" class="btn btn-primary">검색</button>
-                </div>
             </div>
         </div>
+        <div class="col-md-1 text-right">
+            <button type="submit" class="btn btn-primary text-end">검색</button>
+        </div>
     </form>
-
-    <script th:inline="javascript">
-        const startDateInput = document.getElementById('startDate');
-
-        const endDateInput = document.getElementById('endDate');
-
-        // 오늘 날짜를 기준으로 day.js 객체 생성
-        const today = dayjs();
-
-        // 기본값으로 30일을 뺀 값들을 지정
-        const startDateValue = today.subtract(30, 'day');
-
-        const endDateValue = today
-
-        if (startDateInput.value === '') {
-            startDateInput.value = startDateValue.format('YYYY-MM-DD');
-        }
-
-        if (endDateInput.value === '') {
-            endDateInput.value = endDateValue.format('YYYY-MM-DD');
-        }
-
-        // startDateInput과 endDateInput에 이벤트 리스너를 추가하여 min과 max를 1년으로
-        startDateInput.addEventListener('change', function () {
-            const selectedStartDate = dayjs(this.value);
-
-            const maxDate = selectedStartDate.add(1, 'year');
-
-            endDateInput.setAttribute('max', maxDate.format('YYYY-MM-DD'));
-        });
-
-        endDateInput.addEventListener('change', function () {
-            const selectedEndDate = dayjs(this.value);
-
-            const minDate = selectedEndDate.subtract(1, 'year');
-
-            startDateInput.setAttribute('min', minDate.format('YYYY-MM-DD'));
-        });
-    </script>
 </div>
 </html>

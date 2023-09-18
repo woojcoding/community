@@ -1,16 +1,21 @@
 <template>
   <div class="bg-dark">
-    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div id="carousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div v-for="(file, index) in fileList" :key="file.fileId"
              class="carousel-item" :class="{ 'active': index === 0 }">
-          <img :src="`${dynamicDomain}/api/v1/files/images/${file.savedName}`" alt="이미지 없음" class="img-fluid">
+          <div class="img-container">
+            <img :src="`${dynamicDomain}/api/v1/files/images/${file.savedName}`"
+                 alt="이미지 없음" class="img-fluid">
+          </div>
         </div>
       </div>
-      <button v-if="fileList.length > 1" class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+      <button v-if="fileList.length > 1" class="carousel-control-prev"
+              type="button" data-bs-target="#carousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       </button>
-      <button v-if="fileList.length > 1" class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+      <button v-if="fileList.length > 1" class="carousel-control-next"
+              type="button" data-bs-target="#carousel" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
       </button>
     </div>
@@ -41,5 +46,14 @@ export default {
 </script>
 
 <style scoped>
+.img-container {
+  width: 100%;
+  height: 600px;
+}
 
+img {
+  object-fit: contain;
+  height: 100%;
+  width: 100%;
+}
 </style>

@@ -15,7 +15,7 @@
     </thead>
     <tbody>
     <th:block th:if="${type == 'NOTICE' and notificationDtoList != null}">
-      <tr th:each="notification : ${notificationDtoList}">
+      <tr th:each="notification : ${notificationDtoList}" class="bg-light">
         <td class="text-center align-middle"></td>
         <td th:text="'알림'" class="text-center align-middle"></td>
         <td>

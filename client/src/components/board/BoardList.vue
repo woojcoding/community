@@ -14,18 +14,17 @@
       <tbody>
       <!-- notificationList 데이터가 있는 경우에만 랜더링 -->
       <template v-if="notificationList">
-        <tr v-for="notification in notificationList"
-            :key="notification.boardId">
-          <td></td>
-          <td>알림</td>
-          <td class="text-start">
+        <tr v-for="notification in notificationList" :key="notification.boardId">
+          <td class="bg-light"></td>
+          <td class="bg-light">알림</td>
+          <td class="bg-light text-start">
             <a @click="boardDetail(notification.boardId)">
               {{ notification.title }}
             </a>
           </td>
-          <td>{{ notification.views }}</td>
-          <td>{{ formatDate(notification.createdAt) }}</td>
-          <td>{{ notification.writer }}</td>
+          <td class="bg-light">{{ notification.views }}</td>
+          <td class="bg-light">{{ formatDate(notification.createdAt) }}</td>
+          <td class="bg-light">{{ notification.writer }}</td>
         </tr>
       </template>
       <tr v-for="(board, index) in boardList" :key="board.boardId">

@@ -2,7 +2,7 @@ server:
   port: 8081
 
 mybatis:
-  type-aliases-package: com.portfolio.community.dtos
+  type-aliases-package: com.portfolio.community.dto
   configuration:
     map-underscore-to-camel-case: true
     level:

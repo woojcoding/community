@@ -100,7 +100,7 @@
     <th:block
             th:replace="admin/fragments/commentForm :: commentForm"></th:block>
 
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center mb-4">
         <button onclick="return validateForm()"
                 form="writeForm"
                 th:text="${type == 'HELP' ? '답변완료' : '등록 / 수정'}"
@@ -115,9 +115,7 @@
                 keyword=${boardSearch.keyword},
                 sortBy=${boardSearch.sortBy},
                 sort=${boardSearch.sort})}"
-           class="btn btn-secondary">
-            <button class="btn btn-secondary">목록</button>
-        </a>
+           class="btn btn-secondary ml-2">목록</a>
         <a th:href="@{/admin/board/{type}/delete/{boardId}
                 (type=${#strings.toLowerCase(type)},
                 boardId=${boardId},
@@ -129,10 +127,8 @@
                 keyword=${boardSearch.keyword},
                 sortBy=${boardSearch.sortBy},
                 sort=${boardSearch.sort})}"
-           class="btn btn-danger">
-            <button onclick="return deleteConfirm()" class="btn btn-danger">삭제
-            </button>
-        </a>
+           onclick="return deleteConfirm()"
+           class="btn btn-danger ml-2">삭제</a>
     </div>
 
     <script th:inline="javascript">

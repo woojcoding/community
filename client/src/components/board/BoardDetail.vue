@@ -64,10 +64,10 @@
       <div class="buttons mt-4">
         <button @click="moveToList" class="btn btn-secondary">목록</button>
         <button v-if="isAuthorized" @click="moveToModifyForm"
-                class="btn btn-primary">수정
+                class="btn btn-primary ms-2">수정
         </button>
         <button v-if="isAuthorized" @click="confirmDelete"
-                class="btn btn-danger">삭제
+                class="btn btn-danger ms-2">삭제
         </button>
       </div>
     </div>

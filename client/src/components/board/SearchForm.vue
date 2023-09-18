@@ -54,15 +54,15 @@
       <span> 개씩 보기</span>
     </div>
     <div class="col-md-8 text-end">
-      <span>정렬 </span>
-      <select id="sort-by" class="form-control-sm" v-model="boardSearch.sortBy"
+      <span>정렬</span>
+      <select id="sort-by" class="form-control-sm ms-2" v-model="boardSearch.sortBy"
               @change="search">
         <option value="createdAt">등록일시</option>
         <option v-if="categoryList" value="category">분류</option>
         <option value="title">제목</option>
         <option value="views">조회수</option>
       </select>
-      <select id="sort" class="form-control-sm" v-model="boardSearch.sort"
+      <select id="sort" class="form-control-sm ms-2" v-model="boardSearch.sort"
               @change="search">
         <option value="desc">내림차순</option>
         <option value="asc">오름차순</option>
@@ -119,7 +119,7 @@ export default {
     search() {
       this.$emit('searchBoard', this.boardSearch);
     },
-  }
+  },
 }
 </script>
 
