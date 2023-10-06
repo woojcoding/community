@@ -101,7 +101,7 @@ export default {
   data() {
     return {
       boardSearch: {
-        startDate: dayjs().subtract(30, 'day').format('YYYY-MM-DD'),
+        startDate: dayjs().subtract(1, 'year').format('YYYY-MM-DD'),
         endDate: dayjs().format('YYYY-MM-DD'),
         category: 'all',
         keyword: '',

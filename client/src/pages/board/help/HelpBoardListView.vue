@@ -39,7 +39,7 @@ export default {
       totalBoardCount: 0,
       boardList: [],
       boardSearch: {
-        startDate: dayjs().subtract(15, 'day').format('YYYY-MM-DD'),
+        startDate: dayjs().subtract(1, 'year').format('YYYY-MM-DD'),
         endDate: dayjs().format('YYYY-MM-DD'),
         category: 'all',
         keyword: '',
@@ -72,7 +72,7 @@ export default {
 
         if (Object.keys(to.query).length === 0) {
           this.boardSearch = {
-            startDate: dayjs().subtract(30, 'day').format('YYYY-MM-DD'),
+            startDate: dayjs().subtract(1, 'year').format('YYYY-MM-DD'),
             endDate: dayjs().format('YYYY-MM-DD'),
             category: 'all',
             keyword: '',
